@@ -1085,7 +1085,7 @@ p {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   justify-content: center;
-  gap: 1px;
+  gap: 10px;
   width: min(720px, 100%);
   margin-top: clamp(8px, 1.4vw, 14px);
   font-family: var(--font-sans);
@@ -1099,8 +1099,8 @@ p {
   min-width: 0;
   min-height: 54px;
   padding: 9px 14px;
-  border: 0;
-  border-radius: 0;
+  border: 1px solid color-mix(in srgb, var(--line), transparent 48%);
+  border-radius: 12px;
   background: color-mix(in srgb, var(--surface-soft), transparent 54%);
   transition: background 160ms ease, color 160ms ease, transform 160ms ease;
 }
@@ -1134,15 +1134,15 @@ p {
 }
 
 .issue-map a:first-child {
-  border-radius: 12px 0 0 12px;
+  border-radius: 12px;
 }
 
 .issue-map a + a {
-  box-shadow: inset 1px 0 0 color-mix(in srgb, var(--line), transparent 52%);
+  box-shadow: none;
 }
 
 .issue-map a:last-child {
-  border-radius: 0 12px 12px 0;
+  border-radius: 12px;
 }
 
 .issue-masthead p {
@@ -1661,7 +1661,7 @@ p {
 
 .hero-slogan {
   display: block;
-  width: clamp(150px, 16.7vw, 244px);
+  width: clamp(146px, 16.1vw, 236px);
   aspect-ratio: 1900 / 450;
   margin: 0 0 clamp(6px, 1.4vw, 12px);
   background: var(--accent) !important;
@@ -2202,7 +2202,7 @@ h2 {
 }
 
 .archive-refine-row {
-  display: grid;
+  display: inline-grid;
   grid-template-columns: auto minmax(0, 1fr);
   gap: 8px 12px;
   align-items: center;
@@ -2219,19 +2219,19 @@ h2 {
 .archive-sort-toggle {
   display: inline-grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  width: min(100%, 260px);
-  min-height: 40px;
-  padding: 0;
+  width: min(100%, 300px);
+  min-height: 42px;
+  padding: 3px;
   border: 1px solid color-mix(in srgb, var(--line), transparent 32%);
   border-radius: 999px;
-  overflow: hidden;
+  overflow: visible;
   background: color-mix(in srgb, var(--bg), var(--surface-soft) 42%);
 }
 
 .archive-sort-toggle button {
   min-width: 0;
   border: 0;
-  border-radius: 0;
+  border-radius: 999px;
   background: transparent;
   color: var(--quiet);
   cursor: pointer;
@@ -2242,13 +2242,15 @@ h2 {
 }
 
 .archive-sort-toggle button + button {
-  border-left: 1px solid color-mix(in srgb, var(--line), transparent 42%);
+  border-left: 0;
 }
 
 .archive-sort-toggle button[aria-pressed="true"] {
   background: color-mix(in srgb, var(--accent), transparent 84%);
   color: var(--accent);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent), transparent 58%);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--accent), transparent 42%),
+    0 8px 18px color-mix(in srgb, var(--bg-deep), transparent 76%);
 }
 
 .archive-sort-toggle button:hover,
@@ -2285,7 +2287,7 @@ h2 {
 .archive-count {
   width: min(100%, 560px);
   margin: 0;
-  padding: 2px 2px 0;
+  padding: 4px 2px 0;
   color: var(--quiet);
   font-family: var(--font-sans);
   font-size: 13px;
@@ -3648,7 +3650,7 @@ h2 {
   .issue-slogan {
     margin-top: 4px;
     margin-bottom: 10px;
-    width: clamp(156px, 37vw, 218px);
+    width: clamp(152px, 35.5vw, 210px);
   }
 
   h1 {
@@ -3829,7 +3831,7 @@ h2 {
   }
 
   .issue-masthead .hero-slogan {
-    width: clamp(156px, 13.9vw, 230px);
+    width: clamp(152px, 13.2vw, 222px);
   }
 }
 
@@ -4125,7 +4127,7 @@ h2 {
   }
 
   .home-page .issue-masthead .hero-slogan {
-    width: clamp(198px, 18.2vw, 288px);
+    width: clamp(190px, 17.5vw, 276px);
     margin-top: clamp(8px, 0.9vw, 14px);
     margin-bottom: 0;
   }
@@ -4164,6 +4166,7 @@ h2 {
   .home-page .issue-map {
     width: min(760px, 100%);
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
     margin-top: clamp(10px, 1.2vw, 14px);
   }
 

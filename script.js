@@ -503,6 +503,10 @@ const setupTickerMotion = () => {
     const t = Math.max(0, Math.min(1, value));
     return t * t * (3 - 2 * t);
   };
+  const easeOutCubic = (value) => {
+    const t = Math.max(0, Math.min(1, value));
+    return 1 - ((1 - t) ** 3);
+  };
   const clearCarouselTimers = () => {
     carouselPanTimers.forEach((timer) => window.clearTimeout(timer));
     carouselPanTimers = [];
@@ -703,7 +707,7 @@ const setupTickerMotion = () => {
         if (systemPrefersReducedMotion.matches) {
           nextSpeed = tickerPointerInside || time < tickerAutoResumeAt ? 0 : tickerReducedSpeed;
         } else if (tickerPointerInside) {
-          const progress = smoothStep((time - tickerHoverStartedAt) / tickerHoverBrakeDuration);
+          const progress = easeOutCubic((time - tickerHoverStartedAt) / tickerHoverBrakeDuration);
           nextSpeed = tickerHoverStartSpeed * (1 - progress);
         } else if (time < tickerAutoResumeAt) {
           const progress = smoothStep((time - tickerResumeStartedAt) / tickerResumeDuration);
@@ -739,7 +743,7 @@ const setupTickerMotion = () => {
   newsStrip?.addEventListener("pointerenter", () => {
     tickerPointerInside = true;
     tickerHoverStartedAt = performance.now();
-    tickerHoverStartSpeed = tickerCurrentSpeed || (systemPrefersReducedMotion.matches ? tickerReducedSpeed : tickerBaseSpeed);
+    tickerHoverStartSpeed = tickerCurrentSpeed;
     tickerResumeStartedAt = 0;
     if (activeTickerIndex !== null) scheduleTickerRelease(9600);
   });
@@ -792,20 +796,26 @@ if (archiveItems.length) {
   };
 
   const sortArchiveItems = (activeSort) => {
-    if (!archiveList) return;
+    if (!archiveList) return [];
     const sortedItems = [...archiveItems].sort((a, b) => {
       const diff = getArchiveTimestamp(b) - getArchiveTimestamp(a);
       return activeSort === "oldest" ? -diff : diff;
     });
 
     sortedItems.forEach((item) => archiveList.insertBefore(item, archiveEmpty || archiveMore || null));
+    return sortedItems;
   };
 
   const formatArchiveCount = (visibleCount, shownCount, query) => {
     const total = archiveItems.length;
     if (!visibleCount) return "No notes found.";
-    if (query) return `Showing ${visibleCount} ${visibleCount === 1 ? "match" : "matches"}.`;
-    return shownCount >= total ? "Showing all notes." : `Showing ${shownCount} of ${total} notes.`;
+    const orderLabel = archiveSort === "oldest" ? "oldest first" : "newest first";
+    if (query) {
+      return `Filtered: ${visibleCount} ${visibleCount === 1 ? "match" : "matches"} for "${query}". ${orderLabel}.`;
+    }
+    return shownCount >= total
+      ? `Showing all ${total} notes, ${orderLabel}.`
+      : `Showing ${shownCount} of ${total} notes, ${orderLabel}.`;
   };
 
   const updateArchive = () => {
@@ -816,10 +826,15 @@ if (archiveItems.length) {
     let visibleCount = 0;
 
     archiveList?.classList.add("is-updating");
-    sortArchiveItems(activeSort);
+    const sortedItems = sortArchiveItems(activeSort);
 
-    archiveItems.forEach((item) => {
-      const text = item.textContent.toLowerCase();
+    sortedItems.forEach((item) => {
+      const text = [
+        item.textContent,
+        item.dataset.topics,
+        item.dataset.date,
+        item.dataset.dateLabel,
+      ].join(" ").toLowerCase();
       const matchesSearch = !query || text.includes(query);
       if (matchesSearch) matchingItems.push(item);
     });
