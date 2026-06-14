@@ -87,25 +87,12 @@
             <span>Find</span>
             <input type="search" data-archive-search placeholder="Search notes, topics...">
           </label>
-          <div class="archive-refine-row">
-            <label class="archive-select">
-              <span>Topic</span>
-              <select data-archive-topic aria-label="Filter notes by topic">
-                <option value="all">All topics</option>
-                <option value="models">Models</option>
-                <option value="infrastructure">Infrastructure</option>
-                <option value="policy">Policy</option>
-                <option value="tools">Tools</option>
-                <option value="culture">Culture</option>
-              </select>
-            </label>
-            <label class="archive-select">
-              <span>Order</span>
-              <select data-archive-order aria-label="Sort notes">
-                <option value="newest">Newest first</option>
-                <option value="oldest">Oldest first</option>
-              </select>
-            </label>
+          <div class="archive-refine-row" aria-label="Sort notes">
+            <span>Order</span>
+            <div class="archive-sort-toggle">
+              <button type="button" data-archive-order="newest" aria-pressed="true">Newest</button>
+              <button type="button" data-archive-order="oldest" aria-pressed="false">Oldest</button>
+            </div>
           </div>
           <p class="archive-count" data-archive-count aria-live="polite">Showing all notes.</p>
         </div>
@@ -237,7 +224,8 @@
             <span class="card-cta">Read article</span>
           </div>
         </a>
-        <p class="archive-empty" data-archive-empty hidden>No notes match that yet. Try a broader topic or a shorter search.</p>
+        <p class="archive-empty" data-archive-empty hidden>No notes match that yet. Try a shorter search.</p>
+        <button class="archive-more" type="button" data-archive-more hidden>More notes</button>
       </section>
     </main>
 

@@ -16,10 +16,10 @@ let tickerItemCount = 0;
 const issueStrip = document.querySelector(".issue-strip");
 const archiveSearch = document.querySelector("[data-archive-search]");
 const archiveItems = Array.from(document.querySelectorAll("[data-archive-item]"));
-const archiveTopic = document.querySelector("[data-archive-topic]");
-const archiveOrder = document.querySelector("[data-archive-order]");
+const archiveOrderButtons = Array.from(document.querySelectorAll("[data-archive-order]"));
 const archiveCount = document.querySelector("[data-archive-count]");
 const archiveEmpty = document.querySelector("[data-archive-empty]");
+const archiveMore = document.querySelector("[data-archive-more]");
 let issueSections = [];
 let activeIssueIndex = 0;
 
@@ -113,7 +113,7 @@ const showThemeStoragePrompt = () => {
   prompt.setAttribute("role", "dialog");
   prompt.setAttribute("aria-live", "polite");
   prompt.innerHTML = `
-    <p>Save this theme choice on this device?</p>
+    <p>Save this theme choice on this device? This uses local browser storage only, so the site can remember light or dark mode here.</p>
     <div>
       <button type="button" data-theme-save>Save</button>
       <button type="button" data-theme-once>Only now</button>
@@ -489,7 +489,20 @@ const setupTickerMotion = () => {
   let tickerAutoResumeAt = 0;
   let tickerLastScrollLeft = tickerTrack.scrollLeft;
   let tickerLastMovementAt = performance.now();
+  let tickerCurrentSpeed = 0;
   let tickerReadPanFrame = 0;
+  const tickerBaseSpeed = 0.055;
+  const tickerReducedSpeed = 0.018;
+  const tickerHoverBrakeDuration = 2800;
+  const tickerResumeDuration = 1700;
+  let tickerHoverStartedAt = 0;
+  let tickerHoverStartSpeed = tickerBaseSpeed;
+  let tickerResumeStartedAt = 0;
+  let tickerResumeStartSpeed = 0;
+  const smoothStep = (value) => {
+    const t = Math.max(0, Math.min(1, value));
+    return t * t * (3 - 2 * t);
+  };
   const clearCarouselTimers = () => {
     carouselPanTimers.forEach((timer) => window.clearTimeout(timer));
     carouselPanTimers = [];
@@ -549,6 +562,27 @@ const setupTickerMotion = () => {
       const distance = Math.abs(rect.left + rect.width / 2 - trackCenter);
       return distance < best.distance ? { item, distance } : best;
     }, { item: null, distance: Number.POSITIVE_INFINITY }).item || getCarouselTickerItems()[0] || null;
+  };
+  const getEdgeTickerItem = (direction = 1) => {
+    const trackRect = tickerTrack.getBoundingClientRect();
+    const visibleItems = getCarouselTickerItems()
+      .map((item) => {
+        const text = item.querySelector(".ticker-text") || item;
+        const rect = text.getBoundingClientRect();
+        return {
+          item,
+          left: rect.left,
+          right: rect.right,
+          visibleWidth: Math.min(rect.right, trackRect.right) - Math.max(rect.left, trackRect.left),
+        };
+      })
+      .filter((entry) => entry.visibleWidth > 6);
+
+    if (!visibleItems.length) return getCenterTickerItem();
+
+    return (direction > 0
+      ? visibleItems.sort((a, b) => a.left - b.left)
+      : visibleItems.sort((a, b) => b.right - a.right))[0].item;
   };
   const scrollTickerItemToStart = (item, behavior = "smooth") => {
     if (!item) return;
@@ -636,12 +670,15 @@ const setupTickerMotion = () => {
     window.clearTimeout(carouselResumeTimer);
     clearCarouselTimers();
     normalizeTickerScroll();
-    const centeredItem = getCenterTickerItem();
-    if (!centeredItem) return;
-    const centeredIndex = Number(centeredItem.dataset.tickerIndex) || 0;
-    const baseIndex = focusedTickerIndex === null ? centeredIndex : focusedTickerIndex;
-    const nextIndex = (baseIndex + direction + tickerItemCount) % tickerItemCount;
-    const activeItem = getTickerItemByIndex(nextIndex, direction) || centeredItem;
+    const edgeItem = getEdgeTickerItem(direction);
+    if (!edgeItem) return;
+    const edgeIndex = Number(edgeItem.dataset.tickerIndex) || 0;
+    const nextIndex = focusedTickerIndex === null
+      ? edgeIndex
+      : (focusedTickerIndex + direction + tickerItemCount) % tickerItemCount;
+    const activeItem = focusedTickerIndex === null
+      ? edgeItem
+      : getTickerItemByIndex(nextIndex, direction) || edgeItem;
     if (!activeItem) return;
 
     activeTickerIndex = Number(activeItem.dataset.tickerIndex) || 0;
@@ -658,15 +695,31 @@ const setupTickerMotion = () => {
     const delta = Math.min(64, time - tickerAutoTime);
     tickerAutoTime = time;
 
-    if (activeTickerIndex === null && !tickerPointerDown && time >= tickerAutoResumeAt) {
+    if (activeTickerIndex === null && !tickerPointerDown) {
       const maxScroll = Math.max(0, tickerTrack.scrollWidth - tickerTrack.clientWidth);
       if (maxScroll > 1) {
-        const autoSpeed = systemPrefersReducedMotion.matches ? 0.018 : (tickerPointerInside ? 0.014 : 0.055);
-        tickerTrack.scrollLeft += delta * autoSpeed;
+        const baseSpeed = systemPrefersReducedMotion.matches ? tickerReducedSpeed : tickerBaseSpeed;
+        let nextSpeed = baseSpeed;
+        if (systemPrefersReducedMotion.matches) {
+          nextSpeed = tickerPointerInside || time < tickerAutoResumeAt ? 0 : tickerReducedSpeed;
+        } else if (tickerPointerInside) {
+          const progress = smoothStep((time - tickerHoverStartedAt) / tickerHoverBrakeDuration);
+          nextSpeed = tickerHoverStartSpeed * (1 - progress);
+        } else if (time < tickerAutoResumeAt) {
+          const progress = smoothStep((time - tickerResumeStartedAt) / tickerResumeDuration);
+          nextSpeed = tickerResumeStartSpeed * (1 - progress);
+        } else if (tickerResumeStartedAt) {
+          const progress = smoothStep((time - tickerResumeStartedAt) / tickerResumeDuration);
+          nextSpeed = tickerResumeStartSpeed + (baseSpeed - tickerResumeStartSpeed) * progress;
+          if (progress >= 1) tickerResumeStartedAt = 0;
+        }
+        tickerCurrentSpeed = Math.max(0, nextSpeed);
+        if (tickerCurrentSpeed < 0.00002) tickerCurrentSpeed = 0;
+        tickerTrack.scrollLeft += delta * tickerCurrentSpeed;
         if (Math.abs(tickerTrack.scrollLeft - tickerLastScrollLeft) > 0.2) {
           tickerLastMovementAt = time;
           tickerLastScrollLeft = tickerTrack.scrollLeft;
-        } else if (time - tickerLastMovementAt > 1800) {
+        } else if (tickerCurrentSpeed > 0.00002 && !tickerPointerInside && time - tickerLastMovementAt > 1800) {
           tickerTrack.scrollLeft += 1;
           tickerLastMovementAt = time;
           tickerLastScrollLeft = tickerTrack.scrollLeft;
@@ -685,10 +738,16 @@ const setupTickerMotion = () => {
   tickerNext?.addEventListener("click", () => focusReadableTickerItem(1));
   newsStrip?.addEventListener("pointerenter", () => {
     tickerPointerInside = true;
+    tickerHoverStartedAt = performance.now();
+    tickerHoverStartSpeed = tickerCurrentSpeed || (systemPrefersReducedMotion.matches ? tickerReducedSpeed : tickerBaseSpeed);
+    tickerResumeStartedAt = 0;
     if (activeTickerIndex !== null) scheduleTickerRelease(9600);
   });
   newsStrip?.addEventListener("pointerleave", () => {
     tickerPointerInside = false;
+    tickerResumeStartedAt = performance.now();
+    tickerResumeStartSpeed = tickerCurrentSpeed;
+    if (activeTickerIndex === null) tickerAutoResumeAt = performance.now();
     if (activeTickerIndex !== null) scheduleTickerRelease(5200);
   });
   newsStrip?.addEventListener("pointerdown", () => {
@@ -719,10 +778,13 @@ const setupTickerMotion = () => {
 setupTickerControls();
 setupTickerMotion();
 
-// Archive search, topic filter and ordering.
+// Archive search, ordering and progressive reveal.
 if (archiveItems.length) {
   const archiveList = archiveItems[0].parentElement;
   if (archiveList) archiveList.dataset.archiveList = "true";
+  const archiveStep = 4;
+  let archiveVisibleLimit = archiveStep;
+  let archiveSort = "newest";
 
   const getArchiveTimestamp = (item) => {
     const timestamp = new Date(item.dataset.date || "").getTime();
@@ -736,25 +798,21 @@ if (archiveItems.length) {
       return activeSort === "oldest" ? -diff : diff;
     });
 
-    sortedItems.forEach((item) => {
-      archiveList.insertBefore(item, archiveEmpty || null);
-    });
+    sortedItems.forEach((item) => archiveList.insertBefore(item, archiveEmpty || archiveMore || null));
   };
 
-  const formatArchiveCount = (visibleCount, query, activeTopic) => {
+  const formatArchiveCount = (visibleCount, shownCount, query) => {
     const total = archiveItems.length;
     if (!visibleCount) return "No notes found.";
-    if (!query && activeTopic === "all") {
-      return visibleCount === total ? "Showing all notes." : `Showing ${visibleCount} of ${total} notes.`;
-    }
-    return `Showing ${visibleCount} ${visibleCount === 1 ? "note" : "notes"}.`;
+    if (query) return `Showing ${visibleCount} ${visibleCount === 1 ? "match" : "matches"}.`;
+    return shownCount >= total ? "Showing all notes." : `Showing ${shownCount} of ${total} notes.`;
   };
 
   const updateArchive = () => {
     const query = archiveSearch?.value.trim().toLowerCase() || "";
-    const activeTopic = archiveTopic?.value || "all";
-    const activeSort = archiveOrder?.value || "newest";
+    const activeSort = archiveSort;
     const visibleItems = [];
+    const matchingItems = [];
     let visibleCount = 0;
 
     archiveList?.classList.add("is-updating");
@@ -762,11 +820,14 @@ if (archiveItems.length) {
 
     archiveItems.forEach((item) => {
       const text = item.textContent.toLowerCase();
-      const topics = (item.dataset.topics || "").split(" ");
-      const matchesTopic = activeTopic === "all" || topics.includes(activeTopic);
       const matchesSearch = !query || text.includes(query);
-      const isVisible = matchesTopic && matchesSearch;
+      if (matchesSearch) matchingItems.push(item);
+    });
 
+    const shownItems = query ? matchingItems : matchingItems.slice(0, archiveVisibleLimit);
+
+    archiveItems.forEach((item) => {
+      const isVisible = shownItems.includes(item);
       item.hidden = !isVisible;
       item.classList.remove("is-appearing");
       if (isVisible) {
@@ -775,11 +836,14 @@ if (archiveItems.length) {
       }
     });
 
-    if (archiveEmpty) archiveEmpty.hidden = visibleCount > 0;
+    if (archiveEmpty) archiveEmpty.hidden = matchingItems.length > 0;
+    if (archiveMore) {
+      archiveMore.hidden = Boolean(query) || archiveVisibleLimit >= matchingItems.length;
+    }
     if (archiveCount) {
       archiveCount.classList.remove("is-changing");
       void archiveCount.offsetWidth;
-      archiveCount.textContent = formatArchiveCount(visibleCount, query, activeTopic);
+      archiveCount.textContent = formatArchiveCount(matchingItems.length, visibleCount, query);
       archiveCount.classList.add("is-changing");
     }
 
@@ -791,9 +855,22 @@ if (archiveItems.length) {
     });
   };
 
-  archiveSearch?.addEventListener("input", updateArchive);
-  archiveTopic?.addEventListener("change", updateArchive);
-  archiveOrder?.addEventListener("change", updateArchive);
+  archiveSearch?.addEventListener("input", () => {
+    archiveVisibleLimit = archiveStep;
+    updateArchive();
+  });
+  archiveOrderButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      archiveSort = button.dataset.archiveOrder || "newest";
+      archiveVisibleLimit = archiveStep;
+      archiveOrderButtons.forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+      updateArchive();
+    });
+  });
+  archiveMore?.addEventListener("click", () => {
+    archiveVisibleLimit += archiveStep;
+    updateArchive();
+  });
 
   updateArchive();
 }
