@@ -1507,7 +1507,7 @@ p {
   display: inline-flex;
   align-items: center;
   gap: 0;
-  margin-inline: 1px;
+  margin-inline: 0;
   white-space: nowrap;
   transition: background 160ms ease, color 160ms ease, opacity 160ms ease, text-shadow 160ms ease;
 }
@@ -1516,30 +1516,8 @@ p {
   display: inline-flex;
   align-items: center;
   min-height: 24px;
-  padding: 2px 3px;
+  padding: 2px 0;
   transition: color 520ms ease, opacity 520ms ease, text-shadow 520ms ease;
-}
-
-.ticker-track .is-active .ticker-text {
-  font-weight: 900;
-  background: transparent;
-  color: var(--accent);
-  opacity: 1;
-  text-shadow: 0 0 14px color-mix(in srgb, var(--accent), transparent 72%);
-}
-
-:root[data-theme="light"] .ticker-track .is-active .ticker-text {
-  background: transparent;
-  color: var(--accent);
-  text-shadow: 0 0 10px color-mix(in srgb, var(--accent), transparent 80%);
-}
-
-.newsbar.is-reading .ticker-track > :not(.is-active) .ticker-text {
-  opacity: 0.58;
-}
-
-:root[data-theme="light"] .newsbar.is-reading .ticker-track > :not(.is-active) .ticker-text {
-  opacity: 0.52;
 }
 
 .ticker-track > span::after,
@@ -1548,16 +1526,12 @@ p {
   width: 4px;
   height: 4px;
   vertical-align: middle;
-  margin-inline: clamp(7px, 0.95vw, 12px);
+  margin-inline: clamp(10px, 0.95vw, 12px);
   border-radius: 50%;
   background: color-mix(in srgb, var(--accent), var(--quiet) 28%);
   content: "";
   line-height: 1;
   transform: translateY(0);
-}
-
-.ticker-track > .is-before-active::after {
-  opacity: 0;
 }
 
 .reader-controls {
@@ -1661,7 +1635,7 @@ p {
 
 .hero-slogan {
   display: block;
-  width: clamp(146px, 16.1vw, 236px);
+  width: clamp(142px, 15.7vw, 230px);
   aspect-ratio: 1900 / 450;
   margin: 0 0 clamp(6px, 1.4vw, 12px);
   background: var(--accent) !important;
@@ -2112,7 +2086,7 @@ h2 {
   margin-inline: auto;
   overflow-x: clip;
   min-height: calc(100svh - 220px);
-  padding-top: clamp(14px, 2.6vw, 28px);
+  padding-top: clamp(12px, 2vw, 22px);
 }
 
 .archive-page > .section {
@@ -2123,11 +2097,11 @@ h2 {
 
 .archive-hero {
   display: grid;
-  gap: clamp(14px, 2.4vw, 22px);
+  gap: clamp(10px, 1.7vw, 16px);
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  padding: clamp(22px, 3vw, 34px);
+  padding: clamp(18px, 2.4vw, 28px);
   border: 1px solid color-mix(in srgb, var(--line), transparent 36%);
   border-radius: 18px;
   background:
@@ -2138,7 +2112,7 @@ h2 {
 .archive-hero h1 {
   max-width: min(720px, 100%);
   margin: 0;
-  font-size: clamp(38px, 4.4vw, 58px);
+  font-size: clamp(34px, 3.8vw, 50px);
   line-height: 1.02;
 }
 
@@ -2146,7 +2120,7 @@ h2 {
   max-width: 700px;
   margin: 0;
   color: var(--muted);
-  font-size: clamp(17px, 1.8vw, 21px);
+  font-size: clamp(16px, 1.5vw, 19px);
   font-weight: 700;
   line-height: 1.5;
 }
@@ -2154,11 +2128,11 @@ h2 {
 .archive-tools {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
+  gap: 10px;
   align-items: start;
-  width: min(100%, 720px);
-  margin-top: 6px;
-  padding: clamp(12px, 2vw, 16px);
+  width: min(100%, 760px);
+  margin-top: 0;
+  padding: clamp(11px, 1.6vw, 14px);
   border: 1px solid color-mix(in srgb, var(--line), transparent 38%);
   border-radius: 14px;
   background: color-mix(in srgb, var(--surface-soft), transparent 22%);
@@ -2327,7 +2301,7 @@ h2 {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(220px, 0.85fr);
   gap: 14px;
-  padding-top: clamp(18px, 3vw, 30px);
+  padding-top: clamp(8px, 1.8vw, 18px);
   min-width: 0;
   overflow: clip;
 }
@@ -2460,7 +2434,7 @@ h2 {
 
 .edition-list {
   display: grid;
-  gap: 14px;
+  gap: 10px;
   align-items: stretch;
 }
 
@@ -2513,6 +2487,50 @@ h2 {
     linear-gradient(135deg, color-mix(in srgb, var(--accent), transparent 93%), transparent 58%),
     color-mix(in srgb, var(--surface-soft), transparent 22%);
   transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+.archive-page .edition-list {
+  width: min(100%, 920px);
+}
+
+.archive-page .edition-row {
+  grid-template-columns: minmax(92px, 150px) minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  align-items: center;
+  gap: clamp(12px, 1.8vw, 18px);
+  padding: clamp(12px, 1.7vw, 16px);
+  --story-image-adjust: 0px !important;
+}
+
+.archive-page .edition-row::before {
+  grid-row: 1 / -1;
+  aspect-ratio: 16 / 10;
+  min-height: 78px;
+}
+
+.archive-page .edition-row > span:not(.card-cta) {
+  grid-column: 2;
+  align-self: end;
+}
+
+.archive-page .edition-row > div {
+  grid-column: 2;
+  align-self: start;
+  min-width: 0;
+}
+
+.archive-page .edition-row h2 {
+  margin-bottom: 5px;
+  font-size: clamp(21px, 2vw, 28px);
+}
+
+.archive-page .edition-row p {
+  font-size: clamp(15px, 1.35vw, 17px);
+  line-height: 1.45;
+}
+
+.archive-page .edition-row .card-cta {
+  margin-top: clamp(7px, 1vw, 10px);
 }
 
 .edition-row::before {
@@ -3472,14 +3490,6 @@ h2 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .archive-page .edition-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .archive-page .edition-row {
-    grid-template-columns: 1fr;
-  }
-
   .article-page .edition-row,
   .legal-page .edition-row {
     grid-template-columns: minmax(140px, 0.24fr) minmax(0, 0.76fr);
@@ -3650,7 +3660,7 @@ h2 {
   .issue-slogan {
     margin-top: 4px;
     margin-bottom: 10px;
-    width: clamp(152px, 35.5vw, 210px);
+    width: clamp(148px, 34.6vw, 204px);
   }
 
   h1 {
@@ -3790,6 +3800,30 @@ h2 {
     margin-bottom: 2px;
   }
 
+  .archive-page .edition-row {
+    grid-template-columns: minmax(74px, 92px) minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .archive-page .edition-row::before {
+    aspect-ratio: 1 / 1;
+    min-height: 68px;
+  }
+
+  .archive-page .edition-row h2 {
+    font-size: clamp(19px, 5.6vw, 25px);
+    line-height: 1.05;
+  }
+
+  .archive-page .edition-row p {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
   .error-page-main {
     min-height: calc(100svh - var(--header-height, 112px) - 120px);
     padding-top: 18px;
@@ -3831,7 +3865,7 @@ h2 {
   }
 
   .issue-masthead .hero-slogan {
-    width: clamp(152px, 13.2vw, 222px);
+    width: clamp(148px, 12.8vw, 216px);
   }
 }
 
@@ -4127,7 +4161,7 @@ h2 {
   }
 
   .home-page .issue-masthead .hero-slogan {
-    width: clamp(190px, 17.5vw, 276px);
+    width: clamp(184px, 17vw, 268px);
     margin-top: clamp(8px, 0.9vw, 14px);
     margin-bottom: 0;
   }
