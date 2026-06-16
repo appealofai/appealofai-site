@@ -67,25 +67,37 @@
         JavaScript is off. Reading works normally; theme switching and dynamic controls are disabled.
       </div>
       <style id="no-js-news-style">
-        .newsbar { overflow-x: auto; scrollbar-width: none; }
+        .newsbar { overflow: hidden; scrollbar-width: none; }
         .newsbar::-webkit-scrollbar { display: none; }
-        .ticker-track { animation: ticker 44s linear infinite; padding-right: 18px; }
+        .ticker-track { animation: none !important; overflow: hidden; padding-right: 42px; }
+        .ticker-track > a:nth-of-type(n+6) { display: none; }
+        .no-js-banner { display: none; }
+        .ticker-track::after {
+          position: sticky;
+          right: 0;
+          flex: 0 0 54px;
+          align-self: stretch;
+          pointer-events: none;
+          background: linear-gradient(90deg, transparent, var(--bg) 72%);
+          content: "";
+        }
       </style>
     </noscript>
 
-    <div class="newsbar" data-news-strip data-breaking="false" data-last-updated="2026-06-14T08:00:00Z" aria-label="Notes ticker">
+    <div class="newsbar" data-news-strip data-breaking="false" data-last-updated="2026-06-16T16:00:00Z" aria-label="Notes ticker">
       <strong data-news-label>Notes</strong>
       <div class="ticker-track">
-        <a href="articles/fable-5-agi-access-politics.html">A Fable block would be a rehearsal for AGI politics</a>
-        <a href="articles/ai-upside-ledger.html">The AI upside needs a ledger now</a>
-        <a href="articles/ai-compute-bill-public-upside.html">The AI bill is becoming the public test</a>
-        <a href="articles/the-appeal-of-ai.html">The appeal of AI, with the hard parts still in view</a>
-        <a href="articles/first-signal.html">Claude Fable 5 turns safeguards into the story</a>
-        <a href="articles/ai-upside-needs-public-deal.html">The AI upside needs a public deal</a>
-        <a href="articles/ai-slop-social-text-fatigue.html">AI slop is exhausting the public internet</a>
-        <a href="articles/grok-build-terminal-agent.html">Grok puts the coding-agent race inside the terminal</a>
-        <a href="articles/ai-infrastructure-not-bubble.html">AI data centers turn the bubble debate into an energy debate</a>
-        <a href="articles/apple-intelligence-naming-trap.html">Apple's AI problem is naming before delivery</a>
+        <a href="articles/spacex-cursor-grok-build/">SpaceX buying Cursor puts Grok inside the coding race</a>
+        <a href="articles/fable-5-agi-access-politics/">A Fable block makes AGI politics less hypothetical</a>
+        <a href="articles/ai-upside-ledger/">The AI upside needs a ledger now</a>
+        <a href="articles/ai-compute-bill-public-upside/">The AI bill is becoming the public test</a>
+        <a href="articles/the-appeal-of-ai/">The appeal of AI, with the hard parts still in view</a>
+        <a href="articles/first-signal/">Claude Fable 5 turns safeguards into the story</a>
+        <a href="articles/ai-upside-needs-public-deal/">The AI upside needs a public deal</a>
+        <a href="articles/ai-slop-social-text-fatigue/">AI slop is exhausting the public internet</a>
+        <a href="articles/grok-build-terminal-agent/">Grok puts the coding-agent race inside the terminal</a>
+        <a href="articles/ai-infrastructure-not-bubble/">AI data centers turn the bubble debate into an energy debate</a>
+        <a href="articles/apple-intelligence-naming-trap/">Apple's AI problem is naming before delivery</a>
       </div>
     </div>
 
@@ -104,18 +116,18 @@
           <p>
             What gets better, what gets messy,<br>and who gets the upside.
           </p>
-          <a class="hero-lead-card" href="articles/fable-5-agi-access-politics.html">
+          <a class="hero-lead-card" href="articles/spacex-cursor-grok-build/">
             <span class="hero-lead-visual" aria-hidden="true"></span>
             <span class="hero-lead-copy">
               <strong>Lead essay</strong>
-              <span>If strong models can be blocked now, AGI access needs public rules before the emergency.</span>
+              <span>If coding agents are worth buying at infrastructure scale, software work has changed category.</span>
             </span>
             <span class="hero-lead-action">Read lead</span>
           </a>
           <div class="issue-map" aria-label="Current issue map">
-            <a href="articles/ai-upside-needs-public-deal.html"><strong>Public upside</strong><span>Who benefits?</span></a>
-            <a href="articles/ai-slop-social-text-fatigue.html"><strong>Culture</strong><span>What feels empty?</span></a>
-            <a href="articles/ai-infrastructure-not-bubble.html"><strong>Infrastructure</strong><span>What powers it?</span></a>
+            <a href="articles/ai-upside-needs-public-deal/"><strong>Public upside</strong><span>Who benefits?</span></a>
+            <a href="articles/ai-slop-social-text-fatigue/"><strong>Culture</strong><span>What feels empty?</span></a>
+            <a href="articles/ai-infrastructure-not-bubble/"><strong>Infrastructure</strong><span>What powers it?</span></a>
           </div>
         </div>
 
@@ -124,17 +136,17 @@
             <p class="section-label">Featured</p>
           </div>
           <div class="story-track">
-            <a class="top-story-card" href="articles/fable-5-agi-access-politics.html">
+            <a class="top-story-card" href="articles/spacex-cursor-grok-build/">
               <span>Lead essay</span>
               <span class="card-visual" aria-hidden="true"></span>
-              <h2>A Fable block would be a rehearsal for AGI politics.</h2>
+              <h2>SpaceX buying Cursor puts coding inside the infrastructure stack.</h2>
               <p>
-                If strong models can be blocked now, the access question gets
-                sharper before AGI arrives.
+                The coding-agent race is now about workflow, compute and control
+                of the software surface.
               </p>
               <span class="card-cta">Read lead</span>
             </a>
-            <a class="top-story-card" href="articles/ai-upside-needs-public-deal.html">
+            <a class="top-story-card" href="articles/ai-upside-needs-public-deal/">
               <span>Public upside</span>
               <span class="card-visual" aria-hidden="true"></span>
               <h2>The AI upside needs a public deal.</h2>
@@ -144,7 +156,7 @@
               </p>
               <span class="card-cta">Read opinion</span>
             </a>
-            <a class="top-story-card" href="articles/ai-slop-social-text-fatigue.html">
+            <a class="top-story-card" href="articles/ai-slop-social-text-fatigue/">
               <span>Culture</span>
               <span class="card-visual" aria-hidden="true"></span>
               <h2>AI slop is exhausting the public internet.</h2>
@@ -154,7 +166,7 @@
               </p>
               <span class="card-cta">Read note</span>
             </a>
-            <a class="top-story-card" href="articles/ai-infrastructure-not-bubble.html">
+            <a class="top-story-card" href="articles/ai-infrastructure-not-bubble/">
               <span>Infrastructure</span>
               <span class="card-visual" aria-hidden="true"></span>
               <h2>The AI bubble question is really an infrastructure question.</h2>
@@ -164,7 +176,7 @@
               </p>
               <span class="card-cta">Read note</span>
             </a>
-            <a class="top-story-card" href="articles/apple-intelligence-naming-trap.html">
+            <a class="top-story-card" href="articles/apple-intelligence-naming-trap/">
               <span>Apple</span>
               <span class="card-visual" aria-hidden="true"></span>
               <h2>Apple Intelligence still has a naming problem.</h2>
@@ -174,7 +186,7 @@
               </p>
               <span class="card-cta">Read note</span>
             </a>
-            <a class="top-story-card" href="articles/grok-build-terminal-agent.html">
+            <a class="top-story-card" href="articles/grok-build-terminal-agent/">
               <span>Developer Tools</span>
               <span class="card-visual" aria-hidden="true"></span>
               <h2>Grok Build brings the coding-agent fight to the terminal.</h2>

@@ -59,6 +59,38 @@ const initialTheme = themeFromUrl === "light" || themeFromUrl === "dark"
     : systemTheme;
 root.dataset.theme = initialTheme;
 
+const normalizeThemeToggle = () => {
+  if (!themeToggle) return;
+  themeToggle.classList.add("theme-toggle");
+  themeToggle.replaceChildren();
+  const icon = document.createElement("span");
+  icon.className = "theme-icon";
+  icon.setAttribute("aria-hidden", "true");
+  icon.innerHTML = '<svg class="moon-icon" viewBox="0 0 24 24" focusable="false"><path d="M12 3a6.2 6.2 0 0 0 9 7.6A9 9 0 1 1 12 3Z"></path></svg><svg class="sun-icon" viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"></path></svg>';
+  themeToggle.append(icon);
+};
+
+normalizeThemeToggle();
+
+const normalizePrimaryNavigation = () => {
+  if (!menu) return;
+  const isNotesPath = window.location.pathname.includes("/articles/")
+    || window.location.pathname.endsWith("/notes.html")
+    || window.location.pathname.endsWith("/articles.html");
+  const links = Array.from(menu.querySelectorAll("a"));
+  links.forEach((link) => {
+    const label = link.textContent.trim().toLowerCase();
+    const isCurrent = isNotesPath ? label === "notes" : label === "journal";
+    if (isCurrent) {
+      link.setAttribute("aria-current", "page");
+    } else {
+      link.removeAttribute("aria-current");
+    }
+  });
+};
+
+normalizePrimaryNavigation();
+
 document.addEventListener("gesturestart", (event) => {
   event.preventDefault();
 }, { passive: false });
@@ -339,6 +371,43 @@ const getSiteRelativeUrl = (href) => {
   return new URL(href, new URL("../", getContentFeedUrl())).href;
 };
 
+const getArticleSlugFromUrl = (href) => {
+  try {
+    const url = new URL(href, window.location.href);
+    const match = url.pathname.match(/\/articles\/([^/]+)\//);
+    return match ? match[1] : "";
+  } catch {
+    return "";
+  }
+};
+
+const setArticleImageSlot = (element, slug, variant = "wide") => {
+  if (!element || !slug) return;
+  const base = `articles/${slug}/images/${variant}`;
+  element.style.setProperty(
+    "--article-image",
+    `image-set(url("${getSiteRelativeUrl(`${base}.webp`)}") type("image/webp"), url("${getSiteRelativeUrl(`${base}.jpg`)}") type("image/jpeg"))`
+  );
+};
+
+const hydrateArticleImageSlots = () => {
+  document.querySelectorAll('a[href*="articles/"]').forEach((link) => {
+    const slug = getArticleSlugFromUrl(link.href);
+    if (
+      link.classList.contains("hero-lead-card")
+      || link.classList.contains("top-story-card")
+      || link.classList.contains("edition-row")
+    ) {
+      setArticleImageSlot(link, slug, "wide");
+    }
+  });
+
+  const currentSlug = getArticleSlugFromUrl(window.location.href);
+  document.querySelectorAll(".image-brief").forEach((figure) => {
+    setArticleImageSlot(figure, currentSlug, "wide");
+  });
+};
+
 const getTickerTitle = (item) => {
   const title = item.tickerTitle || item.title || "";
   return title.length > 62 ? `${title.slice(0, 59).trim()}...` : title;
@@ -383,7 +452,7 @@ const renderTickerFromArticles = (items = []) => {
     if (item.url) element.href = getSiteRelativeUrl(item.url);
     return element;
   }));
-  tickerTrack.scrollLeft = 0;
+  tickerTrack.scrollLeft = tickerItems.length > 1 ? tickerTrack.scrollWidth / 4 : 0;
   updateTickerSelection();
   setupTickerMotion();
 };
@@ -402,6 +471,7 @@ const loadArticleFeed = async () => {
 };
 
 loadArticleFeed();
+hydrateArticleImageSlots();
 
 const setupTickerControls = () => {
   if (!newsStrip || !tickerTrack || newsStrip.querySelector(".ticker-control")) return;
@@ -433,15 +503,23 @@ const ensureTickerItemIndexes = () => {
 
   const tickerItems = items.filter((item) => item.parentElement === tickerTrack);
   tickerItemCount = tickerItems.length;
-  tickerItems.forEach((item, index) => {
-    const text = item.textContent;
-    item.textContent = "";
+  const sourceItems = tickerItems.map((item) => ({
+    text: item.textContent.trim(),
+    href: item instanceof HTMLAnchorElement ? item.getAttribute("href") : "",
+  }));
+  const repeatedItems = tickerItemCount > 1
+    ? [...sourceItems, ...sourceItems, ...sourceItems, ...sourceItems]
+    : sourceItems;
+  tickerTrack.replaceChildren(...repeatedItems.map((item, index) => {
+    const element = item.href ? document.createElement("a") : document.createElement("span");
     const label = document.createElement("span");
     label.className = "ticker-text";
-    label.textContent = text;
-    item.append(label);
-    item.dataset.tickerIndex = String(index);
-  });
+    label.textContent = item.text;
+    element.append(label);
+    element.dataset.tickerIndex = String(index % tickerItemCount);
+    if (item.href) element.href = item.href;
+    return element;
+  }));
   updateTickerSelection();
 };
 
@@ -486,10 +564,7 @@ const setupTickerMotion = () => {
   let hoverRampFrom = 1;
   let hoverRampTo = 1;
   let hoverSpeedFactor = 1;
-  let hoverReadPanDone = false;
   const progress01 = (value) => Math.max(0, Math.min(1, value));
-  const easeOutCubic = (value) => 1 - Math.pow(1 - value, 3);
-  const easeInCubic = (value) => value * value * value;
   const clearCarouselTimers = () => {
     carouselPanTimers.forEach((timer) => window.clearTimeout(timer));
     carouselPanTimers = [];
@@ -532,10 +607,10 @@ const setupTickerMotion = () => {
   const normalizeTickerScroll = () => {
     const loopDistance = getLoopDistance();
     if (loopDistance <= 1) return;
-    while (tickerTrack.scrollLeft >= loopDistance) {
+    while (tickerTrack.scrollLeft >= loopDistance * 2) {
       tickerTrack.scrollLeft -= loopDistance;
     }
-    while (tickerTrack.scrollLeft < 0) {
+    while (tickerTrack.scrollLeft < loopDistance) {
       tickerTrack.scrollLeft += loopDistance;
     }
   };
@@ -571,25 +646,32 @@ const setupTickerMotion = () => {
       ? visibleItems.sort((a, b) => a.left - b.left)
       : visibleItems.sort((a, b) => b.right - a.right))[0].item;
   };
+  const getTickerReadableLeft = () => {
+    const trackRect = tickerTrack.getBoundingClientRect();
+    return Math.min(trackRect.right - 24, trackRect.left + 2);
+  };
   const scrollTickerItemToStart = (item, behavior = "smooth") => {
     if (!item) return;
     const text = item.querySelector(".ticker-text") || item;
-    const trackRect = tickerTrack.getBoundingClientRect();
     const textRect = text.getBoundingClientRect();
     const maxScroll = Math.max(0, tickerTrack.scrollWidth - tickerTrack.clientWidth);
-    const target = Math.min(maxScroll, Math.max(0, tickerTrack.scrollLeft + textRect.left - trackRect.left));
-    tickerTrack.scrollTo({ left: target, behavior });
+    const target = Math.min(maxScroll, Math.max(0, tickerTrack.scrollLeft + textRect.left - getTickerReadableLeft()));
+    if (behavior === "auto") {
+      stopTickerReadPan();
+      tickerTrack.scrollLeft = target;
+    } else {
+      animateTickerScrollTo(target, 760);
+    }
   };
   const getTickerItemByIndex = (index, direction = 1) => {
     const normalizedIndex = (index + tickerItemCount) % tickerItemCount;
     const getMatchingItems = () => getCarouselTickerItems()
       .filter((item) => Number(item.dataset.tickerIndex) === normalizedIndex);
-    let items = getMatchingItems();
+    const items = getMatchingItems();
     if (!items.length) return null;
 
     const getMoves = () => {
-      const trackRect = tickerTrack.getBoundingClientRect();
-      const readableLeft = trackRect.left;
+      const readableLeft = getTickerReadableLeft();
       return items
       .map((item) => {
         const text = item.querySelector(".ticker-text") || item;
@@ -598,20 +680,9 @@ const setupTickerMotion = () => {
       });
     };
 
-    let moves = getMoves()
+    const moves = getMoves()
       .filter((entry) => direction > 0 ? entry.target > tickerTrack.scrollLeft + 2 : entry.target < tickerTrack.scrollLeft - 2)
       .sort((a, b) => direction > 0 ? a.target - b.target : b.target - a.target);
-
-    if (!moves.length) {
-      const loopDistance = getLoopDistance();
-      if (loopDistance > 1) {
-        tickerTrack.scrollLeft += direction > 0 ? -loopDistance : loopDistance;
-        items = getMatchingItems();
-        moves = getMoves()
-          .filter((entry) => direction > 0 ? entry.target > tickerTrack.scrollLeft + 2 : entry.target < tickerTrack.scrollLeft - 2)
-          .sort((a, b) => direction > 0 ? a.target - b.target : b.target - a.target);
-      }
-    }
 
     if (moves.length) return moves[0].item;
 
@@ -631,34 +702,6 @@ const setupTickerMotion = () => {
     carouselPanTimers.push(window.setTimeout(() => {
       animateTickerScrollTo(Math.max(0, tickerTrack.scrollLeft + text.getBoundingClientRect().left - tickerTrack.getBoundingClientRect().left), 3600);
     }, 10600));
-  };
-  const showHoveredTickerItemOnce = () => {
-    if (!tickerPointerInside || tickerPointerDown || activeTickerIndex !== null) return;
-    const item = getCenterTickerItem();
-    const text = item?.querySelector(".ticker-text") || item;
-    if (!item || !text) return;
-
-    scrollTickerItemToStart(item, systemPrefersReducedMotion.matches ? "auto" : "smooth");
-    if (systemPrefersReducedMotion.matches) return;
-
-    carouselPanTimers.push(window.setTimeout(() => {
-      if (!tickerPointerInside || tickerPointerDown || activeTickerIndex !== null) return;
-      const trackRect = tickerTrack.getBoundingClientRect();
-      const textRect = text.getBoundingClientRect();
-      const overflow = textRect.right - trackRect.right + 16;
-      if (overflow <= 6) return;
-
-      const maxScroll = Math.max(0, tickerTrack.scrollWidth - tickerTrack.clientWidth);
-      const startTarget = Math.max(0, tickerTrack.scrollLeft + textRect.left - trackRect.left);
-      const endTarget = Math.min(maxScroll, tickerTrack.scrollLeft + overflow);
-      const outDuration = Math.min(9600, Math.max(5200, overflow * 44));
-      animateTickerScrollTo(endTarget, outDuration);
-      carouselPanTimers.push(window.setTimeout(() => {
-        if (tickerPointerInside && !tickerPointerDown && activeTickerIndex === null) {
-          animateTickerScrollTo(startTarget, 3000);
-        }
-      }, outDuration + 850));
-    }, 850));
   };
   const clearTickerFocus = () => {
     clearCarouselTimers();
@@ -684,22 +727,18 @@ const setupTickerMotion = () => {
     window.clearTimeout(carouselResumeTimer);
     clearCarouselTimers();
     normalizeTickerScroll();
-    const edgeItem = getEdgeTickerItem(direction);
-    if (!edgeItem) return;
-    const edgeIndex = Number(edgeItem.dataset.tickerIndex) || 0;
-    const nextIndex = focusedTickerIndex === null
-      ? edgeIndex
-      : (focusedTickerIndex + direction + tickerItemCount) % tickerItemCount;
-    const activeItem = focusedTickerIndex === null
-      ? edgeItem
-      : getTickerItemByIndex(nextIndex, direction) || edgeItem;
+    const currentItem = focusedTickerIndex === null ? getCenterTickerItem() : null;
+    const currentIndex = focusedTickerIndex === null
+      ? Number(currentItem?.dataset.tickerIndex) || 0
+      : focusedTickerIndex;
+    const nextIndex = (currentIndex + direction + tickerItemCount) % tickerItemCount;
+    const activeItem = getTickerItemByIndex(nextIndex, direction) || currentItem;
     if (!activeItem) return;
 
     activeTickerIndex = Number(activeItem.dataset.tickerIndex) || 0;
     focusedTickerIndex = activeTickerIndex;
     updateTickerSelection();
     scrollTickerItemToStart(activeItem, systemPrefersReducedMotion.matches ? "auto" : "smooth");
-    gentlyPanLongTickerItem(activeItem);
     holdTickerAutoFlow(tickerPointerInside || tickerPointerDown ? 15000 : 12500);
     scheduleTickerRelease(tickerPointerInside || tickerPointerDown ? 15000 : 12500);
   };
@@ -713,21 +752,14 @@ const setupTickerMotion = () => {
       if (maxScroll > 1) {
         const baseSpeed = systemPrefersReducedMotion.matches ? tickerReducedSpeed : tickerBaseSpeed;
         const hoverProgress = progress01((time - hoverRampStartedAt) / hoverRampDuration);
-        const easedHoverProgress = hoverRampTo < hoverRampFrom
-          ? easeOutCubic(hoverProgress)
-          : easeInCubic(hoverProgress);
-        hoverSpeedFactor = hoverRampFrom + (hoverRampTo - hoverRampFrom) * easedHoverProgress;
+        hoverSpeedFactor = hoverRampFrom + (hoverRampTo - hoverRampFrom) * hoverProgress;
         let nextSpeed = baseSpeed * hoverSpeedFactor;
-        if (time < tickerAutoResumeAt) {
+        if (!tickerPointerInside && time < tickerAutoResumeAt) {
           nextSpeed = 0;
         } else if (systemPrefersReducedMotion.matches) {
           nextSpeed = tickerPointerInside ? 0 : tickerReducedSpeed;
         } else if (tickerPointerInside && hoverSpeedFactor <= 0.001) {
           nextSpeed = 0;
-          if (!hoverReadPanDone) {
-            hoverReadPanDone = true;
-            showHoveredTickerItemOnce();
-          }
         }
         tickerCurrentSpeed = Math.max(0, nextSpeed);
         if (tickerCurrentSpeed < 0.00002) tickerCurrentSpeed = 0;
@@ -741,10 +773,10 @@ const setupTickerMotion = () => {
           tickerLastScrollLeft = tickerTrack.scrollLeft;
         }
         const loopDistance = getLoopDistance();
-        if (loopDistance > 1 && tickerTrack.scrollLeft >= loopDistance) {
+        if (loopDistance > 1 && tickerTrack.scrollLeft >= loopDistance * 2) {
           tickerTrack.scrollLeft -= loopDistance;
           tickerLastScrollLeft = tickerTrack.scrollLeft;
-        } else if (loopDistance > 1 && tickerTrack.scrollLeft < 0) {
+        } else if (loopDistance > 1 && tickerTrack.scrollLeft < loopDistance) {
           tickerTrack.scrollLeft += loopDistance;
           tickerLastScrollLeft = tickerTrack.scrollLeft;
         }
@@ -756,14 +788,18 @@ const setupTickerMotion = () => {
 
   tickerPrev?.addEventListener("click", () => focusReadableTickerItem(-1));
   tickerNext?.addEventListener("click", () => focusReadableTickerItem(1));
+  const getTickerHoverFactor = () => {
+    const progress = progress01((performance.now() - hoverRampStartedAt) / hoverRampDuration);
+    return hoverRampFrom + (hoverRampTo - hoverRampFrom) * progress;
+  };
   const setTickerHoverTarget = (target) => {
+    hoverSpeedFactor = getTickerHoverFactor();
     hoverRampFrom = hoverSpeedFactor;
     hoverRampTo = target;
     hoverRampStartedAt = performance.now();
   };
   newsStrip?.addEventListener("pointerenter", () => {
     tickerPointerInside = true;
-    hoverReadPanDone = false;
     tickerAutoResumeAt = 0;
     setTickerHoverTarget(0);
     if (activeTickerIndex !== null) scheduleTickerRelease(9600);
@@ -771,7 +807,6 @@ const setupTickerMotion = () => {
   newsStrip?.addEventListener("pointerleave", () => {
     tickerPointerInside = false;
     clearCarouselTimers();
-    hoverReadPanDone = false;
     setTickerHoverTarget(1);
     if (activeTickerIndex === null) tickerAutoResumeAt = 0;
     if (activeTickerIndex !== null) scheduleTickerRelease(5200);
@@ -797,6 +832,8 @@ const setupTickerMotion = () => {
     }, { passive: true });
   });
   if (!tickerAutoFrame) {
+    normalizeTickerScroll();
+    tickerLastScrollLeft = tickerTrack.scrollLeft;
     tickerAutoFrame = window.requestAnimationFrame(runTickerAutoFlow);
   }
 };

@@ -1,16 +1,37 @@
 {
-  "updated": "2026-06-14T08:00:00Z",
+  "updated": "2026-06-16T16:00:00Z",
   "items": [
+    {
+      "id": "spacex-cursor-grok-build",
+      "status": "published",
+      "type": "opinion",
+      "date": "2026-06-16",
+      "updated": "2026-06-16T16:00:00Z",
+      "title": "SpaceX buying Cursor puts coding inside the infrastructure stack.",
+      "tickerTitle": "SpaceX buying Cursor puts Grok inside the coding race",
+      "summary": "A personal opinion on the reported SpaceX-Cursor deal, Grok and why coding agents now belong in the infrastructure conversation.",
+      "url": "articles/spacex-cursor-grok-build/",
+      "image": "assets/img/social-card.png",
+      "topics": [
+        "opinion",
+        "developer tools",
+        "infrastructure"
+      ],
+      "sources": [
+        "https://www.businessinsider.com/spacex-confirms-cursor-acquisition-60-billion-ai-coding-startup-2026-6",
+        "https://www.businessinsider.com/cursor-ceo-michael-truell-spacex-elon-musk-anthropic-2026-6"
+      ]
+    },
     {
       "id": "fable-5-agi-access-politics",
       "status": "published",
       "type": "opinion",
       "date": "2026-06-14",
       "updated": "2026-06-14T08:00:00Z",
-      "title": "A Fable block would be a rehearsal for AGI politics.",
-      "tickerTitle": "A Fable block would be a rehearsal for AGI politics",
-      "summary": "A personal opinion on blocked model access, public trust and why the AGI debate needs rules before the emergency.",
-      "url": "articles/fable-5-agi-access-politics.html",
+      "title": "A Fable block makes AGI politics less hypothetical.",
+      "tickerTitle": "A Fable block makes AGI politics less hypothetical",
+      "summary": "A personal opinion on blocked model access, public trust and why the AGI debate needs rules before the emergency gets larger.",
+      "url": "articles/fable-5-agi-access-politics/",
       "image": "assets/img/social-card.png",
       "topics": [
         "models",
@@ -36,7 +57,7 @@
       "title": "The AI upside needs a ledger now.",
       "tickerTitle": "The AI upside needs a ledger now",
       "summary": "A personal opinion on AI infrastructure, jobs, robots and why the appeal of AI now depends on a visible public ledger of costs and gains.",
-      "url": "articles/ai-upside-ledger.html",
+      "url": "articles/ai-upside-ledger/",
       "image": "assets/img/social-card.png",
       "topics": [
         "infrastructure",
@@ -63,7 +84,7 @@
       "title": "The AI bill is becoming the public test.",
       "tickerTitle": "The AI bill is becoming the public test",
       "summary": "A personal opinion on token costs, data centers, space compute, humanoid robots and why the appeal of AI now depends on visible public upside.",
-      "url": "articles/ai-compute-bill-public-upside.html",
+      "url": "articles/ai-compute-bill-public-upside/",
       "topics": [
         "infrastructure",
         "policy",
@@ -81,7 +102,7 @@
       "title": "The appeal of AI, with the hard parts still in view.",
       "tickerTitle": "The appeal of AI, with the hard parts still in view",
       "summary": "A personal launch note for Appeal of AI: useful machine intelligence, public upside and the costs that cannot be waved away.",
-      "url": "articles/the-appeal-of-ai.html",
+      "url": "articles/the-appeal-of-ai/",
       "topics": [
         "culture",
         "policy",
@@ -97,7 +118,7 @@
       "title": "Claude Fable 5 makes the model release feel like a governance story.",
       "tickerTitle": "Claude Fable 5 turns safeguards into the story",
       "summary": "A field note on why the newest Claude coverage is not only about capability, but about what kind of trust a model tries to earn.",
-      "url": "articles/first-signal.html",
+      "url": "articles/first-signal/",
       "image": "assets/img/social-card.png",
       "tags": ["claude", "models", "safety", "trust"],
       "sources": [
@@ -115,7 +136,7 @@
       "title": "The AI upside needs a public deal.",
       "tickerTitle": "The AI upside needs a public deal",
       "summary": "A personal note on AI, work, public upside and why the appeal of the technology depends on how broadly its gains are shared.",
-      "url": "articles/ai-upside-needs-public-deal.html",
+      "url": "articles/ai-upside-needs-public-deal/",
       "image": "assets/img/social-card.png",
       "tags": ["jobs", "policy", "culture", "public-upside"],
       "sources": [
@@ -133,7 +154,7 @@
       "title": "Anthropic's adolescence warning is really about growing up in public.",
       "tickerTitle": "Anthropic frames AI as the adolescence of technology",
       "summary": "Dario Amodei's warning works because it treats AI as powerful, immature and already socially consequential.",
-      "url": "articles/anthropic-adolescence-of-technology.html",
+      "url": "articles/anthropic-adolescence-of-technology/",
       "image": "assets/img/social-card.png",
       "tags": ["anthropic", "safety", "culture", "governance"],
       "sources": [
@@ -151,7 +172,7 @@
       "title": "AI slop is exhausting the public internet.",
       "tickerTitle": "AI slop is exhausting the public internet",
       "summary": "A personal note on synthetic comments, generic article filler and why people can feel when language has no witness behind it.",
-      "url": "articles/ai-slop-social-text-fatigue.html",
+      "url": "articles/ai-slop-social-text-fatigue/",
       "image": "assets/img/social-card.png",
       "tags": ["culture", "social-media", "ai-slop", "writing"],
       "sources": [
@@ -170,7 +191,7 @@
       "title": "Grok Build makes the coding-agent race feel official.",
       "tickerTitle": "Grok puts the coding-agent race inside the terminal",
       "summary": "xAI's Grok Build Beta turns Grok into a terminal coding agent, while fresh safety questions keep the tool story from becoming pure hype.",
-      "url": "articles/grok-build-terminal-agent.html",
+      "url": "articles/grok-build-terminal-agent/",
       "image": "assets/img/social-card.png",
       "tags": ["grok", "coding-agents", "developer-tools", "xai"],
       "sources": [
@@ -189,7 +210,7 @@
       "title": "Apple Intelligence still has a naming problem.",
       "tickerTitle": "Apple's AI problem is naming before delivery",
       "summary": "Apple's AI brand is elegant, but the delivery gap makes every Siri miss feel bigger than a normal product delay.",
-      "url": "articles/apple-intelligence-naming-trap.html",
+      "url": "articles/apple-intelligence-naming-trap/",
       "image": "assets/img/social-card.png",
       "tags": ["apple", "siri", "wwdc", "product"],
       "sources": [
@@ -209,7 +230,7 @@
       "title": "AI data centers in orbit sound absurd until the compute hunger looks ordinary.",
       "tickerTitle": "SpaceX wants AI data centers in orbit",
       "summary": "Orbital compute is easy to mock and hard to dismiss, because the AI infrastructure appetite keeps getting less earthly.",
-      "url": "articles/spacex-orbital-ai-compute.html",
+      "url": "articles/spacex-orbital-ai-compute/",
       "image": "assets/img/social-card.png",
       "tags": ["spacex", "infrastructure", "compute", "space"],
       "sources": [
@@ -229,7 +250,7 @@
       "title": "The AI bubble question is really an infrastructure question.",
       "tickerTitle": "AI data centers turn the bubble debate into an energy debate",
       "summary": "The simple bubble take misses the physical story: power, cooling, chips, grids, data centers and useful intelligence per watt.",
-      "url": "articles/ai-infrastructure-not-bubble.html",
+      "url": "articles/ai-infrastructure-not-bubble/",
       "image": "assets/img/social-card.png",
       "tags": ["infrastructure", "energy", "data-centers", "markets"],
       "sources": [
@@ -248,7 +269,7 @@
       "title": "Vibe coding is leverage, not a replacement for judgment.",
       "tickerTitle": "Vibe coding works best when the human still knows the craft",
       "summary": "AI-assisted programming is strongest in expert hands: faster exploration, faster drafts, but still dependent on taste, structure and review.",
-      "url": "articles/vibe-coding-expertise-leverage.html",
+      "url": "articles/vibe-coding-expertise-leverage/",
       "image": "assets/img/social-card.png",
       "tags": ["vibe-coding", "software", "craft", "tools"],
       "sources": [

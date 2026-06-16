@@ -48,27 +48,40 @@
         JavaScript is off. Reading works normally; filters and sorting are hidden, and all notes are shown in editorial order.
       </div>
       <style id="no-js-news-style">
-        .newsbar { overflow-x: auto; scrollbar-width: none; }
+        .newsbar { overflow: hidden; scrollbar-width: none; }
         .newsbar::-webkit-scrollbar { display: none; }
-        .ticker-track { animation: ticker 44s linear infinite; padding-right: 18px; }
+        .ticker-track { animation: none !important; overflow: hidden; padding-right: 42px; }
+        .ticker-track > a:nth-of-type(n+6) { display: none; }
+        .no-js-banner { display: none; }
+        .ticker-track::after {
+          position: sticky;
+          right: 0;
+          flex: 0 0 54px;
+          align-self: stretch;
+          pointer-events: none;
+          background: linear-gradient(90deg, transparent, var(--bg) 72%);
+          content: "";
+        }
         .archive-tools { display: none; }
         .archive-static-note { display: block; }
+        .archive-more { display: none !important; }
       </style>
     </noscript>
 
-    <div class="newsbar" data-news-strip data-breaking="false" data-last-updated="2026-06-14T08:00:00Z" aria-label="Notes ticker">
+    <div class="newsbar" data-news-strip data-breaking="false" data-last-updated="2026-06-16T16:00:00Z" aria-label="Notes ticker">
       <strong data-news-label>Notes</strong>
       <div class="ticker-track">
-        <a href="articles/fable-5-agi-access-politics.html">A Fable block would be a rehearsal for AGI politics</a>
-        <a href="articles/ai-upside-ledger.html">The AI upside needs a ledger now</a>
-        <a href="articles/ai-compute-bill-public-upside.html">The AI bill is becoming the public test</a>
-        <a href="articles/the-appeal-of-ai.html">The appeal of AI, with the hard parts still in view</a>
-        <a href="articles/first-signal.html">Claude Fable 5 turns safeguards into the story</a>
-        <a href="articles/ai-upside-needs-public-deal.html">The AI upside needs a public deal</a>
-        <a href="articles/ai-slop-social-text-fatigue.html">AI slop is exhausting the public internet</a>
-        <a href="articles/grok-build-terminal-agent.html">Grok puts the coding-agent race inside the terminal</a>
-        <a href="articles/ai-infrastructure-not-bubble.html">AI data centers turn the bubble debate into an energy debate</a>
-        <a href="articles/apple-intelligence-naming-trap.html">Apple's AI problem is naming before delivery</a>
+        <a href="articles/spacex-cursor-grok-build/">SpaceX buying Cursor puts Grok inside the coding race</a>
+        <a href="articles/fable-5-agi-access-politics/">A Fable block makes AGI politics less hypothetical</a>
+        <a href="articles/ai-upside-ledger/">The AI upside needs a ledger now</a>
+        <a href="articles/ai-compute-bill-public-upside/">The AI bill is becoming the public test</a>
+        <a href="articles/the-appeal-of-ai/">The appeal of AI, with the hard parts still in view</a>
+        <a href="articles/first-signal/">Claude Fable 5 turns safeguards into the story</a>
+        <a href="articles/ai-upside-needs-public-deal/">The AI upside needs a public deal</a>
+        <a href="articles/ai-slop-social-text-fatigue/">AI slop is exhausting the public internet</a>
+        <a href="articles/grok-build-terminal-agent/">Grok puts the coding-agent race inside the terminal</a>
+        <a href="articles/ai-infrastructure-not-bubble/">AI data centers turn the bubble debate into an energy debate</a>
+        <a href="articles/apple-intelligence-naming-trap/">Apple's AI problem is naming before delivery</a>
       </div>
     </div>
 
@@ -103,15 +116,23 @@
           </div>
           <p class="archive-count" data-archive-count aria-live="polite">Showing all notes.</p>
         </div>
-        <a class="edition-row" href="articles/fable-5-agi-access-politics.html" data-archive-item data-date="2026-06-14" data-date-label="June 14, 2026" data-topics="models policy public-upside">
+        <a class="edition-row" href="articles/spacex-cursor-grok-build/" data-archive-item data-date="2026-06-16" data-date-label="June 16, 2026" data-topics="tools infrastructure culture">
+          <span>June 16, 2026 &middot; Opinion &middot; Developer Tools</span>
+          <div>
+            <h2>SpaceX buying Cursor puts coding inside the infrastructure stack.</h2>
+            <p>If coding agents are valuable enough for a rocket company, software work has moved out of the neat little tools drawer.</p>
+            <span class="card-cta">Read lead</span>
+          </div>
+        </a>
+        <a class="edition-row" href="articles/fable-5-agi-access-politics/" data-archive-item data-date="2026-06-14" data-date-label="June 14, 2026" data-topics="models policy public-upside">
           <span>June 14, 2026 &middot; Opinion &middot; Model Access</span>
           <div>
-            <h2>A Fable block would be a rehearsal for AGI politics.</h2>
+            <h2>A Fable block makes AGI politics less hypothetical.</h2>
             <p>If strong models can be blocked now, the real question is who gets access, review and benefit when the stakes rise.</p>
             <span class="card-cta">Read lead</span>
           </div>
         </a>
-        <a class="edition-row" href="articles/ai-upside-ledger.html" data-archive-item data-date="2026-06-13" data-date-label="June 13, 2026" data-topics="infrastructure policy robots jobs">
+        <a class="edition-row" href="articles/ai-upside-ledger/" data-archive-item data-date="2026-06-13" data-date-label="June 13, 2026" data-topics="infrastructure policy robots jobs">
           <span>June 13, 2026 &middot; Opinion &middot; Public Upside</span>
           <div>
             <h2>The AI upside needs a ledger now.</h2>
@@ -119,7 +140,7 @@
             <span class="card-cta">Read opinion</span>
           </div>
         </a>
-        <a class="edition-row" href="articles/ai-compute-bill-public-upside.html" data-archive-item data-date="2026-06-13" data-date-label="June 13, 2026" data-topics="infrastructure policy robots tools">
+        <a class="edition-row" href="articles/ai-compute-bill-public-upside/" data-archive-item data-date="2026-06-13" data-date-label="June 13, 2026" data-topics="infrastructure policy robots tools">
           <span>June 13, 2026 &middot; Opinion &middot; Infrastructure</span>
           <div>
             <h2>The AI bill is becoming the public test.</h2>
@@ -127,7 +148,7 @@
             <span class="card-cta">Read opinion</span>
           </div>
         </a>
-        <a class="edition-row" href="articles/the-appeal-of-ai.html" data-archive-item data-date="2026-06-12" data-date-label="June 12, 2026" data-topics="culture policy infrastructure">
+        <a class="edition-row" href="articles/the-appeal-of-ai/" data-archive-item data-date="2026-06-12" data-date-label="June 12, 2026" data-topics="culture policy infrastructure">
           <span>June 12, 2026 &middot; Opinion &middot; Launch Note</span>
           <div>
             <h2>The appeal of AI, with the hard parts still in view.</h2>
@@ -135,7 +156,7 @@
             <span class="card-cta">Read note</span>
           </div>
         </a>
-        <a class="edition-row" href="articles/first-signal.html" data-archive-item data-date="2026-06-11" data-date-label="June 11, 2026" data-topics="models culture">
+        <a class="edition-row" href="articles/first-signal/" data-archive-item data-date="2026-06-11" data-date-label="June 11, 2026" data-topics="models culture">
           <span>June 11, 2026 &middot; Opinion &middot; Claude</span>
           <div>
             <h2>Claude Fable 5 makes the model release feel like a governance story.</h2>
@@ -143,7 +164,7 @@
             <span class="card-cta">Read lead</span>
           </div>
         </a>
-        <a class="edition-row" href="articles/ai-upside-needs-public-deal.html" data-archive-item data-date="2026-06-11" data-date-label="June 11, 2026" data-topics="culture policy">
+        <a class="edition-row" href="articles/ai-upside-needs-public-deal/" data-archive-item data-date="2026-06-11" data-date-label="June 11, 2026" data-topics="culture policy">
           <span>June 11, 2026 &middot; Opinion &middot; Public Upside</span>
           <div>
             <h2>The AI upside needs a public deal.</h2>
@@ -151,7 +172,7 @@
             <span class="card-cta">Read opinion</span>
           </div>
         </a>
-        <a class="edition-row" href="articles/ai-slop-social-text-fatigue.html" data-archive-item data-date="2026-06-10" data-date-label="June 10, 2026" data-topics="culture">
+        <a class="edition-row" href="articles/ai-slop-social-text-fatigue/" data-archive-item data-date="2026-06-10" data-date-label="June 10, 2026" data-topics="culture">
           <span>June 10, 2026 &middot; Opinion &middot; Culture</span>
           <div>
             <h2>AI slop is exhausting the public internet.</h2>
@@ -159,7 +180,7 @@
             <span class="card-cta">Read note</span>
           </div>
         </a>
-        <a class="edition-row" href="articles/ai-infrastructure-not-bubble.html" data-archive-item data-date="2026-06-10" data-date-label="June 10, 2026" data-topics="infrastructure culture">
+        <a class="edition-row" href="articles/ai-infrastructure-not-bubble/" data-archive-item data-date="2026-06-10" data-date-label="June 10, 2026" data-topics="infrastructure culture">
           <span>June 10, 2026 &middot; Opinion &middot; Infrastructure</span>
           <div>
             <h2>The AI bubble question is really an infrastructure question.</h2>
@@ -167,7 +188,7 @@
             <span class="card-cta">Read article</span>
           </div>
         </a>
-        <a class="edition-row" href="articles/apple-intelligence-naming-trap.html" data-archive-item data-date="2026-06-10" data-date-label="June 10, 2026" data-topics="culture tools">
+        <a class="edition-row" href="articles/apple-intelligence-naming-trap/" data-archive-item data-date="2026-06-10" data-date-label="June 10, 2026" data-topics="culture tools">
           <span>June 10, 2026 &middot; Article &middot; Apple</span>
           <div>
             <h2>Apple Intelligence still has a naming problem.</h2>
@@ -175,7 +196,7 @@
             <span class="card-cta">Read article</span>
           </div>
         </a>
-        <a class="edition-row" href="articles/grok-build-terminal-agent.html" data-archive-item data-date="2026-06-10" data-date-label="June 10, 2026" data-topics="tools">
+        <a class="edition-row" href="articles/grok-build-terminal-agent/" data-archive-item data-date="2026-06-10" data-date-label="June 10, 2026" data-topics="tools">
           <span>June 10, 2026 &middot; Article &middot; Developer Tools</span>
           <div>
             <h2>Grok Build makes the coding-agent race feel official.</h2>
@@ -183,7 +204,7 @@
             <span class="card-cta">Read article</span>
           </div>
         </a>
-        <a class="edition-row" href="articles/spacex-orbital-ai-compute.html" data-archive-item data-date="2026-06-10" data-date-label="June 10, 2026" data-topics="infrastructure">
+        <a class="edition-row" href="articles/spacex-orbital-ai-compute/" data-archive-item data-date="2026-06-10" data-date-label="June 10, 2026" data-topics="infrastructure">
           <span>June 10, 2026 &middot; Article &middot; Space</span>
           <div>
             <h2>AI data centers in orbit are absurd and logical.</h2>
@@ -191,7 +212,7 @@
             <span class="card-cta">Read article</span>
           </div>
         </a>
-        <a class="edition-row" href="articles/vibe-coding-expertise-leverage.html" data-archive-item data-date="2026-06-10" data-date-label="June 10, 2026" data-topics="tools culture">
+        <a class="edition-row" href="articles/vibe-coding-expertise-leverage/" data-archive-item data-date="2026-06-10" data-date-label="June 10, 2026" data-topics="tools culture">
           <span>June 10, 2026 &middot; Article &middot; Craft</span>
           <div>
             <h2>Vibe coding is leverage, not a replacement for judgment.</h2>

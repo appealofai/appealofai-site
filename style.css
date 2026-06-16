@@ -541,7 +541,6 @@ p {
   border-radius: 0 999px 999px 0;
 }
 
-.site-nav a:hover,
 .site-nav a[aria-current="page"] {
   background: color-mix(in srgb, var(--surface-soft), var(--accent) 6%);
   border-color: transparent;
@@ -549,8 +548,10 @@ p {
   color: var(--accent);
 }
 
-.site-nav a[aria-current="page"] {
+.site-nav a:hover,
+.site-nav a:focus-visible {
   color: var(--accent);
+  background: color-mix(in srgb, var(--surface-soft), transparent 56%);
 }
 
 :root[data-theme="light"] .site-nav {
@@ -561,15 +562,16 @@ p {
     0 10px 22px color-mix(in srgb, var(--bg-deep), transparent 60%);
 }
 
-:root[data-theme="light"] .site-nav a:hover,
 :root[data-theme="light"] .site-nav a[aria-current="page"] {
   background: color-mix(in srgb, var(--accent), transparent 92%);
   border-color: color-mix(in srgb, var(--line), transparent 18%);
   color: color-mix(in srgb, var(--accent), black 10%);
 }
 
-:root[data-theme="light"] .site-nav a[aria-current="page"] {
-  color: var(--accent);
+:root[data-theme="light"] .site-nav a:hover,
+:root[data-theme="light"] .site-nav a:focus-visible {
+  color: color-mix(in srgb, var(--accent), black 12%);
+  background: color-mix(in srgb, var(--bg), white 8%);
 }
 
 .site-nav a[aria-current="page"]::after {
@@ -641,13 +643,9 @@ p {
   opacity: 1;
 }
 
-.header-actions .icon-button {
-  width: 36px;
-  height: 36px;
+.header-actions .icon-button,
+.site-header > .theme-toggle {
   margin: 0;
-  background:
-    linear-gradient(145deg, color-mix(in srgb, var(--surface), white 6%), color-mix(in srgb, var(--surface-soft), transparent 12%));
-  box-shadow: 0 10px 28px color-mix(in srgb, black, transparent 76%);
 }
 
 .theme-storage-prompt {
@@ -1003,8 +1001,11 @@ p {
   border: 1px solid color-mix(in srgb, var(--line), transparent 34%);
   border-radius: 12px;
   background:
+    var(--article-image, none),
     radial-gradient(circle at 26% 26%, color-mix(in srgb, var(--accent), transparent 76%), transparent 30%),
     linear-gradient(135deg, color-mix(in srgb, var(--bg), var(--accent) 6%), color-mix(in srgb, var(--bg-deep), transparent 10%));
+  background-position: center;
+  background-size: cover, auto, auto;
 }
 
 .hero-lead-copy {
@@ -1321,8 +1322,11 @@ p {
   border: 1px solid color-mix(in srgb, var(--line), transparent 30%);
   border-radius: 8px;
   background:
+    var(--article-image, none),
     radial-gradient(circle at 24% 24%, color-mix(in srgb, var(--accent), transparent 76%), transparent 26%),
     linear-gradient(135deg, color-mix(in srgb, var(--bg), var(--accent) 5%), color-mix(in srgb, var(--bg-deep), transparent 8%));
+  background-position: center;
+  background-size: cover, auto, auto;
 }
 
 .top-story-card h2 {
@@ -1517,7 +1521,7 @@ p {
   align-items: center;
   min-height: 24px;
   padding: 2px 0;
-  transition: color 520ms ease, opacity 520ms ease, text-shadow 520ms ease;
+  transition: color 1100ms ease, opacity 1100ms ease, text-shadow 1100ms ease, font-weight 1100ms ease;
 }
 
 .ticker-track [aria-current="true"] .ticker-text {
@@ -2308,6 +2312,44 @@ h2 {
   font-weight: 800;
 }
 
+body:has(.no-js-banner) .no-js-banner {
+  display: none;
+}
+
+body:has(.no-js-banner) .newsbar {
+  overflow: hidden !important;
+}
+
+body:has(.no-js-banner) .ticker-track {
+  overflow: hidden !important;
+  padding-right: 42px !important;
+  animation: none !important;
+}
+
+body:has(.no-js-banner) .ticker-track > a:nth-of-type(n+6),
+body:has(.no-js-banner) .ticker-track > span:nth-of-type(n+6) {
+  display: none !important;
+}
+
+body:has(.no-js-banner) .ticker-track::after {
+  position: sticky;
+  right: 0;
+  flex: 0 0 54px;
+  align-self: stretch;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, var(--bg) 72%);
+  content: "";
+}
+
+body:has(.no-js-banner) .archive-tools,
+body:has(.no-js-banner) .archive-more {
+  display: none !important;
+}
+
+body:has(.no-js-banner) .archive-static-note {
+  display: block !important;
+}
+
 .edition-row .card-cta {
   margin-top: clamp(10px, 1.25vw, 16px);
 }
@@ -2444,8 +2486,11 @@ h2 {
   border: 1px solid color-mix(in srgb, var(--line), transparent 36%);
   border-radius: 10px;
   background:
+    var(--article-image, none),
     radial-gradient(circle at 27% 25%, color-mix(in srgb, var(--accent), transparent 78%), transparent 30%),
     linear-gradient(135deg, color-mix(in srgb, var(--bg), var(--accent) 5%), color-mix(in srgb, var(--bg-deep), transparent 8%));
+  background-position: center;
+  background-size: cover, auto, auto;
   content: "";
 }
 
@@ -2574,6 +2619,7 @@ h2 {
   min-height: 32px;
   align-items: center;
   padding: 0 9px;
+  border-right: 1px solid color-mix(in srgb, var(--line), transparent 38%);
   color: var(--accent);
   font-weight: 900;
 }
@@ -2589,6 +2635,10 @@ h2 {
   color: inherit;
   text-decoration: none;
   transition: border-color 160ms ease, background 160ms ease, color 160ms ease, text-shadow 160ms ease;
+}
+
+.article-aside a:first-of-type {
+  margin-left: 4px;
 }
 
 .article-aside a + a::before {
@@ -2626,6 +2676,24 @@ h2 {
   background: color-mix(in srgb, var(--accent), transparent 86%);
   color: #001A33;
   text-shadow: none;
+}
+
+@media (max-width: 620px) {
+  .article-aside {
+    gap: 7px;
+  }
+
+  .article-aside strong {
+    flex: 1 0 100%;
+    min-height: auto;
+    padding: 0 0 7px;
+    border-right: 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--line), transparent 48%);
+  }
+
+  .article-aside a:first-of-type {
+    margin-left: 0;
+  }
 }
 
 .article-body {
@@ -2840,8 +2908,17 @@ h2 {
   list-style: none;
 }
 
+.note-box#sources ul {
+  counter-reset: source-list;
+}
+
 .note-box li {
   margin: 0;
+}
+
+.note-box#sources li {
+  position: relative;
+  counter-increment: source-list;
 }
 
 .note-box li.is-source-highlight {
@@ -2864,6 +2941,24 @@ h2 {
   font-weight: 850;
   line-height: 1.3;
   transition: border-color 160ms ease, background 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.note-box#sources li a {
+  padding-left: 52px;
+}
+
+.note-box#sources li::before {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  z-index: 1;
+  color: var(--accent);
+  content: counter(source-list, decimal-leading-zero);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  transform: translateY(-50%);
 }
 
 .note-box li.is-source-highlight a {
@@ -2927,8 +3022,11 @@ h2 {
   border: 1px solid color-mix(in srgb, var(--line), transparent 30%);
   border-radius: 9px;
   background:
+    var(--article-image, none),
     radial-gradient(circle at 24% 28%, color-mix(in srgb, var(--accent), transparent 78%), transparent 28%),
     linear-gradient(135deg, color-mix(in srgb, var(--bg), var(--accent) 5%), color-mix(in srgb, var(--bg-deep), transparent 10%));
+  background-position: center;
+  background-size: cover, auto, auto;
   content: "";
 }
 
@@ -3785,7 +3883,9 @@ h2 {
 }
 
 .site-header .header-actions,
-.home-page .site-header .header-actions {
+.home-page .site-header .header-actions,
+.site-header > .theme-toggle,
+.home-page .site-header > .theme-toggle {
   position: absolute;
   left: clamp(16px, 3vw, 54px);
   right: auto;
@@ -3808,7 +3908,9 @@ h2 {
   }
 
   .site-header .header-actions,
-  .home-page .site-header .header-actions {
+  .home-page .site-header .header-actions,
+  .site-header > .theme-toggle,
+  .home-page .site-header > .theme-toggle {
     left: max(12px, env(safe-area-inset-left));
     right: auto;
     top: calc(50% - 6px);
