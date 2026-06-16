@@ -2549,14 +2549,18 @@ h2 {
   z-index: 12;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 12px;
+  gap: 6px;
   align-items: center;
-  margin-top: -2px;
-  padding: 10px clamp(10px, 1.4vw, 16px) 12px;
-  border-top: 1px solid color-mix(in srgb, var(--line), transparent 56%);
-  border-bottom: 1px solid color-mix(in srgb, var(--line), transparent 44%);
-  background: color-mix(in srgb, var(--bg), transparent 4%);
+  margin-top: 0;
+  padding: 8px;
+  border: 1px solid color-mix(in srgb, var(--line), transparent 36%);
+  border-left: 4px solid var(--accent);
+  border-radius: 10px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent), transparent 93%), transparent 58%),
+    color-mix(in srgb, var(--bg), transparent 4%);
   backdrop-filter: blur(12px);
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--bg-deep), transparent 82%);
   color: var(--quiet);
   font-family: var(--font-sans);
   font-size: 12px;
@@ -2566,6 +2570,10 @@ h2 {
 }
 
 .article-aside strong {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  padding: 0 9px;
   color: var(--accent);
   font-weight: 900;
 }
@@ -2573,19 +2581,26 @@ h2 {
 .article-aside a {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  min-height: 24px;
-  padding: 2px 5px 2px 0;
+  gap: 7px;
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: 999px;
   color: inherit;
   text-decoration: none;
-  transition: color 160ms ease, text-shadow 160ms ease;
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease, text-shadow 160ms ease;
 }
 
 .article-aside a + a::before {
+  display: inline-grid;
+  width: 10px;
+  height: 10px;
+  place-items: center;
   color: color-mix(in srgb, var(--quiet), transparent 24%);
   content: "\203A";
-  font-size: 18px;
-  line-height: 1;
+  font-size: 17px;
+  line-height: 10px;
+  transform: translateY(-0.5px);
 }
 
 .article-aside a:hover,
@@ -2595,7 +2610,22 @@ h2 {
 }
 
 .article-aside a[aria-current="true"] {
+  border-color: color-mix(in srgb, var(--accent), transparent 54%);
+  background: color-mix(in srgb, var(--accent), transparent 90%);
   text-shadow: 0 0 14px color-mix(in srgb, var(--accent), transparent 78%);
+}
+
+:root[data-theme="light"] .article-aside {
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent), transparent 91%), transparent 58%),
+    color-mix(in srgb, var(--bg), white 8%);
+  box-shadow: 0 12px 24px rgba(0, 26, 51, 0.08);
+}
+
+:root[data-theme="light"] .article-aside a[aria-current="true"] {
+  background: color-mix(in srgb, var(--accent), transparent 86%);
+  color: #001A33;
+  text-shadow: none;
 }
 
 .article-body {

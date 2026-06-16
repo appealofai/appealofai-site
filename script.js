@@ -488,6 +488,8 @@ const setupTickerMotion = () => {
   let hoverSpeedFactor = 1;
   let hoverReadPanDone = false;
   const progress01 = (value) => Math.max(0, Math.min(1, value));
+  const easeOutCubic = (value) => 1 - Math.pow(1 - value, 3);
+  const easeInCubic = (value) => value * value * value;
   const clearCarouselTimers = () => {
     carouselPanTimers.forEach((timer) => window.clearTimeout(timer));
     carouselPanTimers = [];
@@ -711,7 +713,10 @@ const setupTickerMotion = () => {
       if (maxScroll > 1) {
         const baseSpeed = systemPrefersReducedMotion.matches ? tickerReducedSpeed : tickerBaseSpeed;
         const hoverProgress = progress01((time - hoverRampStartedAt) / hoverRampDuration);
-        hoverSpeedFactor = hoverRampFrom + (hoverRampTo - hoverRampFrom) * hoverProgress;
+        const easedHoverProgress = hoverRampTo < hoverRampFrom
+          ? easeOutCubic(hoverProgress)
+          : easeInCubic(hoverProgress);
+        hoverSpeedFactor = hoverRampFrom + (hoverRampTo - hoverRampFrom) * easedHoverProgress;
         let nextSpeed = baseSpeed * hoverSpeedFactor;
         if (time < tickerAutoResumeAt) {
           nextSpeed = 0;
@@ -1104,7 +1109,14 @@ if (articleToc) {
 
   const updateActiveToc = () => {
     if (!tocTargets.length) return;
-    const marker = window.scrollY + getHeaderOffset() + articleToc.offsetHeight + 28;
+    const pageBottom = window.scrollY + window.innerHeight;
+    const isNearBottom = pageBottom >= document.documentElement.scrollHeight - 80;
+    if (isNearBottom) {
+      setActiveTocLink(tocTargets[tocTargets.length - 1].id);
+      return;
+    }
+
+    const marker = window.scrollY + window.innerHeight * 0.5;
     const activeTarget = tocTargets.reduce((current, target) => {
       return getDocumentTop(target) <= marker ? target : current;
     }, tocTargets[0]);
