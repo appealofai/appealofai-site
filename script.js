@@ -154,7 +154,6 @@ wireArticleBackLinks();
 const alignImageBufferedCards = () => {
   const cards = Array.from(document.querySelectorAll([
     ".home-page .top-story-card",
-    ".notes-lead",
   ].join(", ")));
   if (!cards.length) return;
 
@@ -482,12 +481,12 @@ const setupTickerMotion = () => {
   let tickerReadPanFrame = 0;
   const tickerBaseSpeed = 0.055;
   const tickerReducedSpeed = 0.018;
-  const hoverBrakeDuration = 4200;
-  const hoverResumeDuration = 2600;
-  let hoverStartedAt = 0;
-  let hoverSpeedFrom = tickerBaseSpeed;
-  let resumeStartedAt = 0;
-  let resumeSpeedFrom = 0;
+  const hoverRampDuration = 3000;
+  let hoverRampStartedAt = performance.now();
+  let hoverRampFrom = 1;
+  let hoverRampTo = 1;
+  let hoverSpeedFactor = 1;
+  let hoverReadPanDone = false;
   const progress01 = (value) => Math.max(0, Math.min(1, value));
   const clearCarouselTimers = () => {
     carouselPanTimers.forEach((timer) => window.clearTimeout(timer));
@@ -631,6 +630,34 @@ const setupTickerMotion = () => {
       animateTickerScrollTo(Math.max(0, tickerTrack.scrollLeft + text.getBoundingClientRect().left - tickerTrack.getBoundingClientRect().left), 3600);
     }, 10600));
   };
+  const showHoveredTickerItemOnce = () => {
+    if (!tickerPointerInside || tickerPointerDown || activeTickerIndex !== null) return;
+    const item = getCenterTickerItem();
+    const text = item?.querySelector(".ticker-text") || item;
+    if (!item || !text) return;
+
+    scrollTickerItemToStart(item, systemPrefersReducedMotion.matches ? "auto" : "smooth");
+    if (systemPrefersReducedMotion.matches) return;
+
+    carouselPanTimers.push(window.setTimeout(() => {
+      if (!tickerPointerInside || tickerPointerDown || activeTickerIndex !== null) return;
+      const trackRect = tickerTrack.getBoundingClientRect();
+      const textRect = text.getBoundingClientRect();
+      const overflow = textRect.right - trackRect.right + 16;
+      if (overflow <= 6) return;
+
+      const maxScroll = Math.max(0, tickerTrack.scrollWidth - tickerTrack.clientWidth);
+      const startTarget = Math.max(0, tickerTrack.scrollLeft + textRect.left - trackRect.left);
+      const endTarget = Math.min(maxScroll, tickerTrack.scrollLeft + overflow);
+      const outDuration = Math.min(9600, Math.max(5200, overflow * 44));
+      animateTickerScrollTo(endTarget, outDuration);
+      carouselPanTimers.push(window.setTimeout(() => {
+        if (tickerPointerInside && !tickerPointerDown && activeTickerIndex === null) {
+          animateTickerScrollTo(startTarget, 3000);
+        }
+      }, outDuration + 850));
+    }, 850));
+  };
   const clearTickerFocus = () => {
     clearCarouselTimers();
     activeTickerIndex = null;
@@ -683,22 +710,19 @@ const setupTickerMotion = () => {
       const maxScroll = Math.max(0, tickerTrack.scrollWidth - tickerTrack.clientWidth);
       if (maxScroll > 1) {
         const baseSpeed = systemPrefersReducedMotion.matches ? tickerReducedSpeed : tickerBaseSpeed;
-        let nextSpeed = baseSpeed;
+        const hoverProgress = progress01((time - hoverRampStartedAt) / hoverRampDuration);
+        hoverSpeedFactor = hoverRampFrom + (hoverRampTo - hoverRampFrom) * hoverProgress;
+        let nextSpeed = baseSpeed * hoverSpeedFactor;
         if (time < tickerAutoResumeAt) {
           nextSpeed = 0;
-          resumeStartedAt = 0;
         } else if (systemPrefersReducedMotion.matches) {
           nextSpeed = tickerPointerInside ? 0 : tickerReducedSpeed;
-        } else if (tickerPointerInside) {
-          const elapsed = time - hoverStartedAt;
-          const progress = progress01(elapsed / hoverBrakeDuration);
-          nextSpeed = hoverSpeedFrom * (1 - progress);
-          resumeStartedAt = 0;
-        } else if (resumeStartedAt) {
-          const progress = progress01((time - resumeStartedAt) / hoverResumeDuration);
-          const easedProgress = progress * progress;
-          nextSpeed = resumeSpeedFrom + (baseSpeed - resumeSpeedFrom) * easedProgress;
-          if (progress >= 1) resumeStartedAt = 0;
+        } else if (tickerPointerInside && hoverSpeedFactor <= 0.001) {
+          nextSpeed = 0;
+          if (!hoverReadPanDone) {
+            hoverReadPanDone = true;
+            showHoveredTickerItemOnce();
+          }
         }
         tickerCurrentSpeed = Math.max(0, nextSpeed);
         if (tickerCurrentSpeed < 0.00002) tickerCurrentSpeed = 0;
@@ -727,18 +751,23 @@ const setupTickerMotion = () => {
 
   tickerPrev?.addEventListener("click", () => focusReadableTickerItem(-1));
   tickerNext?.addEventListener("click", () => focusReadableTickerItem(1));
+  const setTickerHoverTarget = (target) => {
+    hoverRampFrom = hoverSpeedFactor;
+    hoverRampTo = target;
+    hoverRampStartedAt = performance.now();
+  };
   newsStrip?.addEventListener("pointerenter", () => {
     tickerPointerInside = true;
-    hoverStartedAt = performance.now();
-    hoverSpeedFrom = tickerCurrentSpeed || (systemPrefersReducedMotion.matches ? tickerReducedSpeed : tickerBaseSpeed);
-    resumeStartedAt = 0;
+    hoverReadPanDone = false;
     tickerAutoResumeAt = 0;
+    setTickerHoverTarget(0);
     if (activeTickerIndex !== null) scheduleTickerRelease(9600);
   });
   newsStrip?.addEventListener("pointerleave", () => {
     tickerPointerInside = false;
-    resumeStartedAt = performance.now();
-    resumeSpeedFrom = tickerCurrentSpeed;
+    clearCarouselTimers();
+    hoverReadPanDone = false;
+    setTickerHoverTarget(1);
     if (activeTickerIndex === null) tickerAutoResumeAt = 0;
     if (activeTickerIndex !== null) scheduleTickerRelease(5200);
   });
