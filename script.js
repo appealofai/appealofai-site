@@ -8,11 +8,10 @@ const currentDate = document.querySelector("[data-current-date]");
 const newsStrip = document.querySelector("[data-news-strip]");
 const newsLabel = document.querySelector("[data-news-label]");
 const tickerTrack = document.querySelector(".ticker-track");
-let tickerPrev = null;
-let tickerNext = null;
 let activeTickerIndex = null;
 let focusedTickerIndex = null;
 let tickerItemCount = 0;
+const scriptBaseUrl = new URL(".", document.currentScript?.src || new URL("/script.js", window.location.origin).href);
 const issueStrip = document.querySelector(".issue-strip");
 const archiveSearch = document.querySelector("[data-archive-search]");
 const archiveItems = Array.from(document.querySelectorAll("[data-archive-item]"));
@@ -363,12 +362,11 @@ updateNewsLabel();
 
 // Load the lightweight content index and use it as the notes ticker source.
 const getContentFeedUrl = () => {
-  const scriptUrl = document.currentScript?.src || new URL("script.js", window.location.href).href;
-  return new URL("content/articles.json", scriptUrl);
+  return new URL("content/articles.json", scriptBaseUrl);
 };
 
 const getSiteRelativeUrl = (href) => {
-  return new URL(href, new URL("../", getContentFeedUrl())).href;
+  return new URL(href.replace(/^\//, ""), scriptBaseUrl).href;
 };
 
 const getArticleSlugFromUrl = (href) => {
@@ -473,29 +471,6 @@ const loadArticleFeed = async () => {
 loadArticleFeed();
 hydrateArticleImageSlots();
 
-const setupTickerControls = () => {
-  if (!newsStrip || !tickerTrack || newsStrip.querySelector(".ticker-control")) return;
-
-  const controls = document.createElement("div");
-  controls.className = "ticker-controls";
-  controls.setAttribute("aria-label", "Ticker controls");
-
-  tickerPrev = document.createElement("button");
-  tickerPrev.className = "ticker-control ticker-control-prev";
-  tickerPrev.type = "button";
-  tickerPrev.setAttribute("aria-label", "Previous note");
-  tickerPrev.textContent = "\u2039";
-
-  tickerNext = document.createElement("button");
-  tickerNext.className = "ticker-control ticker-control-next";
-  tickerNext.type = "button";
-  tickerNext.setAttribute("aria-label", "Next note");
-  tickerNext.textContent = "\u203a";
-
-  controls.append(tickerPrev, tickerNext);
-  newsStrip.append(controls);
-};
-
 const ensureTickerItemIndexes = () => {
   if (!tickerTrack) return;
   const items = Array.from(tickerTrack.querySelectorAll("a, span"));
@@ -540,7 +515,6 @@ const updateTickerSelection = () => {
 
 const setupTickerMotion = () => {
   if (!tickerTrack) return;
-  setupTickerControls();
   ensureTickerItemIndexes();
   if (tickerTrack.dataset.motionReady === "true") return;
   tickerTrack.dataset.motionReady = "true";
@@ -650,12 +624,29 @@ const setupTickerMotion = () => {
     const trackRect = tickerTrack.getBoundingClientRect();
     return Math.min(trackRect.right - 24, trackRect.left + 2);
   };
-  const scrollTickerItemToStart = (item, behavior = "smooth") => {
+  const getTickerTargetForItem = (item) => {
     if (!item) return;
     const text = item.querySelector(".ticker-text") || item;
     const textRect = text.getBoundingClientRect();
+    return tickerTrack.scrollLeft + textRect.left - getTickerReadableLeft();
+  };
+  const normalizeTickerTarget = (target, direction = 0) => {
+    const loopDistance = getLoopDistance();
+    let nextTarget = target;
+    if (loopDistance > 1) {
+      while (nextTarget < loopDistance) nextTarget += loopDistance;
+      while (nextTarget >= loopDistance * 2) nextTarget -= loopDistance;
+      if (direction > 0 && nextTarget <= tickerTrack.scrollLeft + 2) nextTarget += loopDistance;
+      if (direction < 0 && nextTarget >= tickerTrack.scrollLeft - 2) nextTarget -= loopDistance;
+    }
     const maxScroll = Math.max(0, tickerTrack.scrollWidth - tickerTrack.clientWidth);
-    const target = Math.min(maxScroll, Math.max(0, tickerTrack.scrollLeft + textRect.left - getTickerReadableLeft()));
+    return Math.min(maxScroll, Math.max(0, nextTarget));
+  };
+  const scrollTickerItemToStart = (item, behavior = "smooth", preferredTarget = null) => {
+    if (!item) return;
+    const target = preferredTarget === null
+      ? normalizeTickerTarget(getTickerTargetForItem(item))
+      : preferredTarget;
     if (behavior === "auto") {
       stopTickerReadPan();
       tickerTrack.scrollLeft = target;
@@ -663,31 +654,24 @@ const setupTickerMotion = () => {
       animateTickerScrollTo(target, 760);
     }
   };
-  const getTickerItemByIndex = (index, direction = 1) => {
+  const getTickerMoveByIndex = (index, direction = 1) => {
     const normalizedIndex = (index + tickerItemCount) % tickerItemCount;
     const getMatchingItems = () => getCarouselTickerItems()
       .filter((item) => Number(item.dataset.tickerIndex) === normalizedIndex);
     const items = getMatchingItems();
     if (!items.length) return null;
 
-    const getMoves = () => {
-      const readableLeft = getTickerReadableLeft();
-      return items
-      .map((item) => {
-        const text = item.querySelector(".ticker-text") || item;
-        const target = tickerTrack.scrollLeft + text.getBoundingClientRect().left - readableLeft;
-        return { item, target };
-      });
-    };
-
-    const moves = getMoves()
-      .filter((entry) => direction > 0 ? entry.target > tickerTrack.scrollLeft + 2 : entry.target < tickerTrack.scrollLeft - 2)
-      .sort((a, b) => direction > 0 ? a.target - b.target : b.target - a.target);
-
-    if (moves.length) return moves[0].item;
-
-    return getMoves()
-      .sort((a, b) => Math.abs(a.target - tickerTrack.scrollLeft) - Math.abs(b.target - tickerTrack.scrollLeft))[0]?.item || items[0];
+    const moves = items.map((item) => {
+      const rawTarget = getTickerTargetForItem(item);
+      return {
+        item,
+        rawTarget,
+        target: normalizeTickerTarget(rawTarget, direction),
+      };
+    });
+    const best = moves
+      .sort((a, b) => Math.abs(a.target - tickerTrack.scrollLeft) - Math.abs(b.target - tickerTrack.scrollLeft))[0];
+    return best || { item: items[0], target: normalizeTickerTarget(getTickerTargetForItem(items[0]), direction) };
   };
   const gentlyPanLongTickerItem = (item) => {
     const text = item?.querySelector(".ticker-text") || item;
@@ -732,13 +716,14 @@ const setupTickerMotion = () => {
       ? Number(currentItem?.dataset.tickerIndex) || 0
       : focusedTickerIndex;
     const nextIndex = (currentIndex + direction + tickerItemCount) % tickerItemCount;
-    const activeItem = getTickerItemByIndex(nextIndex, direction) || currentItem;
+    const activeMove = getTickerMoveByIndex(nextIndex, direction);
+    const activeItem = activeMove?.item || currentItem;
     if (!activeItem) return;
 
     activeTickerIndex = Number(activeItem.dataset.tickerIndex) || 0;
     focusedTickerIndex = activeTickerIndex;
     updateTickerSelection();
-    scrollTickerItemToStart(activeItem, systemPrefersReducedMotion.matches ? "auto" : "smooth");
+    scrollTickerItemToStart(activeItem, systemPrefersReducedMotion.matches ? "auto" : "smooth", activeMove?.target ?? null);
     holdTickerAutoFlow(tickerPointerInside || tickerPointerDown ? 15000 : 12500);
     scheduleTickerRelease(tickerPointerInside || tickerPointerDown ? 15000 : 12500);
   };
@@ -786,51 +771,6 @@ const setupTickerMotion = () => {
     tickerAutoFrame = window.requestAnimationFrame(runTickerAutoFlow);
   };
 
-  tickerPrev?.addEventListener("click", () => focusReadableTickerItem(-1));
-  tickerNext?.addEventListener("click", () => focusReadableTickerItem(1));
-  const getTickerHoverFactor = () => {
-    const progress = progress01((performance.now() - hoverRampStartedAt) / hoverRampDuration);
-    return hoverRampFrom + (hoverRampTo - hoverRampFrom) * progress;
-  };
-  const setTickerHoverTarget = (target) => {
-    hoverSpeedFactor = getTickerHoverFactor();
-    hoverRampFrom = hoverSpeedFactor;
-    hoverRampTo = target;
-    hoverRampStartedAt = performance.now();
-  };
-  newsStrip?.addEventListener("pointerenter", () => {
-    tickerPointerInside = true;
-    tickerAutoResumeAt = 0;
-    setTickerHoverTarget(0);
-    if (activeTickerIndex !== null) scheduleTickerRelease(9600);
-  });
-  newsStrip?.addEventListener("pointerleave", () => {
-    tickerPointerInside = false;
-    clearCarouselTimers();
-    setTickerHoverTarget(1);
-    if (activeTickerIndex === null) tickerAutoResumeAt = 0;
-    if (activeTickerIndex !== null) scheduleTickerRelease(5200);
-  });
-  newsStrip?.addEventListener("pointerdown", () => {
-    tickerPointerDown = true;
-    holdTickerAutoFlow(3600);
-    if (activeTickerIndex !== null) scheduleTickerRelease(10400);
-  });
-  ["pointerup", "pointercancel"].forEach((eventName) => {
-    newsStrip?.addEventListener(eventName, () => {
-      tickerPointerDown = false;
-      holdTickerAutoFlow(2800);
-      if (activeTickerIndex !== null) scheduleTickerRelease(tickerPointerInside ? 9600 : 5200);
-    });
-  });
-  ["pointermove", "touchmove", "wheel"].forEach((eventName) => {
-    newsStrip?.addEventListener(eventName, () => {
-      if (eventName !== "pointermove" || tickerPointerDown) {
-        holdTickerAutoFlow(tickerPointerDown ? 3600 : 1800);
-      }
-      if (activeTickerIndex !== null) scheduleTickerRelease(tickerPointerInside || tickerPointerDown ? 9600 : 5200);
-    }, { passive: true });
-  });
   if (!tickerAutoFrame) {
     normalizeTickerScroll();
     tickerLastScrollLeft = tickerTrack.scrollLeft;
@@ -838,7 +778,6 @@ const setupTickerMotion = () => {
   }
 };
 
-setupTickerControls();
 setupTickerMotion();
 
 // Archive search, ordering and progressive reveal.
@@ -912,7 +851,11 @@ if (archiveItems.length) {
 
     if (archiveEmpty) archiveEmpty.hidden = matchingItems.length > 0;
     if (archiveMore) {
-      archiveMore.hidden = Boolean(query) || archiveVisibleLimit >= matchingItems.length;
+      const isExpandable = !query && matchingItems.length > archiveStep;
+      const isExpanded = isExpandable && archiveVisibleLimit >= matchingItems.length;
+      archiveMore.hidden = !isExpandable;
+      archiveMore.textContent = isExpanded ? "Less notes" : "More notes";
+      archiveMore.setAttribute("aria-expanded", String(isExpanded));
     }
     if (archiveCount) {
       archiveCount.classList.remove("is-changing");
@@ -942,7 +885,9 @@ if (archiveItems.length) {
     });
   });
   archiveMore?.addEventListener("click", () => {
-    archiveVisibleLimit += archiveStep;
+    const visibleItems = archiveItems.filter((item) => !item.hidden);
+    const isExpanded = visibleItems.length >= archiveItems.length;
+    archiveVisibleLimit = isExpanded ? archiveStep : archiveVisibleLimit + archiveStep;
     updateArchive();
   });
 
@@ -1070,7 +1015,7 @@ const markCurrentPage = () => {
     if (normalizedLinkPath === currentPath || isArticlePage) {
       link.setAttribute("aria-current", "page");
       currentLink = link;
-    } else if (normalizedLinkPath !== "index") {
+    } else {
       link.removeAttribute("aria-current");
     }
   });
@@ -1080,6 +1025,7 @@ const markCurrentPage = () => {
 };
 
 markCurrentPage();
+normalizePrimaryNavigation();
 
 // Reader controls use actual page sections; no visible section rail is needed.
 issueSections = issueLinks.length
