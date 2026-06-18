@@ -64,7 +64,7 @@
         }
         .archive-tools { display: none; }
         .archive-static-note { display: block; }
-        .archive-more { display: none !important; }
+        .archive-pagination { display: none !important; }
       </style>
     </noscript>
 
@@ -230,7 +230,11 @@
           </div>
         </a>
         <p class="archive-empty" data-archive-empty hidden>No notes match that yet. Try a shorter search.</p>
-        <button class="archive-more" type="button" data-archive-more hidden>More notes</button>
+        <nav class="archive-pagination" data-archive-pagination hidden aria-label="Notes pages">
+          <button type="button" data-archive-prev>Previous</button>
+          <span data-archive-page-status>Page 1 of 1</span>
+          <button type="button" data-archive-next>Next</button>
+        </nav>
       </section>
 
     </main>

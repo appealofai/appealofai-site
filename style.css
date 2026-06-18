@@ -1512,6 +1512,7 @@ p {
   gap: 0;
   margin-inline: 0;
   white-space: nowrap;
+  cursor: default;
   transition: background 160ms ease, color 160ms ease, opacity 160ms ease, text-shadow 160ms ease;
 }
 
@@ -1527,6 +1528,10 @@ p {
   color: var(--accent);
   font-weight: 900;
   text-shadow: 0 0 14px color-mix(in srgb, var(--accent), transparent 72%);
+}
+
+.ticker-track > a .ticker-text {
+  cursor: pointer;
 }
 
 :root[data-theme="light"] .ticker-track [aria-current="true"] .ticker-text {
@@ -2111,6 +2116,56 @@ h2 {
   margin-inline: auto;
 }
 
+.info-page {
+  width: min(100% - clamp(24px, 5vw, 56px), 860px);
+  max-width: 100%;
+  min-height: calc(100svh - 220px);
+  margin-inline: auto;
+  padding-top: clamp(16px, 3vw, 34px);
+  overflow-x: clip;
+}
+
+.info-page > .section {
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+.info-page .page-back {
+  margin-bottom: clamp(12px, 2.4vw, 18px);
+}
+
+.info-hero {
+  display: grid;
+  gap: clamp(12px, 2vw, 18px);
+  padding: clamp(22px, 4vw, 36px);
+  border: 1px solid color-mix(in srgb, var(--line), transparent 32%);
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent), transparent 93%), transparent 62%),
+    color-mix(in srgb, var(--surface-soft), transparent 16%);
+}
+
+.info-hero h1 {
+  max-width: 720px;
+  margin: 0;
+  font-size: clamp(33px, 6.8vw, 50px);
+  line-height: 1.04;
+}
+
+.info-hero p {
+  max-width: 680px;
+  margin: 0;
+  color: var(--muted);
+  font-size: clamp(17px, 2.6vw, 20px);
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+.info-hero .text-note {
+  margin-top: clamp(8px, 2vw, 18px);
+}
+
 .archive-hero {
   display: grid;
   gap: clamp(10px, 1.7vw, 16px);
@@ -2248,30 +2303,60 @@ h2 {
   color: var(--accent);
 }
 
-.archive-more {
-  display: inline-flex;
-  min-height: 40px;
+.archive-pagination {
+  display: flex;
+  width: min(100%, 520px);
   align-items: center;
   justify-content: center;
   justify-self: center;
-  margin-top: 4px;
-  padding: 10px 18px;
-  border: 1px solid color-mix(in srgb, var(--line), transparent 30%);
+  gap: 10px;
+  margin-top: 2px;
+  padding: 8px;
+  border: 1px solid color-mix(in srgb, var(--line), transparent 36%);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--surface-soft), transparent 18%);
-  color: var(--accent);
+  background: color-mix(in srgb, var(--surface-soft), transparent 32%);
+}
+
+.archive-pagination[hidden] {
+  display: none;
+}
+
+.archive-pagination button {
+  min-height: 36px;
+  min-width: 112px;
+  padding: 9px 16px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--quiet);
   cursor: pointer;
   font: 900 12px/1 var(--font-sans);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease, opacity 160ms ease, transform 160ms ease;
 }
 
-.archive-more:hover,
-.archive-more:focus-visible {
-  border-color: color-mix(in srgb, var(--accent), transparent 34%);
+.archive-pagination button:hover,
+.archive-pagination button:focus-visible {
+  border-color: color-mix(in srgb, var(--accent), transparent 46%);
   background: color-mix(in srgb, var(--surface-soft), var(--accent) 6%);
+  color: var(--accent);
   transform: translateY(-1px);
+}
+
+.archive-pagination button:disabled {
+  cursor: default;
+  opacity: 0.42;
+  transform: none;
+}
+
+.archive-pagination span {
+  min-width: 96px;
+  color: var(--muted);
+  font: 900 12px/1 var(--font-sans);
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 .archive-count {
@@ -2343,7 +2428,7 @@ body:has(.no-js-banner) .ticker-track::after {
 }
 
 body:has(.no-js-banner) .archive-tools,
-body:has(.no-js-banner) .archive-more {
+body:has(.no-js-banner) .archive-pagination {
   display: none !important;
 }
 
@@ -2394,6 +2479,10 @@ body:has(.no-js-banner) .archive-static-note {
 
 .edition-list[data-archive-list] [data-archive-item] {
   transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.edition-list[data-archive-list] [data-archive-item][hidden] {
+  display: none !important;
 }
 
 .edition-list[data-archive-list].is-updating [data-archive-item] {

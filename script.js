@@ -18,7 +18,10 @@ const archiveItems = Array.from(document.querySelectorAll("[data-archive-item]")
 const archiveOrderButtons = Array.from(document.querySelectorAll("[data-archive-order]"));
 const archiveCount = document.querySelector("[data-archive-count]");
 const archiveEmpty = document.querySelector("[data-archive-empty]");
-const archiveMore = document.querySelector("[data-archive-more]");
+const archivePagination = document.querySelector("[data-archive-pagination]");
+const archivePrev = document.querySelector("[data-archive-prev]");
+const archiveNext = document.querySelector("[data-archive-next]");
+const archivePageStatus = document.querySelector("[data-archive-page-status]");
 let issueSections = [];
 let activeIssueIndex = 0;
 
@@ -73,13 +76,19 @@ normalizeThemeToggle();
 
 const normalizePrimaryNavigation = () => {
   if (!menu) return;
-  const isNotesPath = window.location.pathname.includes("/articles/")
-    || window.location.pathname.endsWith("/notes.html")
-    || window.location.pathname.endsWith("/articles.html");
+  const path = window.location.pathname;
+  const isNotesPath = path.includes("/articles/")
+    || path.endsWith("/notes.html")
+    || path.endsWith("/articles.html");
+  const isJournalPath = path === "/"
+    || path.endsWith("/")
+    || path.endsWith("/index.html");
   const links = Array.from(menu.querySelectorAll("a"));
   links.forEach((link) => {
     const label = link.textContent.trim().toLowerCase();
-    const isCurrent = isNotesPath ? label === "notes" : label === "journal";
+    const isCurrent = isNotesPath
+      ? label === "notes"
+      : isJournalPath && label === "journal";
     if (isCurrent) {
       link.setAttribute("aria-current", "page");
     } else {
@@ -780,12 +789,12 @@ const setupTickerMotion = () => {
 
 setupTickerMotion();
 
-// Archive search, ordering and progressive reveal.
+// Archive search, ordering and pagination.
 if (archiveItems.length) {
   const archiveList = archiveItems[0].parentElement;
   if (archiveList) archiveList.dataset.archiveList = "true";
-  const archiveStep = 6;
-  let archiveVisibleLimit = archiveStep;
+  const archivePageSize = 5;
+  let archivePage = 1;
   let archiveSort = "newest";
 
   const getArchiveTimestamp = (item) => {
@@ -800,20 +809,19 @@ if (archiveItems.length) {
       return activeSort === "oldest" ? -diff : diff;
     });
 
-    sortedItems.forEach((item) => archiveList.insertBefore(item, archiveEmpty || archiveMore || null));
+    sortedItems.forEach((item) => archiveList.insertBefore(item, archiveEmpty || archivePagination || null));
     return sortedItems;
   };
 
-  const formatArchiveCount = (visibleCount, shownCount, query) => {
-    const total = archiveItems.length;
+  const formatArchiveCount = (visibleCount, shownCount, query, pageStart) => {
     if (!visibleCount) return "No notes found.";
     const orderLabel = archiveSort === "oldest" ? "oldest first" : "newest first";
+    const rangeStart = pageStart + 1;
+    const rangeEnd = pageStart + shownCount;
     if (query) {
-      return `Filtered: ${visibleCount} ${visibleCount === 1 ? "match" : "matches"} for "${query}". ${orderLabel}.`;
+      return `Showing ${rangeStart}-${rangeEnd} of ${visibleCount} ${visibleCount === 1 ? "match" : "matches"} for "${query}", ${orderLabel}.`;
     }
-    return shownCount >= total
-      ? `Showing all ${total} notes, ${orderLabel}.`
-      : `Showing ${shownCount} of ${total} notes, ${orderLabel}.`;
+    return `Showing ${rangeStart}-${rangeEnd} of ${visibleCount} notes, ${orderLabel}.`;
   };
 
   const updateArchive = () => {
@@ -837,7 +845,10 @@ if (archiveItems.length) {
       if (matchesSearch) matchingItems.push(item);
     });
 
-    const shownItems = query ? matchingItems : matchingItems.slice(0, archiveVisibleLimit);
+    const pageCount = Math.max(1, Math.ceil(matchingItems.length / archivePageSize));
+    archivePage = Math.min(Math.max(archivePage, 1), pageCount);
+    const pageStart = (archivePage - 1) * archivePageSize;
+    const shownItems = matchingItems.slice(pageStart, pageStart + archivePageSize);
 
     archiveItems.forEach((item) => {
       const isVisible = shownItems.includes(item);
@@ -850,17 +861,17 @@ if (archiveItems.length) {
     });
 
     if (archiveEmpty) archiveEmpty.hidden = matchingItems.length > 0;
-    if (archiveMore) {
-      const isExpandable = !query && matchingItems.length > archiveStep;
-      const isExpanded = isExpandable && archiveVisibleLimit >= matchingItems.length;
-      archiveMore.hidden = !isExpandable;
-      archiveMore.textContent = isExpanded ? "Less notes" : "More notes";
-      archiveMore.setAttribute("aria-expanded", String(isExpanded));
+    if (archivePagination) {
+      const hasPages = matchingItems.length > archivePageSize;
+      archivePagination.hidden = !hasPages;
+      if (archivePrev) archivePrev.disabled = archivePage <= 1;
+      if (archiveNext) archiveNext.disabled = archivePage >= pageCount;
+      if (archivePageStatus) archivePageStatus.textContent = `Page ${archivePage} of ${pageCount}`;
     }
     if (archiveCount) {
       archiveCount.classList.remove("is-changing");
       void archiveCount.offsetWidth;
-      archiveCount.textContent = formatArchiveCount(matchingItems.length, visibleCount, query);
+      archiveCount.textContent = formatArchiveCount(matchingItems.length, visibleCount, query, pageStart);
       archiveCount.classList.add("is-changing");
     }
 
@@ -873,21 +884,23 @@ if (archiveItems.length) {
   };
 
   archiveSearch?.addEventListener("input", () => {
-    archiveVisibleLimit = archiveStep;
+    archivePage = 1;
     updateArchive();
   });
   archiveOrderButtons.forEach((button) => {
     button.addEventListener("click", () => {
       archiveSort = button.dataset.archiveOrder || "newest";
-      archiveVisibleLimit = archiveStep;
+      archivePage = 1;
       archiveOrderButtons.forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
       updateArchive();
     });
   });
-  archiveMore?.addEventListener("click", () => {
-    const visibleItems = archiveItems.filter((item) => !item.hidden);
-    const isExpanded = visibleItems.length >= archiveItems.length;
-    archiveVisibleLimit = isExpanded ? archiveStep : archiveVisibleLimit + archiveStep;
+  archivePrev?.addEventListener("click", () => {
+    archivePage -= 1;
+    updateArchive();
+  });
+  archiveNext?.addEventListener("click", () => {
+    archivePage += 1;
     updateArchive();
   });
 
