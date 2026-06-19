@@ -177,8 +177,7 @@ window.addEventListener("load", () => {
   window.requestAnimationFrame(resetInitialScroll);
 }, { once: true });
 
-const wireArticleBackLinks = () => {
-  if (!window.location.pathname.includes("/articles/")) return;
+const wireBackLinks = () => {
   document.querySelectorAll(".page-back a").forEach((link) => {
     link.addEventListener("click", (event) => {
       if (window.history.length > 1) {
@@ -189,7 +188,7 @@ const wireArticleBackLinks = () => {
   });
 };
 
-wireArticleBackLinks();
+wireBackLinks();
 
 const alignImageBufferedCards = () => {
   const cards = Array.from(document.querySelectorAll([
@@ -540,8 +539,8 @@ const setupTickerMotion = () => {
   let tickerLastMovementAt = performance.now();
   let tickerCurrentSpeed = 0;
   let tickerReadPanFrame = 0;
-  const tickerBaseSpeed = 0.055;
-  const tickerReducedSpeed = 0.018;
+  const tickerBaseSpeed = 0.048;
+  const tickerReducedSpeed = 0.016;
   const hoverRampDuration = 3000;
   let hoverRampStartedAt = performance.now();
   let hoverRampFrom = 1;

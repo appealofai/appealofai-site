@@ -9,7 +9,7 @@ content/articles.json
 ```
 
 Only items with `"status": "published"` are used for the live Notes ticker.
-Draft items can stay in the file later, but they will not appear in the ticker.
+Unpublished items can stay in the file later, but they will not appear in the ticker.
 
 ## What is still manual
 
@@ -25,7 +25,7 @@ it.
 
 ## Optional writing workspace
 
-The draft folder is only for writing:
+The writing folder is only for working copies:
 
 ```text
 content/drafts/
@@ -34,7 +34,7 @@ content/drafts/
   article-id.x.txt
 ```
 
-- `.txt` is the website draft.
+- `.txt` is the website working copy.
 - `.sources.txt` is the source and claim checklist.
 - `.x.txt` is the companion post for X.
 

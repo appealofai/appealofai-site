@@ -1,6 +1,34 @@
 ﻿{
-  "updated": "2026-06-17T12:00:00Z",
+  "updated": "2026-06-19T12:00:00Z",
   "items": [
+    {
+      "id": "ai-meter-token-power-costs",
+      "status": "published",
+      "type": "opinion",
+      "date": "2026-06-19",
+      "updated": "2026-06-19T12:00:00Z",
+      "title": "The AI meter is becoming part of the product.",
+      "tickerTitle": "The AI meter is becoming part of the product",
+      "summary": "A personal opinion on token budgets, AI subscriptions, data-center power and why useful intelligence now needs a visible meter.",
+      "url": "/articles/ai-meter-token-power-costs/",
+      "image": "assets/img/social-card.png",
+      "topics": [
+        "infrastructure",
+        "costs",
+        "models",
+        "energy"
+      ],
+      "tags": ["tokens", "data-centers", "energy", "pricing", "infrastructure"],
+      "sources": [
+        "https://www.ft.com/content/1d37cc08-e0aa-45a4-a45d-4ad282529314",
+        "https://www.businessinsider.com/disney-ai-push-increase-velocity-tech-employees-tokenmaxxing-josh-damaro-2026-6",
+        "https://www.tomshardware.com/tech-industry/artificial-intelligence/ai-costs-spike-as-subscriptions-hit-pricing-wall-firms-turn-towards-chinese-llms-open-source-models-to-extend-budget",
+        "https://www.theguardian.com/us-news/2026/jun/19/datacenters-us-clean-energy-growth-climate",
+        "https://arxiv.org/abs/2606.05420",
+        "https://arxiv.org/abs/2606.19777"
+      ],
+      "xPost": "AI now needs a visible meter: tokens, dollars, watts, space, and useful output. The appeal is not pretending compute is free. The appeal is making intelligence cheaper, denser, cleaner, and worth the bill."
+    },
     {
       "id": "genesis-ai-robots-practical-body",
       "status": "published",
