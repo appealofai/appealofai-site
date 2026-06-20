@@ -2610,6 +2610,9 @@ body:has(.no-js-banner) .archive-static-note {
   aspect-ratio: auto;
   height: 100%;
   min-height: clamp(104px, 11vw, 152px);
+  background-repeat: no-repeat;
+  background-position: var(--article-image-position, center), center, center;
+  background-size: cover, auto, auto;
 }
 
 .archive-page .edition-row > span:not(.card-cta) {
@@ -2748,25 +2751,26 @@ body:has(.no-js-banner) .archive-static-note {
 
 .article-aside {
   position: sticky;
-  top: calc(var(--header-height, 72px) + var(--newsbar-height, 39px));
+  top: calc(var(--header-height, 72px) + var(--newsbar-height, 39px) + var(--issue-strip-height, 0px) + 8px);
   z-index: 12;
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px 12px;
   align-items: center;
   margin-top: 0;
-  padding: 8px;
-  border: 1px solid color-mix(in srgb, var(--line), transparent 36%);
-  border-left: 4px solid var(--accent);
-  border-radius: 10px;
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--line), transparent 48%);
+  border-radius: 12px;
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--accent), transparent 93%), transparent 58%),
-    color-mix(in srgb, var(--bg), transparent 4%);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 14px 30px color-mix(in srgb, var(--bg-deep), transparent 82%);
+    linear-gradient(90deg, color-mix(in srgb, var(--accent), transparent 84%) 0 3px, transparent 3px),
+    color-mix(in srgb, var(--bg), var(--surface-soft) 16%);
+  isolation: isolate;
+  box-shadow:
+    0 14px 26px color-mix(in srgb, var(--bg-deep), transparent 74%),
+    inset 0 1px 0 color-mix(in srgb, white, transparent 92%);
   color: var(--quiet);
   font-family: var(--font-sans);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -2774,41 +2778,49 @@ body:has(.no-js-banner) .archive-static-note {
 
 .article-aside strong {
   display: inline-flex;
-  min-height: 32px;
+  min-height: 30px;
   align-items: center;
-  padding: 0 9px;
-  border-right: 1px solid color-mix(in srgb, var(--line), transparent 38%);
+  padding: 0 10px 0 8px;
+  border-right: 1px solid color-mix(in srgb, var(--line), transparent 44%);
   color: var(--accent);
   font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .article-aside a {
   display: inline-flex;
+  position: relative;
   align-items: center;
-  gap: 7px;
-  min-height: 32px;
-  padding: 0 10px;
+  gap: 8px;
+  min-height: 30px;
+  padding: 0 9px;
   border: 1px solid transparent;
-  border-radius: 999px;
+  border-radius: 8px;
   color: inherit;
+  line-height: 1;
   text-decoration: none;
-  transition: border-color 160ms ease, background 160ms ease, color 160ms ease, text-shadow 160ms ease;
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease, box-shadow 160ms ease;
 }
 
 .article-aside a:first-of-type {
-  margin-left: 4px;
+  margin-left: 0;
 }
 
 .article-aside a + a::before {
   display: inline-grid;
-  width: 10px;
-  height: 10px;
+  position: absolute;
+  top: 50%;
+  left: -13px;
+  width: 9px;
+  height: 9px;
   place-items: center;
-  color: color-mix(in srgb, var(--quiet), transparent 24%);
+  color: color-mix(in srgb, var(--quiet), transparent 36%);
   content: "\203A";
-  font-size: 17px;
-  line-height: 10px;
-  transform: translateY(-0.5px);
+  font-size: 15px;
+  line-height: 9px;
+  pointer-events: none;
+  transform: translateY(-50%);
 }
 
 .article-aside a:hover,
@@ -2818,33 +2830,40 @@ body:has(.no-js-banner) .archive-static-note {
 }
 
 .article-aside a[aria-current="true"] {
-  border-color: color-mix(in srgb, var(--accent), transparent 54%);
-  background: color-mix(in srgb, var(--accent), transparent 90%);
-  text-shadow: 0 0 14px color-mix(in srgb, var(--accent), transparent 78%);
+  border-color: color-mix(in srgb, var(--accent), transparent 52%);
+  background: color-mix(in srgb, var(--accent), transparent 91%);
+  box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--accent), transparent 24%);
+}
+
+.article-aside a:hover,
+.article-aside a:focus-visible {
+  background: color-mix(in srgb, var(--accent), transparent 94%);
 }
 
 :root[data-theme="light"] .article-aside {
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--accent), transparent 91%), transparent 58%),
+    linear-gradient(90deg, color-mix(in srgb, var(--accent), transparent 72%) 0 3px, transparent 3px),
     color-mix(in srgb, var(--bg), white 8%);
-  box-shadow: 0 12px 24px rgba(0, 26, 51, 0.08);
+  box-shadow:
+    0 14px 26px rgba(0, 26, 51, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.42);
 }
 
 :root[data-theme="light"] .article-aside a[aria-current="true"] {
-  background: color-mix(in srgb, var(--accent), transparent 86%);
+  background: color-mix(in srgb, var(--accent), transparent 88%);
   color: #001A33;
-  text-shadow: none;
 }
 
 @media (max-width: 620px) {
   .article-aside {
     gap: 7px;
+    padding: 10px;
   }
 
   .article-aside strong {
     flex: 1 0 100%;
     min-height: auto;
-    padding: 0 0 7px;
+    padding: 0 0 8px;
     border-right: 0;
     border-bottom: 1px solid color-mix(in srgb, var(--line), transparent 48%);
   }

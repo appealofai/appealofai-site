@@ -387,13 +387,46 @@ const getArticleSlugFromUrl = (href) => {
   }
 };
 
+const articleImageExtensions = ["webp", "png", "jpg", "jpeg"];
+const articleImageCache = new Map();
+
+const probeImageUrl = (url) => new Promise((resolve) => {
+  const image = new Image();
+  image.onload = () => resolve(url);
+  image.onerror = () => resolve("");
+  image.src = url;
+});
+
+const getArticleImageUrl = (slug, variant = "wide") => {
+  const key = `${slug}:${variant}`;
+  if (!articleImageCache.has(key)) {
+    articleImageCache.set(key, (async () => {
+      const variants = [variant, "wide", "square", "portrait"]
+        .filter((value, index, values) => value && values.indexOf(value) === index);
+
+      for (const imageVariant of variants) {
+        const base = `articles/${slug}/images/${imageVariant}`;
+        for (const extension of articleImageExtensions) {
+          const url = getSiteRelativeUrl(`${base}.${extension}`);
+          const foundUrl = await probeImageUrl(url);
+          if (foundUrl) return foundUrl;
+        }
+      }
+      return "";
+    })());
+  }
+  return articleImageCache.get(key);
+};
+
 const setArticleImageSlot = (element, slug, variant = "wide") => {
   if (!element || !slug) return;
-  const base = `articles/${slug}/images/${variant}`;
-  element.style.setProperty(
-    "--article-image",
-    `image-set(url("${getSiteRelativeUrl(`${base}.webp`)}") type("image/webp"), url("${getSiteRelativeUrl(`${base}.jpg`)}") type("image/jpeg"))`
-  );
+  if (element.dataset.imagePosition) {
+    element.style.setProperty("--article-image-position", element.dataset.imagePosition);
+  }
+  getArticleImageUrl(slug, variant).then((url) => {
+    if (!url || !element.isConnected) return;
+    element.style.setProperty("--article-image", `url("${url}")`);
+  });
 };
 
 const hydrateArticleImageSlots = () => {
@@ -402,9 +435,12 @@ const hydrateArticleImageSlots = () => {
     if (
       link.classList.contains("hero-lead-card")
       || link.classList.contains("top-story-card")
-      || link.classList.contains("edition-row")
     ) {
       setArticleImageSlot(link, slug, "wide");
+    }
+
+    if (link.classList.contains("edition-row")) {
+      setArticleImageSlot(link, slug, "square");
     }
   });
 
@@ -1123,7 +1159,7 @@ if (articleToc) {
       const target = document.querySelector(link.getAttribute("href"));
       if (!target) return;
       event.preventDefault();
-      scrollToY(getDocumentTop(target) - getHeaderOffset() - articleToc.offsetHeight - 14);
+      scrollToY(getDocumentTop(target) - getHeaderOffset() - articleToc.offsetHeight - 26);
       setActiveTocLink(target.id);
     });
   });
