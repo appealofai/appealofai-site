@@ -150,17 +150,19 @@
       "id": "the-appeal-of-ai",
       "status": "published",
       "type": "opinion",
-      "date": "2026-06-12",
-      "updated": "2026-06-12T12:00:00Z",
-      "title": "The appeal of AI, with the hard parts still in view.",
-      "tickerTitle": "The appeal of AI, with the hard parts still in view",
-      "summary": "A personal launch note for Appeal of AI: useful machine intelligence, public upside and the costs that cannot be waved away.",
+      "date": "2026-06-21",
+      "updated": "2026-06-21T12:00:00Z",
+      "title": "The appeal of AI, with eyes open.",
+      "tickerTitle": "The appeal of AI, with eyes open",
+      "summary": "A personal opening essay for appealofai: useful machine intelligence, public upside and the costs that have to stay visible.",
       "url": "/articles/the-appeal-of-ai/",
       "topics": [
         "culture",
         "policy",
-        "infrastructure"
-      ]
+        "infrastructure",
+        "public-upside"
+      ],
+      "xPost": "The appeal of AI is stronger with eyes open: useful tools, public upside, real costs, infrastructure, jobs, access, and the rough parts still in view. That is the starting point for appealofai."
     },
     {
       "id": "claude-fable-safeguards",

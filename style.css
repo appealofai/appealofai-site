@@ -2214,6 +2214,16 @@ h2 {
     color-mix(in srgb, var(--surface-soft), transparent 16%);
 }
 
+.info-logo {
+  width: clamp(150px, 28vw, 220px);
+  height: auto;
+  margin-bottom: clamp(2px, 0.8vw, 8px);
+}
+
+:root[data-theme="light"] .info-logo {
+  filter: brightness(0) saturate(100%) opacity(0.92);
+}
+
 .info-hero h1 {
   max-width: 720px;
   margin: 0;
