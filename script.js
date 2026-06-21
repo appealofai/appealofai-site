@@ -1159,7 +1159,9 @@ if (articleToc) {
       const target = document.querySelector(link.getAttribute("href"));
       if (!target) return;
       event.preventDefault();
-      scrollToY(getDocumentTop(target) - getHeaderOffset() - articleToc.offsetHeight - 26);
+      const tocIsSticky = window.getComputedStyle(articleToc).position === "sticky";
+      const tocOffset = tocIsSticky ? articleToc.offsetHeight + 26 : 12;
+      scrollToY(getDocumentTop(target) - getHeaderOffset() - tocOffset);
       setActiveTocLink(target.id);
     });
   });

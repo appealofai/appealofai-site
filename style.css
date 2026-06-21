@@ -2317,7 +2317,7 @@ h2 {
 .archive-refine-row {
   display: inline-grid;
   grid-template-columns: auto minmax(0, 1fr);
-  gap: 8px 12px;
+  gap: 8px 14px;
   align-items: center;
   width: min(100%, 560px);
   min-width: 0;
@@ -2751,13 +2751,14 @@ body:has(.no-js-banner) .archive-static-note {
 
 .article-aside {
   position: sticky;
-  top: calc(var(--header-height, 72px) + var(--newsbar-height, 39px) + var(--issue-strip-height, 0px) + 8px);
+  top: calc(var(--header-height, 72px) + var(--newsbar-height, 39px) + var(--issue-strip-height, 0px) + 10px);
   z-index: 12;
   display: flex;
   flex-wrap: wrap;
   gap: 8px 12px;
   align-items: center;
   margin-top: 0;
+  margin-bottom: clamp(14px, 2.4vw, 22px);
   padding: 10px 12px;
   border: 1px solid color-mix(in srgb, var(--line), transparent 48%);
   border-radius: 12px;
@@ -2794,9 +2795,9 @@ body:has(.no-js-banner) .archive-static-note {
   align-items: center;
   gap: 8px;
   min-height: 30px;
-  padding: 0 9px;
+  padding: 0 4px;
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: 0;
   color: inherit;
   line-height: 1;
   text-decoration: none;
@@ -2807,20 +2808,23 @@ body:has(.no-js-banner) .archive-static-note {
   margin-left: 0;
 }
 
-.article-aside a + a::before {
-  display: inline-grid;
+.article-aside a:not(:last-of-type) {
+  margin-right: 24px;
+}
+
+.article-aside a:not(:last-of-type)::after {
+  display: block;
   position: absolute;
   top: 50%;
-  left: -13px;
-  width: 9px;
-  height: 9px;
-  place-items: center;
+  right: -16px;
+  width: 6px;
+  height: 6px;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
   color: color-mix(in srgb, var(--quiet), transparent 36%);
-  content: "\203A";
-  font-size: 15px;
-  line-height: 9px;
+  content: "";
   pointer-events: none;
-  transform: translateY(-50%);
+  transform: translateY(-50%) rotate(45deg);
 }
 
 .article-aside a:hover,
@@ -2830,14 +2834,15 @@ body:has(.no-js-banner) .archive-static-note {
 }
 
 .article-aside a[aria-current="true"] {
-  border-color: color-mix(in srgb, var(--accent), transparent 52%);
-  background: color-mix(in srgb, var(--accent), transparent 91%);
-  box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--accent), transparent 24%);
+  border-color: transparent;
+  background: transparent;
+  box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--accent), transparent 18%);
 }
 
 .article-aside a:hover,
 .article-aside a:focus-visible {
-  background: color-mix(in srgb, var(--accent), transparent 94%);
+  background: transparent;
+  box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--accent), transparent 46%);
 }
 
 :root[data-theme="light"] .article-aside {
@@ -2850,13 +2855,14 @@ body:has(.no-js-banner) .archive-static-note {
 }
 
 :root[data-theme="light"] .article-aside a[aria-current="true"] {
-  background: color-mix(in srgb, var(--accent), transparent 88%);
+  background: transparent;
   color: #001A33;
 }
 
 @media (max-width: 620px) {
   .article-aside {
     gap: 7px;
+    margin-bottom: clamp(12px, 4vw, 20px);
     padding: 10px;
   }
 
@@ -2900,10 +2906,9 @@ body:has(.no-js-banner) .archive-static-note {
 
 .article-body > p {
   hyphenate-limit-chars: 7 3 3;
-  overflow-wrap: normal;
-  text-align: justify;
-  text-align-last: left;
-  text-justify: inter-word;
+  max-width: 72ch;
+  overflow-wrap: break-word;
+  text-align: left;
 }
 
 :root[data-theme="light"] .site-header {
