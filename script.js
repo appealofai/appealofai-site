@@ -307,6 +307,19 @@ const scrollToY = (top) => {
   });
 };
 
+const getArticleTocOffset = () => {
+  const toc = document.querySelector(".article-aside");
+  if (!toc || window.getComputedStyle(toc).position !== "sticky") return 0;
+  return toc.offsetHeight + 18;
+};
+
+const scrollToElement = (target, options = {}) => {
+  const includeArticleToc = options.includeArticleToc ?? false;
+  const extraOffset = options.extraOffset ?? 0;
+  const tocOffset = includeArticleToc ? getArticleTocOffset() : 0;
+  scrollToY(getDocumentTop(target) - getHeaderOffset() - tocOffset - extraOffset);
+};
+
 // Carry the active theme across internal pages.
 const getThemeAwareUrl = (href) => {
   const url = new URL(href, window.location.href);
@@ -1111,7 +1124,7 @@ if (issueLinks.length || issueSections.length) {
 
       event.preventDefault();
       closeMenu();
-      scrollToY(getDocumentTop(target) - getHeaderOffset());
+      scrollToElement(target);
       setActiveLink(target.id);
     });
   });
@@ -1127,6 +1140,10 @@ if (articleToc) {
   const tocTargets = tocLinks
     .map((link) => document.querySelector(link.getAttribute("href")))
     .filter(Boolean);
+
+  if (!issueSections.length && tocTargets.length) {
+    issueSections = tocTargets;
+  }
 
   const setActiveTocLink = (targetId) => {
     tocLinks.forEach((link) => {
@@ -1151,7 +1168,10 @@ if (articleToc) {
     const activeTarget = tocTargets.reduce((current, target) => {
       return getDocumentTop(target) <= marker ? target : current;
     }, tocTargets[0]);
-    if (activeTarget?.id) setActiveTocLink(activeTarget.id);
+    if (activeTarget?.id) {
+      activeIssueIndex = tocTargets.indexOf(activeTarget);
+      setActiveTocLink(activeTarget.id);
+    }
   };
 
   tocLinks.forEach((link) => {
@@ -1159,9 +1179,7 @@ if (articleToc) {
       const target = document.querySelector(link.getAttribute("href"));
       if (!target) return;
       event.preventDefault();
-      const tocIsSticky = window.getComputedStyle(articleToc).position === "sticky";
-      const tocOffset = tocIsSticky ? articleToc.offsetHeight + 26 : 12;
-      scrollToY(getDocumentTop(target) - getHeaderOffset() - tocOffset);
+      scrollToElement(target, { includeArticleToc: true, extraOffset: 8 });
       setActiveTocLink(target.id);
     });
   });
@@ -1186,7 +1204,7 @@ if (sourceFootnotes.length) {
       if (!target) return;
 
       event.preventDefault();
-      scrollToY(getDocumentTop(target) - getHeaderOffset() - 18);
+      scrollToElement(target, { includeArticleToc: true, extraOffset: 12 });
       highlightSource(target);
       target.setAttribute("tabindex", "-1");
       window.setTimeout(() => target.focus({ preventScroll: true }), systemPrefersReducedMotion.matches ? 0 : 320);
@@ -1198,7 +1216,7 @@ if (sourceFootnotes.length) {
     const initialSource = document.querySelector(window.location.hash);
     if (initialSource) {
       window.setTimeout(() => {
-        scrollToY(getDocumentTop(initialSource) - getHeaderOffset() - 18);
+        scrollToElement(initialSource, { includeArticleToc: true, extraOffset: 12 });
         highlightSource(initialSource);
       }, 260);
     }
@@ -1233,33 +1251,46 @@ const createReaderControls = () => {
   topButton.setAttribute("aria-label", "Back to top");
   topButton.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 7h14M12 19V7M7 12l5-5 5 5"></path></svg>';
 
+  const bottomButton = document.createElement("button");
+  bottomButton.type = "button";
+  bottomButton.className = "reader-control";
+  bottomButton.setAttribute("data-scroll-bottom", "");
+  bottomButton.setAttribute("aria-label", "Go to end");
+  bottomButton.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 17h14M12 5v12M7 12l5 5 5-5"></path></svg>';
+
   controls.append(topButton);
   if (issueSections.length) {
     controls.append(previousButton);
     controls.append(nextButton);
   }
+  controls.append(bottomButton);
   document.body.append(controls);
 
   const updateControls = () => {
     const isVisible = window.scrollY > Math.max(360, window.innerHeight * 0.45);
+    const isNearBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 120;
     controls.classList.toggle("is-visible", isVisible);
     previousButton.disabled = activeIssueIndex <= 0;
     nextButton.disabled = !issueSections.length || activeIssueIndex >= issueSections.length - 1;
+    bottomButton.disabled = isNearBottom;
   };
 
   previousButton.addEventListener("click", () => {
     if (!issueSections.length) return;
     const target = issueSections[Math.max(0, activeIssueIndex - 1)];
-    if (target) scrollToY(getDocumentTop(target) - getHeaderOffset());
+    if (target) scrollToElement(target, { includeArticleToc: Boolean(articleToc), extraOffset: articleToc ? 8 : 0 });
   });
 
   nextButton.addEventListener("click", () => {
     if (!issueSections.length) return;
     const target = issueSections[Math.min(issueSections.length - 1, activeIssueIndex + 1)];
-    if (target) scrollToY(getDocumentTop(target) - getHeaderOffset());
+    if (target) scrollToElement(target, { includeArticleToc: Boolean(articleToc), extraOffset: articleToc ? 8 : 0 });
   });
 
   topButton.addEventListener("click", () => scrollToY(0));
+  bottomButton.addEventListener("click", () => {
+    scrollToY(document.documentElement.scrollHeight - window.innerHeight);
+  });
 
   updateControls();
   window.addEventListener("scroll", updateControls, { passive: true });

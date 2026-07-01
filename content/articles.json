@@ -1,6 +1,33 @@
 ﻿{
-  "updated": "2026-06-19T12:00:00Z",
+  "updated": "2026-07-01T12:00:00Z",
   "items": [
+    {
+      "id": "ai-bottleneck-public",
+      "status": "published",
+      "type": "opinion",
+      "date": "2026-07-01",
+      "updated": "2026-07-01T12:00:00Z",
+      "title": "The AI bottleneck is becoming public.",
+      "tickerTitle": "AI's bottleneck is becoming public",
+      "summary": "A personal opinion on AI capacity, token prices, data centers, job anxiety and why the next phase has to explain the bill.",
+      "url": "/articles/ai-bottleneck-public/",
+      "image": "assets/img/social-card.png",
+      "topics": [
+        "infrastructure",
+        "costs",
+        "jobs",
+        "markets",
+        "public-upside"
+      ],
+      "tags": [
+        "Opinion",
+        "AI Capacity",
+        "Infrastructure"
+      ],
+      "priority": 98,
+      "readMinutes": 8,
+      "xPost": "AI is not becoming less interesting. It is becoming more physical: tokens, GPU capacity, data centers, water, power, job anxiety and market concentration. The appeal survives if the bottleneck becomes visible instead of hidden."
+    },
     {
       "id": "ai-meter-token-power-costs",
       "status": "published",
@@ -74,32 +101,6 @@
         "https://www.businessinsider.com/spacex-confirms-cursor-acquisition-60-billion-ai-coding-startup-2026-6",
         "https://www.businessinsider.com/cursor-ceo-michael-truell-spacex-elon-musk-anthropic-2026-6"
       ]
-    },
-    {
-      "id": "fable-5-agi-access-politics",
-      "status": "published",
-      "type": "opinion",
-      "date": "2026-06-14",
-      "updated": "2026-06-14T08:00:00Z",
-      "title": "A Fable block makes AGI politics less hypothetical.",
-      "tickerTitle": "A Fable block makes AGI politics less hypothetical",
-      "summary": "A personal opinion on blocked model access, public trust and why the AGI debate needs rules before the emergency gets larger.",
-      "url": "/articles/fable-5-agi-access-politics/",
-      "image": "assets/img/social-card.png",
-      "topics": [
-        "models",
-        "policy",
-        "public-upside"
-      ],
-      "tags": ["models", "policy", "model-access", "public-upside"],
-      "sources": [
-        "https://www.anthropic.com/news",
-        "https://www.whitehouse.gov/ostp/",
-        "https://www.nist.gov/artificial-intelligence",
-        "https://www.nist.gov/itl/ai-risk-management-framework",
-        "https://www.iea.org/reports/energy-and-ai"
-      ],
-      "xPost": "If strong models can be blocked now, AGI access cannot be improvised later. The appeal of AI needs broad upside, real audits, and rules that do not turn the future into a private room."
     },
     {
       "id": "ai-upside-ledger",
