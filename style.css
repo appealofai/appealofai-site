@@ -1320,22 +1320,24 @@ p {
 .top-stories-head {
   display: flex;
   align-items: center;
+  min-height: 28px;
+  justify-content: flex-start;
+  gap: clamp(12px, 2vw, 18px);
+  padding: 0;
 }
 
-.top-stories-head {
-  justify-content: flex-start;
-  gap: 18px;
-  padding: clamp(8px, 1.4vw, 14px) clamp(10px, 1.8vw, 18px);
-  border: 1px solid color-mix(in srgb, var(--line), transparent 48%);
-  border-left: 4px solid var(--accent);
-  border-radius: 10px;
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--accent), transparent 93%), transparent 60%),
-    color-mix(in srgb, var(--surface-soft), transparent 32%);
+.top-stories-head::after {
+  display: block;
+  flex: 1 1 auto;
+  height: 1px;
+  min-width: 42px;
+  background: color-mix(in srgb, var(--line), transparent 38%);
+  content: "";
 }
 
 .top-stories .section-label {
   margin-bottom: 0;
+  white-space: nowrap;
 }
 
 .section-link {
