@@ -22,7 +22,11 @@
       "tags": [
         "Opinion",
         "AI Capacity",
-        "Infrastructure"
+        "Infrastructure",
+        "OpenAI",
+        "ChatGPT",
+        "Anthropic",
+        "NVIDIA"
       ],
       "priority": 98,
       "readMinutes": 8,
@@ -45,7 +49,7 @@
         "models",
         "energy"
       ],
-      "tags": ["tokens", "data-centers", "energy", "pricing", "infrastructure"],
+      "tags": ["tokens", "data-centers", "energy", "pricing", "infrastructure", "OpenAI", "ChatGPT", "API", "inference"],
       "sources": [
         "https://www.ft.com/content/1d37cc08-e0aa-45a4-a45d-4ad282529314",
         "https://www.businessinsider.com/disney-ai-push-increase-velocity-tech-employees-tokenmaxxing-josh-damaro-2026-6",
@@ -72,7 +76,7 @@
         "infrastructure",
         "models"
       ],
-      "tags": ["robots", "genesis-ai", "nvidia", "humanoids", "infrastructure"],
+      "tags": ["robots", "genesis-ai", "nvidia", "humanoids", "infrastructure", "robotics", "embodied-ai"],
       "sources": [
         "https://www.theverge.com/ai-artificial-intelligence/951283/genesis-ai-humanoid-robot-eno",
         "https://www.businessinsider.com/genesis-ai-unveils-robot-with-no-head-or-legs-2026-6",
@@ -97,6 +101,7 @@
         "developer tools",
         "infrastructure"
       ],
+      "tags": ["SpaceX", "Cursor", "Grok", "xAI", "coding agents", "developer tools", "OpenAI", "ChatGPT"],
       "sources": [
         "https://www.businessinsider.com/spacex-confirms-cursor-acquisition-60-billion-ai-coding-startup-2026-6",
         "https://www.businessinsider.com/cursor-ceo-michael-truell-spacex-elon-musk-anthropic-2026-6"
@@ -119,7 +124,7 @@
         "robots",
         "jobs"
       ],
-      "tags": ["infrastructure", "jobs", "robots", "public-upside"],
+      "tags": ["infrastructure", "jobs", "robots", "public-upside", "Anthropic", "OpenAI", "ChatGPT", "UBI"],
       "sources": [
         "https://www.iea.org/reports/energy-and-ai",
         "https://www.anthropic.com/economic-index",
@@ -145,6 +150,7 @@
         "infrastructure",
         "public-upside"
       ],
+      "tags": ["opening essay", "appealofai", "OpenAI", "ChatGPT", "progress", "public trust"],
       "xPost": "The appeal of AI is stronger with eyes open: useful tools, public upside, real costs, infrastructure, jobs, access, and the rough parts still in view. That is the starting point for appealofai."
     },
     {
@@ -158,7 +164,7 @@
       "summary": "A personal note on AI, work, public upside and why the appeal of the technology depends on how broadly its gains are shared.",
       "url": "/articles/ai-upside-needs-public-deal/",
       "image": "assets/img/social-card.png",
-      "tags": ["jobs", "policy", "culture", "public-upside"],
+      "tags": ["jobs", "policy", "culture", "public-upside", "OpenAI", "ChatGPT", "access", "labor"],
       "sources": [
         "https://darioamodei.com/the-adolescence-of-technology",
         "https://www.anthropic.com/economic-index"
@@ -176,7 +182,7 @@
       "summary": "A personal note on synthetic comments, generic article filler and why people can feel when language has no witness behind it.",
       "url": "/articles/ai-slop-social-text-fatigue/",
       "image": "assets/img/social-card.png",
-      "tags": ["culture", "social-media", "ai-slop", "writing"],
+      "tags": ["culture", "social-media", "ai-slop", "writing", "ChatGPT", "OpenAI", "generic text"],
       "sources": [
         "https://en.wikipedia.org/wiki/AI_slop",
         "https://www.fastcompany.com/91330702/what-is-ai-slop",
@@ -195,7 +201,7 @@
       "summary": "The simple bubble take misses the physical story: power, cooling, chips, grids, data centers and useful intelligence per watt.",
       "url": "/articles/ai-infrastructure-not-bubble/",
       "image": "assets/img/social-card.png",
-      "tags": ["infrastructure", "energy", "data-centers", "markets"],
+      "tags": ["infrastructure", "energy", "data-centers", "markets", "NVIDIA", "OpenAI", "compute", "chips"],
       "sources": [
         "https://www.iea.org/reports/energy-and-ai",
         "https://www.iea.org/reports/electricity-2026",
@@ -214,7 +220,7 @@
       "summary": "AI-assisted programming is strongest in expert hands: faster exploration, faster drafts, but still dependent on taste, structure and review.",
       "url": "/articles/vibe-coding-expertise-leverage/",
       "image": "assets/img/social-card.png",
-      "tags": ["vibe-coding", "software", "craft", "tools"],
+      "tags": ["vibe-coding", "software", "craft", "tools", "Cursor", "Claude", "ChatGPT", "OpenAI", "agents"],
       "sources": [
         "https://en.wikipedia.org/wiki/Vibe_coding",
         "https://github.blog/ai-and-ml/generative-ai/vibe-coding/"

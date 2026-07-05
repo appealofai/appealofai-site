@@ -2287,11 +2287,11 @@ h2 {
 
 .archive-hero {
   display: grid;
-  gap: clamp(10px, 1.7vw, 16px);
-  width: 100%;
+  gap: clamp(8px, 1.2vw, 12px);
+  width: min(100%, 920px);
   max-width: 100%;
   min-width: 0;
-  padding: clamp(18px, 2.4vw, 28px);
+  padding: clamp(16px, 2vw, 24px);
   border: 1px solid color-mix(in srgb, var(--line), transparent 36%);
   border-radius: 18px;
   background:
@@ -2300,19 +2300,19 @@ h2 {
 }
 
 .archive-hero h1 {
-  max-width: min(720px, 100%);
+  max-width: min(620px, 100%);
   margin: 0;
-  font-size: clamp(34px, 3.8vw, 50px);
-  line-height: 1.02;
+  font-size: clamp(32px, 3vw, 44px);
+  line-height: 1.04;
 }
 
 .archive-hero p {
-  max-width: 700px;
+  max-width: 660px;
   margin: 0;
   color: var(--muted);
-  font-size: clamp(16px, 1.5vw, 19px);
+  font-size: clamp(15px, 1.25vw, 17px);
   font-weight: 700;
-  line-height: 1.5;
+  line-height: 1.45;
 }
 
 .archive-tools {
@@ -2562,8 +2562,8 @@ body:has(.no-js-banner) .archive-static-note {
 
 .notes-list-heading {
   position: relative;
-  gap: clamp(7px, 1vw, 10px);
-  margin-bottom: clamp(10px, 1.5vw, 14px);
+  gap: clamp(5px, 0.8vw, 8px);
+  margin-bottom: clamp(8px, 1.2vw, 12px);
   padding-top: 0;
   border-top: 0;
 }
@@ -2585,8 +2585,9 @@ body:has(.no-js-banner) .archive-static-note {
 }
 
 .notes-list-heading h2 {
-  max-width: min(100%, 760px);
+  max-width: min(100%, 680px);
   overflow-wrap: break-word;
+  font-size: clamp(34px, 4.4vw, 56px);
 }
 
 .notes-list-heading + .archive-tools {

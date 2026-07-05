@@ -76,19 +76,12 @@ normalizeThemeToggle();
 
 const normalizePrimaryNavigation = () => {
   if (!menu) return;
-  const path = window.location.pathname;
-  const isNotesPath = path.includes("/articles/")
-    || path.endsWith("/notes.html")
-    || path.endsWith("/articles.html");
-  const isJournalPath = path === "/"
-    || path.endsWith("/")
-    || path.endsWith("/index.html");
+  const path = window.location.pathname.replace(/\/index\.html$/i, "/");
+  const isNotesPath = /\/notes(?:\.html|\/)?$/i.test(path);
   const links = Array.from(menu.querySelectorAll("a"));
   links.forEach((link) => {
     const label = link.textContent.trim().toLowerCase();
-    const isCurrent = isNotesPath
-      ? label === "notes"
-      : isJournalPath && label === "journal";
+    const isCurrent = isNotesPath ? label === "notes" : label === "journal";
     if (isCurrent) {
       link.setAttribute("aria-current", "page");
     } else {
@@ -874,8 +867,15 @@ if (archiveItems.length) {
     return `Showing ${rangeStart}-${rangeEnd} of ${visibleCount} notes, ${orderLabel}.`;
   };
 
+  const normalizeArchiveSearchText = (value) => value
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+
   const updateArchive = () => {
-    const query = archiveSearch?.value.trim().toLowerCase() || "";
+    const query = archiveSearch?.value.trim() || "";
+    const queryTokens = normalizeArchiveSearchText(query).split(" ").filter(Boolean);
     const activeSort = archiveSort;
     const visibleItems = [];
     const matchingItems = [];
@@ -890,8 +890,10 @@ if (archiveItems.length) {
         item.dataset.topics,
         item.dataset.date,
         item.dataset.dateLabel,
-      ].join(" ").toLowerCase();
-      const matchesSearch = !query || text.includes(query);
+      ].join(" ");
+      const searchableText = normalizeArchiveSearchText(text);
+      const matchesSearch = !queryTokens.length
+        || queryTokens.every((token) => searchableText.includes(token));
       if (matchesSearch) matchingItems.push(item);
     });
 
@@ -1067,15 +1069,14 @@ if (themeToggle) {
 
 // Active page state for the top navigation.
 const markCurrentPage = () => {
-  const path = window.location.pathname;
-  const currentPath = (path.split("/").pop() || "index").replace(/\.html$/i, "");
+  const path = window.location.pathname.replace(/\/index\.html$/i, "/");
+  const isNotesPath = /\/notes(?:\.html|\/)?$/i.test(path);
   let currentLink = null;
 
   document.querySelectorAll(".site-nav a").forEach((link) => {
-    const linkPath = link.getAttribute("href")?.split("#")[0] || "";
-    const normalizedLinkPath = (linkPath.split("/").pop() || "index").replace(/\.html$/i, "");
-    const isArticlePage = path.includes("/articles/") && normalizedLinkPath === "notes";
-    if (normalizedLinkPath === currentPath || isArticlePage) {
+    const label = link.textContent.trim().toLowerCase();
+    const isCurrent = isNotesPath ? label === "notes" : label === "journal";
+    if (isCurrent) {
       link.setAttribute("aria-current", "page");
       currentLink = link;
     } else {
