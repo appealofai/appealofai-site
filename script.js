@@ -432,7 +432,9 @@ const setArticleImageSlot = (element, slug, variant = "wide") => {
   const expectedUrl = getSiteRelativeUrl(`articles/${slug}/images/${variant}.png`);
   element.style.setProperty("--article-image", `url("${expectedUrl}")`);
   if (element.classList.contains("image-brief")) {
-    let image = element.querySelector(".image-brief-img");
+    const images = Array.from(element.querySelectorAll(".image-brief-img"));
+    let image = images[0];
+    images.slice(1).forEach((extraImage) => extraImage.remove());
     if (!image) {
       image = document.createElement("img");
       image.className = "image-brief-img";

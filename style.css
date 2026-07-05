@@ -3512,7 +3512,8 @@ body:has(.no-js-banner) .archive-static-note {
 }
 
 .image-brief.has-real-image::before {
-  display: none;
+  display: none !important;
+  content: none !important;
 }
 
 .image-brief-img {
@@ -3526,6 +3527,10 @@ body:has(.no-js-banner) .archive-static-note {
     radial-gradient(circle at 24% 28%, color-mix(in srgb, var(--accent), transparent 78%), transparent 28%),
     linear-gradient(135deg, color-mix(in srgb, var(--bg), var(--accent) 5%), color-mix(in srgb, var(--bg-deep), transparent 10%));
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--line), transparent 48%);
+}
+
+.image-brief-img + .image-brief-img {
+  display: none !important;
 }
 
 .image-brief strong {
