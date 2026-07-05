@@ -400,7 +400,7 @@ const getArticleSlugFromUrl = (href) => {
   }
 };
 
-const articleImageExtensions = ["webp", "png", "jpg", "jpeg"];
+const articleImageExtensions = ["png", "webp", "jpg", "jpeg"];
 const articleImageCache = new Map();
 
 const probeImageUrl = (url) => new Promise((resolve) => {
@@ -436,8 +436,10 @@ const setArticleImageSlot = (element, slug, variant = "wide") => {
   if (element.dataset.imagePosition) {
     element.style.setProperty("--article-image-position", element.dataset.imagePosition);
   }
+  const expectedUrl = getSiteRelativeUrl(`articles/${slug}/images/${variant}.png`);
+  element.style.setProperty("--article-image", `url("${expectedUrl}")`);
   getArticleImageUrl(slug, variant).then((url) => {
-    if (!url || !element.isConnected) return;
+    if (!url || !element.isConnected || url === expectedUrl) return;
     element.style.setProperty("--article-image", `url("${url}")`);
   });
 };
