@@ -4316,6 +4316,7 @@ body:has(.no-js-banner) .archive-static-note {
     aspect-ratio: auto;
     height: 100%;
     min-height: 86px;
+    background-position: var(--article-mobile-image-position, var(--article-image-position, center)), center, center;
   }
 
   .archive-page .edition-row h2 {
