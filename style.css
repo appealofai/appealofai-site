@@ -1049,6 +1049,15 @@ p {
   text-transform: uppercase;
 }
 
+.hero-lead-title {
+  color: var(--paper);
+  font-family: var(--font-serif);
+  font-size: clamp(19px, 1.55vw, 25px);
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.12;
+}
+
 .hero-lead-action {
   display: inline-flex;
   position: relative;
@@ -3092,24 +3101,14 @@ body:has(.no-js-banner) .archive-static-note {
     overflow-x: auto;
     overflow-y: hidden;
     overscroll-behavior-x: contain;
-    scrollbar-width: thin;
-    scrollbar-color: color-mix(in srgb, var(--accent), transparent 44%) transparent;
+    scrollbar-width: none;
     scroll-snap-type: x proximity;
     -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 36px), transparent 100%);
     mask-image: linear-gradient(90deg, #000 calc(100% - 36px), transparent 100%);
   }
 
   .article-aside.is-collapsible .article-toc-list::-webkit-scrollbar {
-    height: 4px;
-  }
-
-  .article-aside.is-collapsible .article-toc-list::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .article-aside.is-collapsible .article-toc-list::-webkit-scrollbar-thumb {
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--accent), transparent 48%);
+    display: none;
   }
 
   .article-toc-toggle {
@@ -3421,9 +3420,11 @@ body:has(.no-js-banner) .archive-static-note {
 .note-box#sources li {
   position: relative;
   display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) 18px;
   gap: 3px;
   min-height: 58px;
-  padding: 10px 16px 10px 0;
+  align-items: center;
+  padding: 10px 14px;
   border: 1px solid color-mix(in srgb, var(--line), transparent 34%);
   border-radius: 10px;
   background: color-mix(in srgb, var(--surface-soft), transparent 20%);
@@ -3459,12 +3460,19 @@ body:has(.no-js-banner) .archive-static-note {
 }
 
 .note-box#sources li a {
+  grid-column: 2;
+  grid-row: 1;
+  display: block;
   min-height: 26px;
-  padding: 0 0 0 52px;
+  padding: 0;
   border: 0;
   border-radius: 0;
   background: transparent;
   box-shadow: none;
+}
+
+.note-box#sources li a::after {
+  display: none;
 }
 
 .note-box#sources li a:hover,
@@ -3476,7 +3484,9 @@ body:has(.no-js-banner) .archive-static-note {
 
 .note-box#sources .source-meta {
   display: block;
-  padding-left: 52px;
+  grid-column: 2;
+  grid-row: 2;
+  padding-left: 0;
   color: var(--quiet);
   font-family: var(--font-sans);
   font-size: 11px;
@@ -3487,9 +3497,10 @@ body:has(.no-js-banner) .archive-static-note {
 }
 
 .note-box#sources li::before {
-  position: absolute;
-  top: 23px;
-  left: 14px;
+  position: static;
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  align-self: center;
   z-index: 1;
   color: var(--accent);
   content: counter(source-list, decimal-leading-zero);
@@ -3497,7 +3508,22 @@ body:has(.no-js-banner) .archive-static-note {
   font-size: 11px;
   font-weight: 900;
   letter-spacing: 0.06em;
-  transform: translateY(-50%);
+  transform: none;
+}
+
+.note-box#sources li::after {
+  display: block;
+  grid-column: 3;
+  grid-row: 1 / span 2;
+  align-self: center;
+  justify-self: end;
+  width: 8px;
+  height: 8px;
+  border-top: 3px solid currentColor;
+  border-right: 3px solid currentColor;
+  color: var(--accent);
+  content: "";
+  transform: rotate(45deg);
 }
 
 .note-box li.is-source-highlight a {
@@ -4692,6 +4718,12 @@ body:has(.no-js-banner) .archive-static-note {
     max-width: 50ch;
     font-size: clamp(16px, 1.1vw, 19px);
     line-height: 1.4;
+  }
+
+  .home-page .hero-lead-copy .hero-lead-title {
+    max-width: 34ch;
+    font-size: clamp(22px, 1.65vw, 28px);
+    line-height: 1.1;
   }
 
   .home-page .hero-lead-action {

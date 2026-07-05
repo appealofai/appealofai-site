@@ -1193,17 +1193,25 @@ if (articleToc) {
 
   const setActiveTocLink = (targetId) => {
     const activeIndex = tocLinks.findIndex((link) => link.getAttribute("href") === `#${targetId}`);
+    let activeLink = null;
     tocLinks.forEach((link) => {
       if (link.getAttribute("href") === `#${targetId}`) {
         link.setAttribute("aria-current", "true");
+        activeLink = link;
       } else {
         link.removeAttribute("aria-current");
       }
       const linkIndex = tocLinks.indexOf(link);
       link.classList.toggle("is-near-active", activeIndex >= 0 && Math.abs(linkIndex - activeIndex) <= 1);
       link.classList.toggle("is-after-active", activeIndex >= 0 && linkIndex > activeIndex);
-      link.classList.toggle("is-compact-preview", activeIndex >= 0 && linkIndex > activeIndex && linkIndex <= activeIndex + 2);
+      link.classList.toggle(
+        "is-compact-preview",
+        activeIndex >= 0 && linkIndex !== activeIndex && linkIndex >= activeIndex - 1 && linkIndex <= activeIndex + 2
+      );
     });
+    if (activeLink && tocList && articleToc.classList.contains("is-collapsible") && !articleToc.classList.contains("is-expanded")) {
+      activeLink.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    }
   };
 
   const updateActiveToc = () => {

@@ -1,4 +1,4 @@
-﻿{
+{
   "updated": "2026-07-03T12:00:00Z",
   "items": [
     {
@@ -86,25 +86,26 @@
       "xPost": "The robot race is getting more interesting when it stops trying so hard to look human. The appeal is not a costume. It is useful bodies, useful hands, better simulation, and machines that can survive ordinary work."
     },
     {
-      "id": "spacex-cursor-grok-build",
+      "id": "coding-agents-infrastructure-stack",
       "status": "published",
       "type": "opinion",
       "date": "2026-07-03",
       "updated": "2026-07-03T12:00:00Z",
       "title": "Coding agents put software inside the infrastructure stack.",
       "tickerTitle": "Coding agents put software inside the infrastructure stack",
-      "summary": "A personal opinion on Cursor, Grok and why coding agents now belong in the infrastructure conversation.",
-      "url": "/articles/spacex-cursor-grok-build/",
+      "summary": "A personal opinion on Cursor, Grok, SpaceX and why coding agents now belong in the infrastructure conversation.",
+      "url": "/articles/coding-agents-infrastructure-stack/",
       "image": "assets/img/social-card.png",
       "topics": [
         "opinion",
         "developer tools",
         "infrastructure"
       ],
-      "tags": ["Cursor", "Grok", "xAI", "coding agents", "developer tools", "OpenAI", "ChatGPT"],
+      "tags": ["SpaceX", "Cursor", "Grok", "xAI", "coding agents", "developer tools", "OpenAI", "ChatGPT"],
       "sources": [
         "https://cursor.com/",
         "https://x.ai/grok",
+        "https://www.spacex.com/",
         "https://arxiv.org/abs/2605.24521"
       ]
     },
@@ -136,15 +137,15 @@
       "xPost": "The appeal of AI now needs a public ledger: power, jobs, data centers, robots, safety, access, and who actually gets the upside. The technology can still be worth it. The bill has to be visible."
     },
     {
-      "id": "the-appeal-of-ai",
+      "id": "appeal-of-ai-without-looking-away",
       "status": "published",
       "type": "opinion",
       "date": "2026-07-03",
       "updated": "2026-07-03T12:00:00Z",
-      "title": "The appeal of AI, with eyes open.",
-      "tickerTitle": "The appeal of AI, with eyes open",
+      "title": "The appeal of AI, without looking away.",
+      "tickerTitle": "The appeal of AI, without looking away",
       "summary": "A personal opening essay for appealofai: useful machine intelligence, public upside and the costs that have to stay visible.",
-      "url": "/articles/the-appeal-of-ai/",
+      "url": "/articles/appeal-of-ai-without-looking-away/",
       "topics": [
         "culture",
         "policy",
@@ -152,7 +153,7 @@
         "public-upside"
       ],
       "tags": ["opening essay", "appealofai", "OpenAI", "ChatGPT", "progress", "public trust"],
-      "xPost": "The appeal of AI is stronger with eyes open: useful tools, public upside, real costs, infrastructure, jobs, access, and the rough parts still in view. That is the starting point for appealofai."
+      "xPost": "The appeal of AI is stronger when it does not look away: useful tools, public upside, real costs, infrastructure, jobs, access, and the rough parts still in view. That is the starting point for appealofai."
     },
     {
       "id": "ai-upside-needs-public-deal",
@@ -219,15 +220,15 @@
       "updated": "2026-07-03T12:00:00Z",
       "title": "Vibe coding is leverage, not a replacement for judgment.",
       "tickerTitle": "Vibe coding works best when the human still knows the craft",
-      "summary": "AI-assisted programming is strongest in expert hands: faster exploration, faster drafts, but still dependent on taste, structure and review.",
+      "summary": "Expert-led AI programming is strongest in practiced hands: faster exploration, faster drafts, but still dependent on taste, structure and review.",
       "url": "/articles/vibe-coding-expertise-leverage/",
       "image": "assets/img/social-card.png",
-      "tags": ["vibe-coding", "software", "craft", "tools", "Cursor", "Claude", "ChatGPT", "OpenAI", "agents"],
+      "tags": ["vibe-coding", "expert-led AI programming", "AI-amplified engineering", "software", "craft", "tools", "Cursor", "Claude", "ChatGPT", "OpenAI", "agents"],
       "sources": [
         "https://arxiv.org/abs/2506.23253",
         "https://arxiv.org/abs/2605.24521"
       ],
-      "xPost": "Vibe coding without engineering judgment is mostly confidence cosplay. Vibe coding with expertise is leverage: faster drafts, faster exploration, and still enough taste to catch the structural mistakes."
+      "xPost": "Vibe coding without engineering judgment is mostly confidence cosplay. The serious version is expert-led AI programming: faster drafts, faster exploration, and still enough taste to catch the structural mistakes."
     }
   ]
 }

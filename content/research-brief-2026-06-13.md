@@ -5,7 +5,7 @@ Editorial rule for this issue: do not rewrite existing article text. Move stale 
 ## Current issue spine
 
 - Lead frame: the public ledger for AI. The strongest current angle is not "AI good" or "AI bad"; it is whether compute, power, jobs, robots and platform control produce visible public upside.
-- Keep as current: `ai-upside-ledger`, `ai-compute-bill-public-upside`, `the-appeal-of-ai`, `grok-build-terminal-agent`, `spacex-orbital-ai-compute`, `ai-slop-social-text-fatigue`.
+- Keep as current: `ai-upside-ledger`, `ai-compute-bill-public-upside`, `appeal-of-ai-without-looking-away`, `grok-build-terminal-agent`, `spacex-orbital-ai-compute`, `ai-slop-social-text-fatigue`.
 - Keep in archive/search: older culture notes and narrowly timed campaign notes, including the Messi/OpenAI item already moved to `content/archive/`.
 
 ## Publishable topics after source check
