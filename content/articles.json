@@ -51,8 +51,8 @@
       ],
       "tags": ["tokens", "data-centers", "energy", "pricing", "infrastructure", "OpenAI", "ChatGPT", "API", "inference"],
       "sources": [
-        "https://www.ft.com/content/1d37cc08-e0aa-45a4-a45d-4ad282529314",
-        "https://www.businessinsider.com/disney-ai-push-increase-velocity-tech-employees-tokenmaxxing-josh-damaro-2026-6",
+        "https://www.itpro.com/technology/artificial-intelligence/what-were-seeing-right-now-is-just-rapid-escalation-in-ai-token-spend-accenture-tells-staff-to-stop-using-ai-for-unnecessary-tasks-amid-surging-costs",
+        "https://developers.openai.com/api/docs/pricing",
         "https://www.tomshardware.com/tech-industry/artificial-intelligence/ai-costs-spike-as-subscriptions-hit-pricing-wall-firms-turn-towards-chinese-llms-open-source-models-to-extend-budget",
         "https://www.theguardian.com/us-news/2026/jun/19/datacenters-us-clean-energy-growth-climate",
         "https://arxiv.org/abs/2606.05420",
@@ -79,7 +79,7 @@
       "tags": ["robots", "genesis-ai", "nvidia", "humanoids", "infrastructure", "robotics", "embodied-ai"],
       "sources": [
         "https://www.theverge.com/ai-artificial-intelligence/951283/genesis-ai-humanoid-robot-eno",
-        "https://www.businessinsider.com/genesis-ai-unveils-robot-with-no-head-or-legs-2026-6",
+        "https://www.nvidia.com/en-us/learn/physical-ai/what-is-isaac-gr00t/",
         "https://arxiv.org/abs/2503.14734",
         "https://arxiv.org/abs/2606.03551"
       ],
@@ -91,9 +91,9 @@
       "type": "opinion",
       "date": "2026-07-03",
       "updated": "2026-07-03T12:00:00Z",
-      "title": "SpaceX buying Cursor puts coding inside the infrastructure stack.",
-      "tickerTitle": "SpaceX buying Cursor puts Grok inside the coding race",
-      "summary": "A personal opinion on the reported SpaceX-Cursor deal, Grok and why coding agents now belong in the infrastructure conversation.",
+      "title": "Coding agents put software inside the infrastructure stack.",
+      "tickerTitle": "Coding agents put software inside the infrastructure stack",
+      "summary": "A personal opinion on Cursor, Grok and why coding agents now belong in the infrastructure conversation.",
       "url": "/articles/spacex-cursor-grok-build/",
       "image": "assets/img/social-card.png",
       "topics": [
@@ -101,10 +101,11 @@
         "developer tools",
         "infrastructure"
       ],
-      "tags": ["SpaceX", "Cursor", "Grok", "xAI", "coding agents", "developer tools", "OpenAI", "ChatGPT"],
+      "tags": ["Cursor", "Grok", "xAI", "coding agents", "developer tools", "OpenAI", "ChatGPT"],
       "sources": [
-        "https://www.businessinsider.com/spacex-confirms-cursor-acquisition-60-billion-ai-coding-startup-2026-6",
-        "https://www.businessinsider.com/cursor-ceo-michael-truell-spacex-elon-musk-anthropic-2026-6"
+        "https://cursor.com/",
+        "https://x.ai/grok",
+        "https://arxiv.org/abs/2605.24521"
       ]
     },
     {
@@ -128,7 +129,7 @@
       "sources": [
         "https://www.iea.org/reports/energy-and-ai",
         "https://www.anthropic.com/economic-index",
-        "https://www.businessinsider.com/anthropic-ceo-dario-amodei-ai-related-job-displacement-policy-plan-2026-6",
+        "https://www.anthropic.com/economic-futures",
         "https://about.fb.com/news/",
         "https://www.figure.ai/news/helix"
       ],
@@ -166,8 +167,9 @@
       "image": "assets/img/social-card.png",
       "tags": ["jobs", "policy", "culture", "public-upside", "OpenAI", "ChatGPT", "access", "labor"],
       "sources": [
-        "https://darioamodei.com/the-adolescence-of-technology",
-        "https://www.anthropic.com/economic-index"
+        "https://darioamodei.com/essay/machines-of-loving-grace",
+        "https://www.anthropic.com/economic-index",
+        "https://www.pewresearch.org/internet/2025/04/03/how-the-us-public-and-ai-experts-view-artificial-intelligence/"
       ],
       "xPost": "The appeal of AI gets weaker if the upside feels privately captured and publicly imposed. The public deal matters: access, education, worker mobility, provenance, creator rights, and useful transparency."
     },
@@ -184,9 +186,9 @@
       "image": "assets/img/social-card.png",
       "tags": ["culture", "social-media", "ai-slop", "writing", "ChatGPT", "OpenAI", "generic text"],
       "sources": [
-        "https://en.wikipedia.org/wiki/AI_slop",
-        "https://www.fastcompany.com/91330702/what-is-ai-slop",
-        "https://www.theguardian.com/technology/article/2024/aug/20/techscape-ai-generated-art-slop-facebook-shrimp-jesus"
+        "https://www.theverge.com/news/844640/merriam-webster-ai-slop-word-of-the-year-2025",
+        "https://www.theguardian.com/technology/article/2024/may/19/spam-junk-slop-the-latest-wave-of-ai-behind-the-zombie-internet",
+        "https://arxiv.org/abs/2508.01042"
       ],
       "xPost": "AI slop is exhausting because it has the shape of participation without the weight of having participated. The better line is taste: use the tool, but leave a fingerprint."
     },
@@ -222,8 +224,8 @@
       "image": "assets/img/social-card.png",
       "tags": ["vibe-coding", "software", "craft", "tools", "Cursor", "Claude", "ChatGPT", "OpenAI", "agents"],
       "sources": [
-        "https://en.wikipedia.org/wiki/Vibe_coding",
-        "https://github.blog/ai-and-ml/generative-ai/vibe-coding/"
+        "https://arxiv.org/abs/2506.23253",
+        "https://arxiv.org/abs/2605.24521"
       ],
       "xPost": "Vibe coding without engineering judgment is mostly confidence cosplay. Vibe coding with expertise is leverage: faster drafts, faster exploration, and still enough taste to catch the structural mistakes."
     }

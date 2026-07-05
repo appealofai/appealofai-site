@@ -9,8 +9,8 @@ Sources for: Apple Intelligence still has a naming problem.
 - Axios: Apple's Siri AI is both cool and 2 years too late
   https://www.axios.com/2026/06/09/apple-siri-ai-agents-wwdc
 
-- Business Insider: What smart people in tech are saying about Apple's AI announcements
-  https://www.businessinsider.com/what-smart-people-are-saying-about-apple-ai-announcements-wwdc-2026-6
+- Apple Machine Learning Research
+  https://machinelearning.apple.com/
 
 Editorial caution:
 Separate official WWDC announcements from commentary about Siri quality,

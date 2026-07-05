@@ -6,13 +6,10 @@ Sources for: AI data centers in orbit sound absurd until the compute hunger look
 - Starlink
   https://www.starlink.com/
 
-- Business Insider: Elon Musk shared a fresh look at the AI data centers SpaceX wants to send into orbit
-  https://www.businessinsider.com/elon-musk-ai-data-centers-spacex-will-send-into-space-2026-6
-
 - arXiv: Orbital Data Centers: Spacecraft Constraints and Economic Viability
   https://arxiv.org/abs/2604.27197
 
 Editorial caution:
-Use official SpaceX and Starlink pages for baseline context. Attribute claims
-about future AI satellites, data centers or timelines to the reporting source
-that published them.
+Use official SpaceX and Starlink pages for baseline context. Treat future AI
+satellite or orbital data-center timelines as speculative unless backed by
+primary documents.

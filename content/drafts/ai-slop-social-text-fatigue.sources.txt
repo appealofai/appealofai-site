@@ -4,6 +4,6 @@ Source checklist:
 - Frame examples as typical patterns, not direct quotes from specific people.
 
 Sources:
-- https://en.wikipedia.org/wiki/AI_slop
-- https://www.fastcompany.com/91330702/what-is-ai-slop
-- https://www.theguardian.com/technology/article/2024/aug/20/techscape-ai-generated-art-slop-facebook-shrimp-jesus
+- https://www.theverge.com/news/844640/merriam-webster-ai-slop-word-of-the-year-2025
+- https://www.theguardian.com/technology/article/2024/may/19/spam-junk-slop-the-latest-wave-of-ai-behind-the-zombie-internet
+- https://arxiv.org/abs/2508.01042

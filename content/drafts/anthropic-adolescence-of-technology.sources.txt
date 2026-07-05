@@ -4,5 +4,5 @@ Source checklist:
 - Treat this as a personal interpretation, not a news report.
 
 Sources:
-- https://darioamodei.com/the-adolescence-of-technology
+- https://darioamodei.com/essay/machines-of-loving-grace
 - https://www.anthropic.com/news
