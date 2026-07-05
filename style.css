@@ -3089,9 +3089,27 @@ body:has(.no-js-banner) .archive-static-note {
     flex-wrap: nowrap;
     gap: 14px;
     align-items: center;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--accent), transparent 44%) transparent;
+    scroll-snap-type: x proximity;
     -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 36px), transparent 100%);
     mask-image: linear-gradient(90deg, #000 calc(100% - 36px), transparent 100%);
+  }
+
+  .article-aside.is-collapsible .article-toc-list::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .article-aside.is-collapsible .article-toc-list::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .article-aside.is-collapsible .article-toc-list::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--accent), transparent 48%);
   }
 
   .article-toc-toggle {
@@ -3107,6 +3125,7 @@ body:has(.no-js-banner) .archive-static-note {
     min-width: 0;
     margin-right: 0 !important;
     padding-inline: 4px;
+    scroll-snap-align: start;
   }
 
   .article-aside a::after {
@@ -3121,7 +3140,7 @@ body:has(.no-js-banner) .archive-static-note {
   .article-aside.is-collapsible:not(.is-expanded) a.is-compact-preview {
     display: inline-flex;
     flex: 0 0 auto;
-    max-width: max-content;
+    max-width: min(62vw, max-content);
     justify-content: center;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -3402,7 +3421,12 @@ body:has(.no-js-banner) .archive-static-note {
 .note-box#sources li {
   position: relative;
   display: grid;
-  gap: 7px;
+  gap: 3px;
+  min-height: 58px;
+  padding: 10px 16px 10px 0;
+  border: 1px solid color-mix(in srgb, var(--line), transparent 34%);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--surface-soft), transparent 20%);
   color: var(--quiet);
   counter-increment: source-list;
   font-family: var(--font-sans);
@@ -3435,7 +3459,19 @@ body:has(.no-js-banner) .archive-static-note {
 }
 
 .note-box#sources li a {
-  padding-left: 52px;
+  min-height: 26px;
+  padding: 0 0 0 52px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.note-box#sources li a:hover,
+.note-box#sources li a:focus-visible {
+  background: transparent;
+  color: var(--accent);
+  transform: none;
 }
 
 .note-box#sources .source-meta {
@@ -3467,6 +3503,17 @@ body:has(.no-js-banner) .archive-static-note {
 .note-box li.is-source-highlight a {
   border-color: color-mix(in srgb, var(--accent), transparent 28%);
   background: color-mix(in srgb, var(--accent), transparent 84%);
+  color: var(--text);
+}
+
+.note-box#sources li.is-source-highlight {
+  border-color: color-mix(in srgb, var(--accent), transparent 28%);
+  background: color-mix(in srgb, var(--accent), transparent 84%);
+}
+
+.note-box#sources li.is-source-highlight a {
+  border-color: transparent;
+  background: transparent;
   color: var(--text);
 }
 
