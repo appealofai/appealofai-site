@@ -1323,7 +1323,7 @@ const createReaderControls = () => {
     const isVisible = window.scrollY > Math.max(360, window.innerHeight * 0.45);
     const isNearBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 120;
     const footer = document.querySelector(".site-footer");
-    const footerIsClose = footer ? footer.getBoundingClientRect().top < window.innerHeight - 8 : false;
+    const footerIsClose = footer ? footer.getBoundingClientRect().top < window.innerHeight - 120 : false;
     controls.classList.toggle("is-visible", isVisible);
     controls.classList.toggle("is-footer-close", footerIsClose);
     previousButton.disabled = activeIssueIndex <= 0;
