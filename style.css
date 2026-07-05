@@ -4174,6 +4174,7 @@ body:has(.no-js-banner) .archive-static-note {
 
 @media (max-width: 720px) {
   .issue-strip {
+    gap: 2px 14px;
     justify-content: center;
     text-align: center;
   }
@@ -4184,6 +4185,10 @@ body:has(.no-js-banner) .archive-static-note {
 
   .issue-strip span:nth-child(2) {
     display: none;
+  }
+
+  .issue-strip span:first-child {
+    white-space: nowrap;
   }
 }
 
@@ -4751,7 +4756,7 @@ body:has(.no-js-banner) .archive-static-note {
     align-content: start;
     margin: 0;
     padding: clamp(12px, 1.6vw, 18px) 0 0;
-    border-top: 1px solid color-mix(in srgb, var(--line), transparent 42%);
+    border-top: 0;
     border-bottom: 0;
   }
 
