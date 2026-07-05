@@ -14,13 +14,13 @@
     <meta property="og:title" content="Notes | appealofai">
     <meta property="og:description" content="Short reports, watchlists and field notes from appealofai.">
     <meta property="og:url" content="https://appealofai.sol.site/notes.html">
-    <meta property="og:image" content="https://appealofai.sol.site/assets/img/social-card.png?v=2026-06-21-2">
+    <meta property="og:image" content="https://appealofai.sol.site/assets/img/social-card.png?v=2026-07-05-1">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Notes | appealofai">
     <meta name="twitter:description" content="Short reports, watchlists and field notes from appealofai.">
-    <meta name="twitter:image" content="https://appealofai.sol.site/assets/img/social-card.png?v=2026-06-21-2">
+    <meta name="twitter:image" content="https://appealofai.sol.site/assets/img/social-card.png?v=2026-07-05-1">
     <link rel="preload" as="image" href="articles/ai-bottleneck-public/images/square.png" fetchpriority="high">
     <link rel="preload" as="image" href="articles/ai-meter-token-power-costs/images/square.png">
     <link rel="stylesheet" href="style.css">
@@ -64,6 +64,7 @@
           background: linear-gradient(90deg, transparent, var(--bg) 72%);
           content: "";
         }
+        .archive-disclosure,
         .archive-tools { display: none; }
         .archive-static-note { display: block; }
         .archive-pagination { display: none !important; }
@@ -101,21 +102,27 @@
           <p class="section-label">All notes</p>
           <h2>Search the archive.</h2>
         </div>
-        <div class="archive-tools" aria-label="Article filters">
-          <label class="archive-search">
-            <span>Find</span>
-            <input type="search" data-archive-search placeholder="Search notes, topics...">
-          </label>
-          <div class="archive-refine-row" aria-label="Sort notes">
-            <span>Order</span>
-            <div class="archive-sort-toggle">
-              <button type="button" data-archive-order="newest" aria-pressed="true">Newest</button>
-              <button type="button" data-archive-order="oldest" aria-pressed="false">Oldest</button>
+        <details class="archive-disclosure">
+          <summary>
+            <span>Find and sort</span>
+            <small data-archive-summary>Showing newest notes</small>
+          </summary>
+          <div class="archive-tools" aria-label="Article filters">
+            <label class="archive-search">
+              <span>Find</span>
+              <input type="search" data-archive-search placeholder="Search notes, topics...">
+            </label>
+            <div class="archive-refine-row" aria-label="Sort notes">
+              <span>Order</span>
+              <div class="archive-sort-toggle">
+                <button type="button" data-archive-order="newest" aria-pressed="true">Newest</button>
+                <button type="button" data-archive-order="oldest" aria-pressed="false">Oldest</button>
+              </div>
             </div>
+            <p class="archive-count" data-archive-count aria-live="polite">Showing all notes.</p>
           </div>
-          <p class="archive-count" data-archive-count aria-live="polite">Showing all notes.</p>
-        </div>
-        <a class="edition-row" href="/articles/ai-bottleneck-public/" data-archive-item data-date="2026-07-03" data-date-label="July 3, 2026" data-topics="infrastructure costs jobs markets public-upside capacity compute tokens openai chatgpt anthropic meta google nvidia data-centers market-concentration">
+        </details>
+        <a class="edition-row" href="/articles/ai-bottleneck-public/" style="--article-image: url('/articles/ai-bottleneck-public/images/square.png'); --article-image-position: center;" data-archive-item data-date="2026-07-03" data-date-label="July 3, 2026" data-topics="infrastructure costs jobs markets public-upside capacity compute tokens openai chatgpt anthropic meta google nvidia data-centers market-concentration">
           <span>July 3, 2026 &middot; Opinion &middot; AI Capacity</span>
           <div>
             <h2>The AI bottleneck is becoming public.</h2>
@@ -123,7 +130,7 @@
             <span class="card-cta">Read lead</span>
           </div>
         </a>
-        <a class="edition-row" href="/articles/the-appeal-of-ai/" data-archive-item data-date="2026-07-03" data-date-label="July 3, 2026" data-topics="culture policy infrastructure public-upside opening essay appeal progress chatgpt openai trust society">
+        <a class="edition-row" href="/articles/the-appeal-of-ai/" style="--article-image: url('/articles/the-appeal-of-ai/images/square.png'); --article-image-position: center;" data-archive-item data-date="2026-07-03" data-date-label="July 3, 2026" data-topics="culture policy infrastructure public-upside opening essay appeal progress chatgpt openai trust society">
           <span>July 3, 2026 &middot; Opinion &middot; Start Here</span>
           <div>
             <h2>The appeal of AI, with eyes open.</h2>
@@ -131,7 +138,7 @@
             <span class="card-cta">Read lead</span>
           </div>
         </a>
-        <a class="edition-row" href="/articles/ai-meter-token-power-costs/" data-archive-item data-date="2026-07-03" data-date-label="July 3, 2026" data-topics="infrastructure costs models energy tokens subscriptions chatgpt openai api pricing compute inference meter nvidia data-centers">
+        <a class="edition-row" href="/articles/ai-meter-token-power-costs/" style="--article-image: url('/articles/ai-meter-token-power-costs/images/square.png'); --article-image-position: center;" data-archive-item data-date="2026-07-03" data-date-label="July 3, 2026" data-topics="infrastructure costs models energy tokens subscriptions chatgpt openai api pricing compute inference meter nvidia data-centers">
           <span>July 3, 2026 &middot; Opinion &middot; AI Costs</span>
           <div>
             <h2>The AI meter is becoming part of the product.</h2>
@@ -139,7 +146,7 @@
             <span class="card-cta">Read lead</span>
           </div>
         </a>
-        <a class="edition-row" href="/articles/genesis-ai-robots-practical-body/" data-archive-item data-date="2026-07-03" data-date-label="July 3, 2026" data-topics="robots infrastructure models humanoid genesis-ai nvidia robotics embodied-ai practical-bodies eno">
+        <a class="edition-row" href="/articles/genesis-ai-robots-practical-body/" style="--article-image: url('/articles/genesis-ai-robots-practical-body/images/square.png'); --article-image-position: center;" data-archive-item data-date="2026-07-03" data-date-label="July 3, 2026" data-topics="robots infrastructure models humanoid genesis-ai nvidia robotics embodied-ai practical-bodies eno">
           <span>July 3, 2026 &middot; Opinion &middot; Robotics</span>
           <div>
             <h2>Robots are getting useful before they get human.</h2>
@@ -147,7 +154,7 @@
             <span class="card-cta">Read lead</span>
           </div>
         </a>
-        <a class="edition-row" href="/articles/spacex-cursor-grok-build/" data-archive-item data-date="2026-07-03" data-date-label="July 3, 2026" data-topics="tools infrastructure culture spacex cursor grok xai openai chatgpt coding agents developer-tools software">
+        <a class="edition-row" href="/articles/spacex-cursor-grok-build/" style="--article-image: url('/articles/spacex-cursor-grok-build/images/square.png'); --article-image-position: center;" data-archive-item data-date="2026-07-03" data-date-label="July 3, 2026" data-topics="tools infrastructure culture spacex cursor grok xai openai chatgpt coding agents developer-tools software">
           <span>July 3, 2026 &middot; Opinion &middot; Developer Tools</span>
           <div>
             <h2>SpaceX buying Cursor puts coding inside the infrastructure stack.</h2>
@@ -155,7 +162,7 @@
             <span class="card-cta">Read lead</span>
           </div>
         </a>
-        <a class="edition-row" href="/articles/ai-upside-ledger/" data-archive-item data-date="2026-07-03" data-date-label="July 3, 2026" data-topics="infrastructure policy robots jobs public-upside costs power data-centers labor ubi anthropic openai chatgpt">
+        <a class="edition-row" href="/articles/ai-upside-ledger/" style="--article-image: url('/articles/ai-upside-ledger/images/square.png'); --article-image-position: center;" data-archive-item data-date="2026-07-03" data-date-label="July 3, 2026" data-topics="infrastructure policy robots jobs public-upside costs power data-centers labor ubi anthropic openai chatgpt">
           <span>July 3, 2026 &middot; Opinion &middot; Public Upside</span>
           <div>
             <h2>The AI upside needs a ledger now.</h2>
@@ -163,7 +170,7 @@
             <span class="card-cta">Read opinion</span>
           </div>
         </a>
-        <a class="edition-row" href="/articles/ai-upside-needs-public-deal/" data-archive-item data-date="2026-07-03" data-date-label="July 3, 2026" data-topics="culture policy public-upside ownership access labor openai chatgpt distribution trust">
+        <a class="edition-row" href="/articles/ai-upside-needs-public-deal/" style="--article-image: url('/articles/ai-upside-needs-public-deal/images/square.png'); --article-image-position: center;" data-archive-item data-date="2026-07-03" data-date-label="July 3, 2026" data-topics="culture policy public-upside ownership access labor openai chatgpt distribution trust">
           <span>July 3, 2026 &middot; Opinion &middot; Public Upside</span>
           <div>
             <h2>The AI upside needs a public deal.</h2>
@@ -171,7 +178,7 @@
             <span class="card-cta">Read opinion</span>
           </div>
         </a>
-        <a class="edition-row" href="/articles/ai-slop-social-text-fatigue/" data-archive-item data-date="2026-07-03" data-date-label="July 3, 2026" data-topics="culture ai-slop slop chatgpt openai generic-text writing social-media taste language fatigue">
+        <a class="edition-row" href="/articles/ai-slop-social-text-fatigue/" style="--article-image: url('/articles/ai-slop-social-text-fatigue/images/square.png'); --article-image-position: center;" data-archive-item data-date="2026-07-03" data-date-label="July 3, 2026" data-topics="culture ai-slop slop chatgpt openai generic-text writing social-media taste language fatigue">
           <span>July 3, 2026 &middot; Opinion &middot; Culture</span>
           <div>
             <h2>AI slop is exhausting the public internet.</h2>
@@ -179,7 +186,7 @@
             <span class="card-cta">Read note</span>
           </div>
         </a>
-        <a class="edition-row" href="/articles/ai-infrastructure-not-bubble/" data-archive-item data-date="2026-07-03" data-date-label="July 3, 2026" data-topics="infrastructure culture data-centers energy chips nvidia openai compute bubble power cooling grids">
+        <a class="edition-row" href="/articles/ai-infrastructure-not-bubble/" style="--article-image: url('/articles/ai-infrastructure-not-bubble/images/square.png'); --article-image-position: center;" data-archive-item data-date="2026-07-03" data-date-label="July 3, 2026" data-topics="infrastructure culture data-centers energy chips nvidia openai compute bubble power cooling grids">
           <span>July 3, 2026 &middot; Opinion &middot; Infrastructure</span>
           <div>
             <h2>The AI bubble question is really an infrastructure question.</h2>
@@ -187,7 +194,7 @@
             <span class="card-cta">Read article</span>
           </div>
         </a>
-        <a class="edition-row" href="/articles/vibe-coding-expertise-leverage/" data-archive-item data-date="2026-07-03" data-date-label="July 3, 2026" data-topics="tools culture vibe-coding cursor claude chatgpt openai coding agents developer-tools review prompts software">
+        <a class="edition-row" href="/articles/vibe-coding-expertise-leverage/" style="--article-image: url('/articles/vibe-coding-expertise-leverage/images/square.png'); --article-image-position: center;" data-archive-item data-date="2026-07-03" data-date-label="July 3, 2026" data-topics="tools culture vibe-coding cursor claude chatgpt openai coding agents developer-tools review prompts software">
           <span>July 3, 2026 &middot; Opinion &middot; Craft</span>
           <div>
             <h2>Vibe coding is leverage, not a replacement for judgment.</h2>
@@ -196,11 +203,10 @@
           </div>
         </a>
         <p class="archive-empty" data-archive-empty hidden>No notes match that yet. Try a shorter search.</p>
-        <nav class="archive-pagination" data-archive-pagination hidden aria-label="Notes pages">
-          <button type="button" data-archive-prev>Previous</button>
-          <span data-archive-page-status>Page 1 of 1</span>
-          <button type="button" data-archive-next>Next</button>
-        </nav>
+        <div class="archive-pagination" data-archive-pagination hidden>
+          <button type="button" data-archive-more>Show more notes</button>
+          <span data-archive-page-status>Showing 5</span>
+        </div>
       </section>
 
     </main>

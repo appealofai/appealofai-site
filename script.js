@@ -19,9 +19,9 @@ const archiveOrderButtons = Array.from(document.querySelectorAll("[data-archive-
 const archiveCount = document.querySelector("[data-archive-count]");
 const archiveEmpty = document.querySelector("[data-archive-empty]");
 const archivePagination = document.querySelector("[data-archive-pagination]");
-const archivePrev = document.querySelector("[data-archive-prev]");
-const archiveNext = document.querySelector("[data-archive-next]");
+const archiveMore = document.querySelector("[data-archive-more]");
 const archivePageStatus = document.querySelector("[data-archive-page-status]");
+const archiveSummary = document.querySelector("[data-archive-summary]");
 let issueSections = [];
 let activeIssueIndex = 0;
 
@@ -431,8 +431,26 @@ const setArticleImageSlot = (element, slug, variant = "wide") => {
   }
   const expectedUrl = getSiteRelativeUrl(`articles/${slug}/images/${variant}.png`);
   element.style.setProperty("--article-image", `url("${expectedUrl}")`);
+  if (element.classList.contains("image-brief")) {
+    let image = element.querySelector(".image-brief-img");
+    if (!image) {
+      image = document.createElement("img");
+      image.className = "image-brief-img";
+      image.alt = element.querySelector("p")?.textContent?.trim() || "Article image";
+      image.loading = "eager";
+      image.decoding = "async";
+      element.prepend(image);
+    }
+    element.classList.add("has-real-image");
+    image.src = expectedUrl;
+  }
   getArticleImageUrl(slug, variant).then((url) => {
-    if (!url || !element.isConnected || url === expectedUrl) return;
+    if (!url || !element.isConnected) return;
+    const image = element.classList.contains("image-brief")
+      ? element.querySelector(".image-brief-img")
+      : null;
+    if (image) image.src = url;
+    if (url === expectedUrl) return;
     element.style.setProperty("--article-image", `url("${url}")`);
   });
 };
@@ -837,7 +855,7 @@ if (archiveItems.length) {
   const archiveList = archiveItems[0].parentElement;
   if (archiveList) archiveList.dataset.archiveList = "true";
   const archivePageSize = 5;
-  let archivePage = 1;
+  let archiveVisibleLimit = archivePageSize;
   let archiveSort = "newest";
 
   const getArchiveTimestamp = (item) => {
@@ -856,15 +874,13 @@ if (archiveItems.length) {
     return sortedItems;
   };
 
-  const formatArchiveCount = (visibleCount, shownCount, query, pageStart) => {
+  const formatArchiveCount = (visibleCount, shownCount, query) => {
     if (!visibleCount) return "No notes found.";
     const orderLabel = archiveSort === "oldest" ? "oldest first" : "newest first";
-    const rangeStart = pageStart + 1;
-    const rangeEnd = pageStart + shownCount;
     if (query) {
-      return `Showing ${rangeStart}-${rangeEnd} of ${visibleCount} ${visibleCount === 1 ? "match" : "matches"} for "${query}", ${orderLabel}.`;
+      return `Showing ${shownCount} of ${visibleCount} ${visibleCount === 1 ? "match" : "matches"} for "${query}", ${orderLabel}.`;
     }
-    return `Showing ${rangeStart}-${rangeEnd} of ${visibleCount} notes, ${orderLabel}.`;
+    return `Showing ${shownCount} of ${visibleCount} notes, ${orderLabel}.`;
   };
 
   const normalizeArchiveSearchText = (value) => value
@@ -897,10 +913,8 @@ if (archiveItems.length) {
       if (matchesSearch) matchingItems.push(item);
     });
 
-    const pageCount = Math.max(1, Math.ceil(matchingItems.length / archivePageSize));
-    archivePage = Math.min(Math.max(archivePage, 1), pageCount);
-    const pageStart = (archivePage - 1) * archivePageSize;
-    const shownItems = matchingItems.slice(pageStart, pageStart + archivePageSize);
+    archiveVisibleLimit = Math.min(Math.max(archiveVisibleLimit, archivePageSize), Math.max(archivePageSize, matchingItems.length));
+    const shownItems = matchingItems.slice(0, archiveVisibleLimit);
 
     archiveItems.forEach((item) => {
       const isVisible = shownItems.includes(item);
@@ -914,17 +928,23 @@ if (archiveItems.length) {
 
     if (archiveEmpty) archiveEmpty.hidden = matchingItems.length > 0;
     if (archivePagination) {
-      const hasPages = matchingItems.length > archivePageSize;
-      archivePagination.hidden = !hasPages;
-      if (archivePrev) archivePrev.disabled = archivePage <= 1;
-      if (archiveNext) archiveNext.disabled = archivePage >= pageCount;
-      if (archivePageStatus) archivePageStatus.textContent = `Page ${archivePage} of ${pageCount}`;
+      const hasMore = shownItems.length < matchingItems.length;
+      archivePagination.hidden = !matchingItems.length || !hasMore;
+      if (archiveMore) archiveMore.disabled = !hasMore;
+      if (archivePageStatus) archivePageStatus.textContent = hasMore
+        ? `${matchingItems.length - shownItems.length} more`
+        : "All shown";
     }
     if (archiveCount) {
       archiveCount.classList.remove("is-changing");
       void archiveCount.offsetWidth;
-      archiveCount.textContent = formatArchiveCount(matchingItems.length, visibleCount, query, pageStart);
+      archiveCount.textContent = formatArchiveCount(matchingItems.length, visibleCount, query);
       archiveCount.classList.add("is-changing");
+    }
+    if (archiveSummary) {
+      archiveSummary.textContent = query
+        ? `${matchingItems.length} ${matchingItems.length === 1 ? "match" : "matches"}`
+        : `${matchingItems.length} notes, ${archiveSort === "oldest" ? "oldest first" : "newest first"}`;
     }
 
     requestAnimationFrame(() => {
@@ -936,23 +956,19 @@ if (archiveItems.length) {
   };
 
   archiveSearch?.addEventListener("input", () => {
-    archivePage = 1;
+    archiveVisibleLimit = archivePageSize;
     updateArchive();
   });
   archiveOrderButtons.forEach((button) => {
     button.addEventListener("click", () => {
       archiveSort = button.dataset.archiveOrder || "newest";
-      archivePage = 1;
+      archiveVisibleLimit = archivePageSize;
       archiveOrderButtons.forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
       updateArchive();
     });
   });
-  archivePrev?.addEventListener("click", () => {
-    archivePage -= 1;
-    updateArchive();
-  });
-  archiveNext?.addEventListener("click", () => {
-    archivePage += 1;
+  archiveMore?.addEventListener("click", () => {
+    archiveVisibleLimit += archivePageSize;
     updateArchive();
   });
 
@@ -1143,18 +1159,48 @@ if (articleToc) {
   const tocTargets = tocLinks
     .map((link) => document.querySelector(link.getAttribute("href")))
     .filter(Boolean);
+  let tocList = null;
+  let tocToggle = null;
+
+  if (tocLinks.length) {
+    articleToc.classList.add("is-enhanced");
+    tocList = document.createElement("div");
+    tocList.className = "article-toc-list";
+    articleToc.insertBefore(tocList, tocLinks[0]);
+    tocLinks.forEach((link) => tocList.appendChild(link));
+  }
+
+  if (tocLinks.length > 3) {
+    articleToc.classList.add("is-collapsible");
+    tocToggle = document.createElement("button");
+    tocToggle.type = "button";
+    tocToggle.className = "article-toc-toggle";
+    tocToggle.setAttribute("aria-expanded", "false");
+    tocToggle.textContent = "Sections";
+    articleToc.insertBefore(tocToggle, tocList);
+
+    tocToggle.addEventListener("click", () => {
+      const isExpanded = articleToc.classList.toggle("is-expanded");
+      tocToggle.setAttribute("aria-expanded", String(isExpanded));
+    });
+  }
 
   if (!issueSections.length && tocTargets.length) {
     issueSections = tocTargets;
   }
 
   const setActiveTocLink = (targetId) => {
+    const activeIndex = tocLinks.findIndex((link) => link.getAttribute("href") === `#${targetId}`);
     tocLinks.forEach((link) => {
       if (link.getAttribute("href") === `#${targetId}`) {
         link.setAttribute("aria-current", "true");
       } else {
         link.removeAttribute("aria-current");
       }
+      const linkIndex = tocLinks.indexOf(link);
+      link.classList.toggle("is-near-active", activeIndex >= 0 && Math.abs(linkIndex - activeIndex) <= 1);
+      link.classList.toggle("is-after-active", activeIndex >= 0 && linkIndex > activeIndex);
+      link.classList.toggle("is-compact-preview", activeIndex >= 0 && linkIndex > activeIndex && linkIndex <= activeIndex + 2);
     });
   };
 
@@ -1184,6 +1230,10 @@ if (articleToc) {
       event.preventDefault();
       scrollToElement(target, { includeArticleToc: true, extraOffset: 8 });
       setActiveTocLink(target.id);
+      if (articleToc.classList.contains("is-expanded")) {
+        articleToc.classList.remove("is-expanded");
+        tocToggle?.setAttribute("aria-expanded", "false");
+      }
     });
   });
 
@@ -1272,7 +1322,10 @@ const createReaderControls = () => {
   const updateControls = () => {
     const isVisible = window.scrollY > Math.max(360, window.innerHeight * 0.45);
     const isNearBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 120;
+    const footer = document.querySelector(".site-footer");
+    const footerIsClose = footer ? footer.getBoundingClientRect().top < window.innerHeight - 8 : false;
     controls.classList.toggle("is-visible", isVisible);
+    controls.classList.toggle("is-footer-close", footerIsClose);
     previousButton.disabled = activeIssueIndex <= 0;
     nextButton.disabled = !issueSections.length || activeIssueIndex >= issueSections.length - 1;
     bottomButton.disabled = isNearBottom;
