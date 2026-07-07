@@ -1,15 +1,15 @@
 {
-  "updated": "2026-07-03T12:00:00Z",
+  "updated": "2026-07-06T12:00:00Z",
   "items": [
     {
       "id": "ai-bottleneck-public",
       "status": "published",
       "type": "opinion",
-      "date": "2026-07-03",
-      "updated": "2026-07-03T12:00:00Z",
+      "date": "2026-07-06",
+      "updated": "2026-07-06T12:00:00Z",
       "title": "The AI bottleneck is becoming public.",
       "tickerTitle": "AI's bottleneck is becoming public",
-      "summary": "A personal opinion on AI capacity, token prices, data centers, job anxiety and why the next phase has to explain the bill.",
+      "summary": "A personal opinion on AI capacity, token prices, data centers, job anxiety and why the next phase now has to explain power, land, capital and useful capacity.",
       "url": "/articles/ai-bottleneck-public/",
       "image": "assets/img/social-card.png",
       "topics": [
@@ -26,7 +26,8 @@
         "OpenAI",
         "ChatGPT",
         "Anthropic",
-        "NVIDIA"
+        "NVIDIA",
+        "TeraWulf"
       ],
       "priority": 98,
       "readMinutes": 8,

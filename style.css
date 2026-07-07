@@ -1055,7 +1055,7 @@ p {
   font-size: clamp(19px, 1.55vw, 25px);
   font-weight: 700;
   letter-spacing: 0;
-  line-height: 1.12;
+  line-height: 1.18;
 }
 
 .hero-lead-action {
@@ -1313,7 +1313,7 @@ p {
   gap: clamp(12px, 1.8vw, 18px);
   margin-bottom: clamp(8px, 1.6vw, 18px);
   padding: clamp(14px, 2vw, 22px) 0 14px;
-  border-top: 1px solid color-mix(in srgb, var(--line), transparent 40%);
+  border-top: 0;
   border-bottom: 1px solid color-mix(in srgb, var(--line), transparent 40%);
 }
 
@@ -4714,7 +4714,7 @@ body:has(.no-js-banner) .archive-static-note {
   }
 
   .home-page .hero-lead-copy {
-    gap: 8px;
+    gap: 10px;
   }
 
   .home-page .hero-lead-copy strong {
@@ -4724,13 +4724,14 @@ body:has(.no-js-banner) .archive-static-note {
   .home-page .hero-lead-copy span {
     max-width: 50ch;
     font-size: clamp(16px, 1.1vw, 19px);
-    line-height: 1.4;
+    line-height: 1.48;
   }
 
   .home-page .hero-lead-copy .hero-lead-title {
     max-width: 34ch;
     font-size: clamp(22px, 1.65vw, 28px);
-    line-height: 1.1;
+    line-height: 1.18;
+    margin-bottom: 2px;
   }
 
   .home-page .hero-lead-action {
