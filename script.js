@@ -97,12 +97,7 @@ document.addEventListener("gesturestart", (event) => {
 }, { passive: false });
 
 if ("scrollRestoration" in window.history) {
-  window.history.scrollRestoration = "manual";
-}
-
-const resetInitialScroll = () => {
-  if (window.location.hash) return;
-  window.scrollTo(0, 0);
+  window.history.scrollRestoration = "auto";
 };
 
 const getCleanDisplayUrl = (href) => {
@@ -165,10 +160,6 @@ const showThemeStoragePrompt = () => {
 
 cleanInitialUrl();
 updateThemeButton();
-resetInitialScroll();
-window.addEventListener("load", () => {
-  window.requestAnimationFrame(resetInitialScroll);
-}, { once: true });
 
 const wireBackLinks = () => {
   document.querySelectorAll(".page-back a").forEach((link) => {
@@ -262,11 +253,13 @@ const getHeaderOffset = () => {
   updateIssueStripWrap();
   const height = header?.offsetHeight || 72;
   const newsbarHeight = newsStrip?.offsetHeight || 0;
+  const newsbarPosition = newsStrip ? window.getComputedStyle(newsStrip).position : "";
+  const stickyNewsbarHeight = newsbarPosition === "sticky" || newsbarPosition === "fixed" ? newsbarHeight : 0;
   const issueStripHeight = issueStrip?.scrollHeight || 0;
   root.style.setProperty("--header-height", `${height}px`);
   root.style.setProperty("--newsbar-height", `${newsbarHeight}px`);
   root.style.setProperty("--issue-strip-height", `${issueStripHeight}px`);
-  return height + newsbarHeight + issueStripHeight + 18;
+  return height + stickyNewsbarHeight + issueStripHeight + 18;
 };
 
 if ("ResizeObserver" in window) {
@@ -1172,6 +1165,16 @@ if (articleToc) {
     tocLinks.forEach((link) => tocList.appendChild(link));
   }
 
+  const updateTocOverflow = () => {
+    if (!tocList) return;
+    const hasOverflow = tocList.scrollWidth > tocList.clientWidth + 2;
+    const hasMoreLeft = tocList.scrollLeft > 2;
+    const hasMoreRight = tocList.scrollLeft + tocList.clientWidth < tocList.scrollWidth - 2;
+    tocList.classList.toggle("has-overflow", hasOverflow);
+    tocList.classList.toggle("has-more-left", hasMoreLeft);
+    tocList.classList.toggle("has-more-right", hasMoreRight);
+  };
+
   if (tocLinks.length > 3) {
     articleToc.classList.add("is-collapsible");
     tocToggle = document.createElement("button");
@@ -1211,6 +1214,7 @@ if (articleToc) {
     });
     if (activeLink && tocList && articleToc.classList.contains("is-collapsible") && !articleToc.classList.contains("is-expanded")) {
       activeLink.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+      window.setTimeout(updateTocOverflow, 180);
     }
   };
 
@@ -1248,8 +1252,13 @@ if (articleToc) {
   });
 
   updateActiveToc();
+  updateTocOverflow();
+  tocList?.addEventListener("scroll", updateTocOverflow, { passive: true });
   window.addEventListener("scroll", updateActiveToc, { passive: true });
-  window.addEventListener("resize", updateActiveToc);
+  window.addEventListener("resize", () => {
+    updateActiveToc();
+    updateTocOverflow();
+  });
 }
 
 const sourceFootnotes = Array.from(document.querySelectorAll('.article-body sup a[href^="#source-"]'));

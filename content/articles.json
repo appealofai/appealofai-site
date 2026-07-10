@@ -1,6 +1,46 @@
 {
-  "updated": "2026-07-06T12:00:00Z",
+  "updated": "2026-07-08T12:00:00Z",
   "items": [
+    {
+      "id": "ai-advice-public-interface",
+      "status": "published",
+      "type": "opinion",
+      "date": "2026-07-08",
+      "updated": "2026-07-08T12:00:00Z",
+      "title": "AI advice is becoming a public interface.",
+      "tickerTitle": "AI advice is becoming a public interface",
+      "summary": "A personal opinion on AI advice, elections, work, agents and why useful assistants need public trust before they become ordinary infrastructure.",
+      "url": "/articles/ai-advice-public-interface/",
+      "image": "articles/ai-advice-public-interface/images/wide.png",
+      "topics": [
+        "culture",
+        "policy",
+        "tools",
+        "public-trust"
+      ],
+      "tags": [
+        "Opinion",
+        "AI advice",
+        "ChatGPT",
+        "OpenAI",
+        "Anthropic",
+        "Claude",
+        "agents",
+        "public trust",
+        "elections",
+        "robotics"
+      ],
+      "sources": [
+        "https://help.openai.com/en/articles/6825453-chatgpt-release-notes",
+        "https://www.anthropic.com/economic-index",
+        "https://www.anthropic.com/research/tracing-thoughts-language-model",
+        "https://www.pewresearch.org/internet/2025/04/03/how-the-us-public-and-ai-experts-view-artificial-intelligence/",
+        "https://arxiv.org/abs/2503.14734"
+      ],
+      "priority": 99,
+      "readMinutes": 7,
+      "xPost": "AI advice is becoming a public interface. That can be useful: clearer documents, better drafts, better questions. It can also quietly steer work, politics and trust. The appeal survives if the advice layer shows its sources and limits."
+    },
     {
       "id": "ai-bottleneck-public",
       "status": "published",
@@ -11,7 +51,7 @@
       "tickerTitle": "AI's bottleneck is becoming public",
       "summary": "A personal opinion on AI capacity, token prices, data centers, job anxiety and why the next phase now has to explain power, land, capital and useful capacity.",
       "url": "/articles/ai-bottleneck-public/",
-      "image": "assets/img/social-card.png",
+      "image": "articles/ai-bottleneck-public/images/wide.png",
       "topics": [
         "infrastructure",
         "costs",
@@ -43,7 +83,7 @@
       "tickerTitle": "The AI meter is becoming part of the product",
       "summary": "A personal opinion on token budgets, AI subscriptions, data-center power and why useful intelligence now needs a visible meter.",
       "url": "/articles/ai-meter-token-power-costs/",
-      "image": "assets/img/social-card.png",
+      "image": "articles/ai-meter-token-power-costs/images/wide.png",
       "topics": [
         "infrastructure",
         "costs",
@@ -71,7 +111,7 @@
       "tickerTitle": "Genesis AI points robotics toward useful bodies",
       "summary": "A personal opinion on Genesis AI, Eno, NVIDIA robotics and why the next robot wave may be judged by useful bodies instead of human costumes.",
       "url": "/articles/genesis-ai-robots-practical-body/",
-      "image": "assets/img/social-card.png",
+      "image": "articles/genesis-ai-robots-practical-body/images/wide.png",
       "topics": [
         "robots",
         "infrastructure",
@@ -80,7 +120,6 @@
       "tags": ["robots", "genesis-ai", "nvidia", "humanoids", "infrastructure", "robotics", "embodied-ai"],
       "sources": [
         "https://www.theverge.com/ai-artificial-intelligence/951283/genesis-ai-humanoid-robot-eno",
-        "https://www.nvidia.com/en-us/learn/physical-ai/what-is-isaac-gr00t/",
         "https://arxiv.org/abs/2503.14734",
         "https://arxiv.org/abs/2606.03551"
       ],
@@ -96,7 +135,7 @@
       "tickerTitle": "Coding agents put software inside the infrastructure stack",
       "summary": "A personal opinion on Cursor, Grok, SpaceX and why coding agents now belong in the infrastructure conversation.",
       "url": "/articles/coding-agents-infrastructure-stack/",
-      "image": "assets/img/social-card.png",
+      "image": "articles/coding-agents-infrastructure-stack/images/wide.png",
       "topics": [
         "opinion",
         "developer tools",
@@ -120,7 +159,7 @@
       "tickerTitle": "The AI upside needs a ledger now",
       "summary": "A personal opinion on AI infrastructure, jobs, robots and why the appeal of AI now depends on a visible public ledger of costs and gains.",
       "url": "/articles/ai-upside-ledger/",
-      "image": "assets/img/social-card.png",
+      "image": "articles/ai-upside-ledger/images/wide.png",
       "topics": [
         "infrastructure",
         "policy",
@@ -147,6 +186,7 @@
       "tickerTitle": "The appeal of AI, without looking away",
       "summary": "A personal opening essay for appealofai: useful machine intelligence, public upside and the costs that have to stay visible.",
       "url": "/articles/appeal-of-ai-without-looking-away/",
+      "image": "articles/appeal-of-ai-without-looking-away/images/wide.png",
       "topics": [
         "culture",
         "policy",
@@ -166,7 +206,7 @@
       "tickerTitle": "The AI upside needs a public deal",
       "summary": "A personal note on AI, work, public upside and why the appeal of the technology depends on how broadly its gains are shared.",
       "url": "/articles/ai-upside-needs-public-deal/",
-      "image": "assets/img/social-card.png",
+      "image": "articles/ai-upside-needs-public-deal/images/wide.png",
       "tags": ["jobs", "policy", "culture", "public-upside", "OpenAI", "ChatGPT", "access", "labor"],
       "sources": [
         "https://darioamodei.com/essay/machines-of-loving-grace",
@@ -185,7 +225,7 @@
       "tickerTitle": "AI slop is exhausting the public internet",
       "summary": "A personal note on synthetic comments, generic article filler and why people can feel when language has no witness behind it.",
       "url": "/articles/ai-slop-social-text-fatigue/",
-      "image": "assets/img/social-card.png",
+      "image": "articles/ai-slop-social-text-fatigue/images/wide.png",
       "tags": ["culture", "social-media", "ai-slop", "writing", "ChatGPT", "OpenAI", "generic text"],
       "sources": [
         "https://www.theverge.com/news/844640/merriam-webster-ai-slop-word-of-the-year-2025",
@@ -204,7 +244,7 @@
       "tickerTitle": "AI data centers turn the bubble debate into an energy debate",
       "summary": "The simple bubble take misses the physical story: power, cooling, chips, grids, data centers and useful intelligence per watt.",
       "url": "/articles/ai-infrastructure-not-bubble/",
-      "image": "assets/img/social-card.png",
+      "image": "articles/ai-infrastructure-not-bubble/images/wide.png",
       "tags": ["infrastructure", "energy", "data-centers", "markets", "NVIDIA", "OpenAI", "compute", "chips"],
       "sources": [
         "https://www.iea.org/reports/energy-and-ai",
@@ -223,7 +263,7 @@
       "tickerTitle": "Vibe coding works best when the human still knows the craft",
       "summary": "Expert-led AI programming is strongest in practiced hands: faster exploration, faster drafts, but still dependent on taste, structure and review.",
       "url": "/articles/vibe-coding-expertise-leverage/",
-      "image": "assets/img/social-card.png",
+      "image": "articles/vibe-coding-expertise-leverage/images/wide.png",
       "tags": ["vibe-coding", "expert-led AI programming", "AI-amplified engineering", "software", "craft", "tools", "Cursor", "Claude", "ChatGPT", "OpenAI", "agents"],
       "sources": [
         "https://arxiv.org/abs/2506.23253",
